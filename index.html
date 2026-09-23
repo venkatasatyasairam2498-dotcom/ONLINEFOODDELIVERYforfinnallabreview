@@ -1,0 +1,1979 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crave — Order Food Online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#fc8019;--orange-dk:#e5700f;--ink:#282c3f;--ink-2:#3d4152;--muted:#7e808c;--line:#e9e9eb;--white:#fff;--green:#48c479;--red:#e23744;--radius:16px;--shadow-sm:0 2px 8px rgba(40,44,63,.08);--shadow-md:0 8px 24px rgba(40,44,63,.12);--shadow-lg:0 20px 50px rgba(40,44,63,.18)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--ink);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit;outline:none;border:none}
+a{text-decoration:none;color:inherit}
+::selection{background:var(--orange);color:#fff}
+
+/* AUTH */
+.auth-screen{position:fixed;inset:0;z-index:1000;background:linear-gradient(135deg,#fff8f2,#fff);display:grid;place-items:center;padding:20px;overflow-y:auto}
+.auth-screen.hidden{display:none}
+.auth-box{background:#fff;border-radius:24px;box-shadow:0 30px 80px rgba(40,44,63,.18);width:min(440px,100%);padding:40px 36px;border:1px solid var(--line)}
+.auth-logo{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:28px}
+.auth-logo .logo-mark{width:52px;height:52px;font-size:28px}
+.auth-logo .logo-text{font-size:28px}
+.auth-tabs{display:flex;gap:6px;padding:5px;background:#f4f4f5;border-radius:14px;margin-bottom:24px}
+.auth-tab{flex:1;padding:11px;border-radius:10px;font-size:14px;font-weight:700;color:var(--muted);text-align:center;cursor:pointer;transition:.2s}
+.auth-tab.active{background:#fff;color:var(--ink);box-shadow:0 2px 8px rgba(40,44,63,.1)}
+.auth-form{display:none}
+.auth-form.active{display:block}
+.auth-title{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+.auth-sub{font-size:13.5px;color:var(--muted);font-weight:500;margin-bottom:22px}
+.auth-field{margin-bottom:14px}
+.auth-field label{display:block;font-size:12.5px;font-weight:700;color:var(--ink-2);margin-bottom:7px}
+.auth-field input{width:100%;height:50px;padding:0 16px;border:1.5px solid var(--line);border-radius:12px;font-size:14px;color:var(--ink);background:#fff;transition:.18s}
+.auth-field input:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(252,128,25,.12)}
+.auth-field .hint{font-size:11.5px;color:var(--muted);font-weight:500;margin-top:5px}
+.auth-error{background:#ffe8ea;color:#c81e2b;padding:11px 14px;border-radius:10px;font-size:12.5px;font-weight:600;margin-bottom:14px;display:none}
+.auth-error.show{display:block}
+.auth-success{background:#eafaf0;color:#1f7a45;padding:11px 14px;border-radius:10px;font-size:12.5px;font-weight:600;margin-bottom:14px;display:none}
+.auth-success.show{display:block}
+.auth-btn{width:100%;padding:15px;border-radius:12px;background:var(--orange);color:#fff;font-size:15.5px;font-weight:800;transition:.2s;box-shadow:0 6px 18px rgba(252,128,25,.35);margin-top:8px}
+.auth-btn:hover{background:var(--orange-dk);transform:translateY(-1px)}
+.auth-demo{margin-top:20px;padding:14px;background:#f0fdf4;border:1px dashed #b6e3c4;border-radius:12px;font-size:12px;color:#1f7a45;font-weight:600;line-height:1.55}
+.auth-demo strong{font-weight:800}
+.auth-demo button{margin-top:8px;width:100%;padding:8px;border-radius:8px;background:#1f7a45;color:#fff;font-size:11.5px;font-weight:800;cursor:pointer}
+.auth-switch{text-align:center;margin-top:18px;font-size:13.5px;color:var(--muted);font-weight:500}
+.auth-switch a{color:var(--orange);font-weight:700;cursor:pointer}
+
+/* HEADER */
+.header{position:sticky;top:0;z-index:60;background:#fff;box-shadow:0 2px 12px rgba(40,44,63,.08)}
+.header-inner{max-width:1280px;margin:0 auto;padding:0 24px;height:80px;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;cursor:pointer}
+.logo-mark{width:40px;height:40px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,var(--orange),#ff9a4d);display:grid;place-items:center;font-size:22px;box-shadow:0 4px 12px rgba(252,128,25,.35)}
+.logo-text{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.logo-text span{color:var(--orange)}
+.nav{margin-left:auto;display:flex;align-items:center;gap:6px}
+.nav-link{padding:10px 16px;font-size:14.5px;font-weight:600;color:var(--ink-2);border-radius:10px;transition:.18s;white-space:nowrap;cursor:pointer}
+.nav-link:hover{color:var(--orange);background:#fff5ec}
+.icon-btn{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:18px;background:#f4f4f5;transition:.18s;position:relative;cursor:pointer}
+.icon-btn:hover{background:#e9e9eb}
+.icon-btn .dot{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:var(--orange);border:2px solid #fff;display:none}
+.icon-btn.has .dot{display:block}
+.cart-btn{display:flex;align-items:center;gap:9px;padding:11px 20px;border-radius:12px;background:var(--orange);color:#fff;font-weight:700;font-size:14.5px;transition:.2s;box-shadow:0 4px 14px rgba(252,128,25,.35);cursor:pointer}
+.cart-btn:hover{background:var(--orange-dk)}
+.cart-count{background:rgba(255,255,255,.28);border-radius:20px;padding:1px 8px;font-size:12.5px;min-width:22px;text-align:center}
+.user-menu{position:relative}
+.user-btn{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:12px;background:#f4f4f5;transition:.18s;cursor:pointer;font-size:13.5px;font-weight:700}
+.user-btn:hover{background:#e9e9eb}
+.user-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--orange),#ff9a4d);display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px;flex-shrink:0}
+.user-name{max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.user-dropdown{position:absolute;top:calc(100% + 8px);right:0;min-width:220px;background:#fff;border-radius:14px;box-shadow:var(--shadow-lg);padding:8px;opacity:0;visibility:hidden;transform:translateY(-8px);transition:.2s;z-index:80}
+.user-dropdown.open{opacity:1;visibility:visible;transform:translateY(0)}
+.user-dropdown-head{padding:12px;border-bottom:1px solid var(--line);margin-bottom:6px}
+.user-dropdown-head .uname{font-size:14px;font-weight:800;color:var(--ink)}
+.user-dropdown-head .uemail{font-size:11.5px;color:var(--muted);font-weight:500;margin-top:2px}
+.dropdown-item{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:9px;font-size:13.5px;font-weight:600;color:var(--ink-2);transition:.15s;text-align:left;cursor:pointer}
+.dropdown-item:hover{background:#fff5ec;color:var(--orange)}
+.dropdown-item.danger{color:var(--red)}
+.dropdown-item.danger:hover{background:#ffe8ea;color:var(--red)}
+
+/* HERO */
+.hero{background:radial-gradient(900px 380px at 12% -10%,rgba(252,128,25,.22),transparent 60%),linear-gradient(180deg,#fff8f2,#ffffff);padding:52px 24px 34px;border-bottom:1px solid var(--line)}
+.hero-inner{max-width:1280px;margin:0 auto;text-align:center}
+.hero h1{font-size:clamp(28px,4.4vw,46px);font-weight:800;letter-spacing:-1.2px;line-height:1.15}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero p{margin-top:12px;color:var(--muted);font-size:15.5px;font-weight:500}
+.search-wrap{max-width:640px;margin:28px auto 0}
+.search-box{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:0 8px 0 18px;height:58px;box-shadow:0 8px 26px rgba(40,44,63,.08);transition:.2s}
+.search-box:focus-within{border-color:var(--orange)}
+.search-box .s-icon{font-size:17px;color:var(--muted)}
+.search-box input{flex:1;height:100%;font-size:15px;color:var(--ink);background:transparent}
+.search-box input::placeholder{color:#a5a7b0}
+.search-clear{width:28px;height:28px;border-radius:50%;background:#f4f4f5;display:none;place-items:center;font-size:13px;color:var(--muted);cursor:pointer}
+.search-clear.show{display:grid}
+.search-btn{background:var(--orange);color:#fff;font-weight:700;font-size:14.5px;padding:0 26px;height:44px;border-radius:11px;cursor:pointer}
+.search-btn:hover{background:var(--orange-dk)}
+.hero-stats{display:flex;justify-content:center;gap:44px;margin-top:30px;flex-wrap:wrap}
+.hero-stat b{display:block;font-size:22px;font-weight:800}
+.hero-stat span{font-size:12.5px;color:var(--muted);font-weight:500}
+
+/* CATEGORIES */
+.cats-section{max-width:1280px;margin:0 auto;padding:40px 24px 10px}
+.cats-head{margin-bottom:24px}
+.cats-head h2{font-size:clamp(20px,2.6vw,26px);font-weight:800;letter-spacing:-.6px}
+.cats-head p{font-size:13.5px;color:var(--muted);font-weight:500;margin-top:4px}
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(106px,1fr));gap:22px 10px}
+.cat{display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;user-select:none}
+.cat-icon{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;font-size:40px;background:#fff;border:3px solid transparent;box-shadow:var(--shadow-sm);transition:.25s}
+.cat:hover .cat-icon{transform:translateY(-5px) scale(1.06)}
+.cat.active .cat-icon{border-color:var(--orange);transform:translateY(-3px)}
+.cat-label{margin-top:11px;font-size:13px;font-weight:700;color:var(--ink);line-height:1.25}
+.cat.active .cat-label{color:var(--orange)}
+.cat-desc{margin-top:3px;font-size:10.5px;color:var(--muted);font-weight:500}
+
+/* FILTER BAR */
+.filterbar{position:sticky;top:80px;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);margin-top:26px}
+.filterbar-inner{max-width:1280px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.active-pill{display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border-radius:100px;background:linear-gradient(135deg,var(--orange),#ff9a4d);color:#fff;font-size:13px;font-weight:700;cursor:pointer}
+.active-pill.idle{background:#f4f4f5;color:var(--ink-2);cursor:default}
+.active-pill .x{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.3);display:grid;place-items:center;font-size:11px}
+.tools{display:flex;align-items:center;gap:12px;margin-left:auto}
+.veg-toggle{display:flex;align-items:center;gap:9px;padding:9px 16px;border-radius:100px;border:1.5px solid var(--line);font-size:13px;font-weight:600;background:#fff;cursor:pointer}
+.veg-toggle .box{width:16px;height:16px;border:2px solid var(--green);border-radius:4px;display:grid;place-items:center}
+.veg-toggle .box::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--green);transform:scale(0);transition:.15s}
+.veg-toggle.on .box::after{transform:scale(1)}
+.sortsel{padding:9px 16px;border-radius:100px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:var(--ink-2);cursor:pointer}
+
+/* GRID */
+.section{max-width:1280px;margin:0 auto;padding:34px 24px 70px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.section-head h2{font-size:clamp(19px,2.4vw,25px);font-weight:800}
+.section-head p{font-size:13.5px;color:var(--muted);font-weight:500;margin-top:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:26px 22px}
+.card{border-radius:var(--radius);cursor:pointer;transition:.25s;animation:pop .35s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.card:hover{transform:translateY(-4px)}
+.card-img{position:relative;height:172px;border-radius:var(--radius);overflow:hidden;display:grid;place-items:center}
+.card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.55))}
+.card-emoji{font-size:74px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.22));transition:transform .35s}
+.card:hover .card-emoji{transform:scale(1.12) rotate(-5deg)}
+.offer-badge{position:absolute;bottom:10px;left:12px;z-index:2;color:#fff;font-size:14px;font-weight:800;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.fav{position:absolute;top:10px;right:10px;z-index:2;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;font-size:15px;cursor:pointer}
+.fav.on{color:var(--red)}
+.card-body{padding:12px 2px 0}
+.card-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card-row h3{font-size:16.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rating{display:flex;align-items:center;gap:3px;font-size:12.5px;font-weight:700;color:#fff;background:var(--green);padding:3px 7px;border-radius:6px;flex-shrink:0}
+.rating.low{background:#db7c38}
+.cuisines{margin-top:5px;font-size:13px;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{margin-top:5px;font-size:13px;color:var(--muted);font-weight:500}
+.card-foot{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.add-btn{padding:9px 26px;border-radius:10px;border:1.5px solid var(--line);background:#fff;font-size:13.5px;font-weight:800;letter-spacing:.6px;color:var(--green);box-shadow:var(--shadow-sm);cursor:pointer}
+.add-btn:hover{background:#f0fdf4;border-color:#b6e3c4}
+.stepper{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.stepper button{width:34px;height:34px;font-size:17px;font-weight:700;color:var(--green);display:grid;place-items:center;cursor:pointer}
+.stepper span{min-width:26px;text-align:center;font-size:14px;font-weight:800}
+.badge-tag{font-size:11px;font-weight:700;color:#7a4b12;background:#fff3e0;border-radius:6px;padding:4px 9px;white-space:nowrap}
+.empty{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--muted)}
+.empty .big{font-size:60px;margin-bottom:14px}
+.empty h3{font-size:19px;color:var(--ink);font-weight:700;margin-bottom:6px}
+.empty p{font-size:14px;margin-bottom:16px}
+.empty-btn{padding:11px 22px;border-radius:11px;background:var(--orange);color:#fff;font-weight:700;font-size:13.5px;cursor:pointer}
+
+/* PAGE VIEW */
+#pageView{display:none;max-width:960px;margin:0 auto;padding:40px 24px 90px}
+#pageView.active{display:block}
+.page-back{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;background:#f4f4f5;color:var(--ink-2);font-size:13.5px;font-weight:700;margin-bottom:24px;cursor:pointer}
+.page-back:hover{background:#e9e9eb}
+.page-hero{padding:32px;border-radius:20px;margin-bottom:28px;background:linear-gradient(135deg,#fff8f2,#fff);border:1px solid var(--line);position:relative;overflow:hidden}
+.page-hero-emoji{font-size:52px;margin-bottom:12px}
+.page-hero h1{font-size:clamp(26px,3.6vw,38px);font-weight:800;letter-spacing:-.9px;line-height:1.15}
+.page-hero p{margin-top:10px;font-size:15px;color:var(--muted);font-weight:500;max-width:620px;line-height:1.55}
+.page-block{margin-bottom:28px}
+.page-block h2{font-size:20px;font-weight:800;letter-spacing:-.4px;margin-bottom:12px;color:var(--ink)}
+.page-block p{font-size:14.5px;color:var(--ink-2);line-height:1.7;font-weight:500;margin-bottom:12px}
+.page-block ul{margin:8px 0 12px 20px}
+.page-block li{font-size:14.5px;color:var(--ink-2);line-height:1.75;font-weight:500;margin-bottom:5px}
+.page-block li::marker{color:var(--orange)}
+
+/* ADMIN */
+#adminView{display:none;min-height:100vh;background:#f7f7f8}
+#adminView.active{display:block}
+.admin-header{background:#fff;box-shadow:0 2px 12px rgba(40,44,63,.08);position:sticky;top:0;z-index:60}
+.admin-header-inner{max-width:1400px;margin:0 auto;padding:0 24px;height:72px;display:flex;align-items:center;gap:20px}
+.admin-badge{background:linear-gradient(135deg,#8E2DE2,#4A00E0);color:#fff;font-size:11px;font-weight:800;letter-spacing:.6px;padding:5px 11px;border-radius:8px;text-transform:uppercase}
+.admin-nav{display:flex;gap:4px;margin-left:24px}
+.admin-nav-item{padding:9px 16px;border-radius:10px;font-size:13.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:.18s}
+.admin-nav-item:hover{background:#f4f4f5;color:var(--ink-2)}
+.admin-nav-item.active{background:#fff5ec;color:var(--orange)}
+.admin-container{max-width:1400px;margin:0 auto;padding:32px 24px 80px}
+.admin-page{display:none}
+.admin-page.active{display:block}
+.admin-head{margin-bottom:26px}
+.admin-head h1{font-size:28px;font-weight:800;letter-spacing:-.8px}
+.admin-head p{font-size:14px;color:var(--muted);font-weight:500;margin-top:6px}
+.stat-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-bottom:32px}
+.stat-card{background:#fff;border-radius:16px;padding:22px;border:1px solid var(--line);transition:.2s}
+.stat-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:#ffd9b8}
+.stat-card-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.stat-card-emoji{font-size:22px;width:44px;height:44px;border-radius:12px;background:#fff5ec;display:grid;place-items:center}
+.stat-card b{display:block;font-size:30px;font-weight:800;letter-spacing:-1px;color:var(--ink)}
+.stat-card span{display:block;font-size:12.5px;color:var(--muted);font-weight:600;margin-top:4px}
+.admin-card{background:#fff;border-radius:16px;border:1px solid var(--line);overflow:hidden;margin-bottom:24px}
+.admin-card-head{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+.admin-card-head h3{font-size:17px;font-weight:800}
+.admin-card-head p{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:4px}
+.btn-primary{padding:11px 20px;border-radius:11px;background:var(--orange);color:#fff;font-size:13.5px;font-weight:800;cursor:pointer;box-shadow:0 4px 12px rgba(252,128,25,.3);transition:.18s}
+.btn-primary:hover{background:var(--orange-dk);transform:translateY(-1px)}
+.btn-secondary{padding:11px 20px;border-radius:11px;background:#f4f4f5;color:var(--ink-2);font-size:13.5px;font-weight:800;cursor:pointer;transition:.18s}
+.btn-secondary:hover{background:#e9e9eb}
+.btn-danger{padding:8px 14px;border-radius:9px;background:#ffe8ea;color:var(--red);font-size:12px;font-weight:800;cursor:pointer;transition:.18s}
+.btn-danger:hover{background:#ffd4d9}
+.btn-edit{padding:8px 14px;border-radius:9px;background:#e3f2fd;color:#0c5fa5;font-size:12px;font-weight:800;cursor:pointer;transition:.18s}
+.btn-edit:hover{background:#d0e8fb}
+.admin-table{width:100%;border-collapse:collapse}
+.admin-table th{text-align:left;padding:14px 20px;font-size:11.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;background:#fafafa;border-bottom:1px solid var(--line)}
+.admin-table td{padding:16px 20px;font-size:13.5px;color:var(--ink-2);font-weight:500;border-bottom:1px solid var(--line);vertical-align:middle}
+.admin-table tr:last-child td{border-bottom:none}
+.admin-table tr:hover td{background:#fafafa}
+.admin-table .cell-strong{font-weight:700;color:var(--ink)}
+.status-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 11px;border-radius:100px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px}
+.status-preparing{background:#fff3e0;color:#7a4b12}
+.status-out{background:#e3f2fd;color:#0c5fa5}
+.status-delivered{background:#eafaf0;color:#1f7a45}
+.status-cancelled{background:#ffe8ea;color:#c81e2b}
+.status-select{padding:6px 10px;border-radius:8px;border:1.5px solid var(--line);font-size:12px;font-weight:700;background:#fff;cursor:pointer;color:var(--ink-2)}
+.status-select:focus{border-color:var(--orange)}
+.admin-empty{padding:60px 20px;text-align:center;color:var(--muted)}
+.admin-empty .big{font-size:52px;margin-bottom:12px;opacity:.5}
+.admin-empty h4{color:var(--ink);font-size:15px;font-weight:700;margin-bottom:6px}
+.admin-empty p{font-size:13px;line-height:1.55}
+
+/* Admin modal */
+.admin-modal-wrap{position:fixed;inset:0;z-index:200;display:grid;place-items:center;padding:20px;opacity:0;visibility:hidden;transition:.25s}
+.admin-modal-wrap.open{opacity:1;visibility:visible}
+.admin-modal-bg{position:absolute;inset:0;background:rgba(28,28,28,.6)}
+.admin-modal{position:relative;background:#fff;border-radius:20px;width:min(540px,100%);max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg);transform:scale(.94);transition:.28s}
+.admin-modal-wrap.open .admin-modal{transform:none}
+.admin-modal-head{padding:22px 26px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:14px;position:sticky;top:0;background:#fff;border-radius:20px 20px 0 0;z-index:2}
+.admin-modal-head h3{font-size:18px;font-weight:800}
+.admin-modal-body{padding:22px 26px 26px}
+.admin-form-field{margin-bottom:14px}
+.admin-form-field label{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:7px}
+.admin-form-field input,.admin-form-field select,.admin-form-field textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:11px;font-size:13.5px;color:var(--ink);background:#fff;transition:.15s}
+.admin-form-field input:focus,.admin-form-field select:focus,.admin-form-field textarea:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(252,128,25,.1)}
+.admin-form-field textarea{resize:vertical;min-height:70px}
+.admin-form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.admin-form-actions{display:flex;gap:10px;margin-top:18px}
+.btn-menu{padding:8px 14px;border-radius:9px;background:#ede7f6;color:#5b2ea6;font-size:12px;font-weight:800;cursor:pointer;transition:.18s}
+.btn-menu:hover{background:#ddd2f2}
+.menu-editor-hint{font-size:12.5px;color:var(--muted);font-weight:500;background:#f9f9fa;border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:14px;line-height:1.5}
+.menu-edit-table td{padding:8px 10px}
+.menu-edit-table input,.menu-edit-table select{width:100%;padding:9px 11px;border:1.5px solid var(--line);border-radius:9px;font-size:13px;color:var(--ink);background:#fff;transition:.15s}
+.menu-edit-table input:focus,.menu-edit-table select:focus{border-color:var(--orange);box-shadow:0 0 0 3px rgba(252,128,25,.1)}
+.view-menu-btn{width:100%;margin:10px 0 2px;padding:8px 10px;border:1.5px dashed #e3e3e6;border-radius:10px;font-size:12.5px;font-weight:700;color:var(--orange);background:#fffaf5;transition:.18s}
+.view-menu-btn:hover{border-color:var(--orange);background:#fff5ec}
+.cust-menu-head{display:flex;align-items:center;gap:12px;background:#fff7ef;border:1px solid #ffe3c7;border-radius:12px;padding:14px 16px;margin-bottom:14px}
+.cust-menu-head .cm-emoji{font-size:26px}
+.cust-menu-head b{display:block;font-size:13.5px;color:var(--ink)}
+.cust-menu-head small{display:block;font-size:12px;color:var(--muted);font-weight:600;margin-top:3px}
+.cust-menu-list{display:flex;flex-direction:column}
+.menu-item{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px dashed var(--line);font-size:13.5px}
+.menu-item:last-child{border-bottom:none}
+.mi-name{font-weight:600;color:var(--ink-2)}
+.mi-dots{flex:1;border-bottom:2px dotted #d8d8dc;transform:translateY(4px)}
+.mi-price{font-weight:800;color:var(--ink)}
+.mveg,.mnon{width:14px;height:14px;border-radius:3px;display:inline-grid;place-items:center;flex-shrink:0}
+.mveg{border:2px solid #2e9e5b}.mveg::before{content:"";width:6px;height:6px;border-radius:50%;background:#2e9e5b}
+.mnon{border:2px solid #c9312b}.mnon::before{content:"";width:6px;height:6px;border-radius:50%;background:#c9312b}
+
+/* FOOTER */
+.footer{background:#1c1c1c;color:#b9b9b9;padding:54px 24px 30px;margin-top:20px}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:36px}
+.footer .logo-text{color:#fff}
+.footer p{font-size:13.5px;line-height:1.7;margin-top:14px;max-width:320px;color:#8f8f8f}
+.footer h5{color:#fff;font-size:14px;font-weight:700;margin-bottom:16px}
+.footer ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.footer li a{font-size:13.5px;color:#9d9d9d;transition:.15s;cursor:pointer;display:inline-block}
+.footer li a:hover{color:var(--orange)}
+.footer-bottom{max-width:1280px;margin:40px auto 0;padding-top:22px;border-top:1px solid #2e2e2e;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:#7a7a7a}
+
+/* DRAWERS */
+.overlay{position:fixed;inset:0;background:rgba(28,28,28,.55);opacity:0;visibility:hidden;transition:.25s;z-index:90}
+.overlay.open{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:#fff;z-index:100;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .32s}
+.drawer.open{transform:translateX(0)}
+.drawer.left{right:auto;left:0;transform:translateX(-100%)}
+.drawer.left.open{transform:translateX(0)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--line);gap:12px}
+.drawer-head h3{font-size:17px;font-weight:800}
+.drawer-head small{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:3px}
+.head-actions{display:flex;align-items:center;gap:8px}
+.clear-btn{font-size:12px;font-weight:700;color:var(--red);padding:7px 11px;border-radius:8px;cursor:pointer}
+.clear-btn:hover{background:#ffe8ea}
+.close-x{width:36px;height:36px;border-radius:50%;background:#f4f4f5;display:grid;place-items:center;font-size:17px;cursor:pointer}
+.close-x:hover{background:#e9e9eb}
+.drawer-body{flex:1;overflow-y:auto;padding:18px 24px}
+.c-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px dashed var(--line)}
+.c-emoji{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;font-size:26px;flex-shrink:0}
+.c-info{flex:1;min-width:0}
+.c-info h4{font-size:14px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-info span{font-size:12.5px;color:var(--muted);font-weight:500}
+.c-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.c-price{font-size:14px;font-weight:800}
+.stepper.sm button{width:28px;height:28px;font-size:15px}
+.stepper.sm span{min-width:22px;font-size:13px}
+.cart-empty{text-align:center;padding:70px 20px;color:var(--muted)}
+.cart-empty .big{font-size:56px;margin-bottom:14px;opacity:.5}
+.cart-empty h4{color:var(--ink);font-size:16px;font-weight:700;margin-bottom:6px}
+.cart-empty p{font-size:13.5px;line-height:1.6}
+.bill{margin-top:22px;background:#fafafa;border-radius:14px;padding:18px}
+.bill h4{font-size:13px;font-weight:800;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;margin-bottom:14px}
+.bill-row{display:flex;justify-content:space-between;font-size:13.5px;color:var(--ink-2);margin-bottom:10px;font-weight:500}
+.bill-row.total{border-top:1px dashed #d9d9d9;padding-top:12px;margin-top:14px;font-size:16px;font-weight:800;color:var(--ink)}
+.free{color:var(--green);font-weight:700}
+.strike{text-decoration:line-through;color:#b0b0b0;margin-right:6px}
+.savings{margin-top:14px;background:#eafaf0;color:#1f7a45;border-radius:10px;padding:11px 14px;font-size:12.5px;font-weight:700;text-align:center}
+.drawer-foot{padding:18px 24px 22px;border-top:1px solid var(--line);background:#fff}
+.checkout{width:100%;padding:16px;border-radius:13px;background:var(--orange);color:#fff;font-size:15.5px;font-weight:800;cursor:pointer}
+.checkout:hover{background:var(--orange-dk)}
+.h-order{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;background:#fff}
+.h-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.h-id{font-size:12.5px;font-weight:800;color:var(--ink)}
+.h-date{font-size:11.5px;color:var(--muted);font-weight:500;margin-top:3px}
+.h-total{font-size:16px;font-weight:800;flex-shrink:0}
+.h-items{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);margin-top:12px}
+.h-item{display:flex;align-items:center;gap:10px;font-size:13px}
+.h-item-emoji{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:15px;flex-shrink:0}
+.h-item-name{flex:1;font-weight:600;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.h-item-qty{font-weight:700;color:var(--muted);font-size:12.5px}
+.h-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:12px}
+.h-status{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:100px}
+.h-btn{padding:9px 18px;border-radius:10px;font-size:12.5px;font-weight:800;cursor:pointer}
+.h-btn.reorder{background:var(--orange);color:#fff}
+.h-btn.reorder:hover{background:var(--orange-dk)}
+
+/* TOAST */
+.toast-wrap{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:2000;display:flex;flex-direction:column;gap:10px;align-items:center;pointer-events:none}
+.toast{background:#1c1c1c;color:#fff;padding:13px 22px;border-radius:12px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:10px;box-shadow:0 12px 30px rgba(0,0,0,.3)}
+.toast.out{opacity:0;transition:opacity .25s}
+
+@media(max-width:1024px){
+  .nav-link{display:none}
+  .footer-inner{grid-template-columns:1fr 1fr}
+  .admin-nav{margin-left:auto;gap:2px}
+  .admin-nav-item{padding:8px 12px;font-size:12.5px}
+}
+@media(max-width:760px){
+  .header-inner{height:auto;padding:14px 16px;gap:12px;flex-wrap:wrap}
+  .logo-text{font-size:19px}
+  .nav{margin-left:auto;gap:8px}
+  .cart-btn{padding:10px 14px;font-size:13.5px}
+  .cart-btn .lbl{display:none}
+  .user-name{display:none}
+  .hero{padding:36px 18px 26px}
+  .hero-stats{gap:24px}
+  .cats-section{padding:30px 0 6px}
+  .cats-head{padding:0 16px;margin-bottom:18px}
+  .cats-grid{display:flex;overflow-x:auto;gap:16px;padding:0 16px 14px;scrollbar-width:none}
+  .cats-grid::-webkit-scrollbar{display:none}
+  .cat{flex:0 0 84px;width:84px}
+  .cat-icon{width:72px;height:72px;font-size:33px}
+  .cat-label{font-size:11.5px}
+  .cat-desc{display:none}
+  .filterbar{position:static;margin-top:10px}
+  .filterbar-inner{padding:12px 16px}
+  .section{padding:24px 16px 60px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px 14px}
+  .card-img{height:130px}
+  .card-emoji{font-size:54px}
+  .card-row h3{font-size:14.5px}
+  .add-btn{padding:8px 18px;font-size:12.5px}
+  .footer-inner{grid-template-columns:1fr}
+  .drawer{width:100%}
+  #pageView{padding:28px 16px 70px}
+  .page-hero{padding:22px}
+  .page-hero-emoji{font-size:40px}
+  .auth-box{padding:32px 24px}
+  .admin-container{padding:22px 16px 60px}
+  .admin-head h1{font-size:22px}
+  .stat-cards{grid-template-columns:repeat(2,1fr);gap:12px}
+  .stat-card{padding:16px}
+  .stat-card b{font-size:24px}
+  .admin-table th,.admin-table td{padding:12px 10px;font-size:12px}
+  .admin-form-row{grid-template-columns:1fr}
+  .admin-nav-item{padding:7px 10px;font-size:11.5px}
+}
+</style>
+</head>
+<body>
+
+<!-- ==================== AUTH SCREEN ==================== -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-box">
+    <div class="auth-logo">
+      <div class="logo-mark">🍽️</div>
+      <div class="logo-text">Cra<span>ve</span></div>
+    </div>
+
+    <div class="auth-tabs">
+      <div class="auth-tab active" data-tab="login">Sign In</div>
+      <div class="auth-tab" data-tab="signup">Sign Up</div>
+    </div>
+
+    <!-- LOGIN -->
+    <div class="auth-form active" id="loginForm">
+      <div class="auth-title">Welcome back! 👋</div>
+      <div class="auth-sub">Sign in to order your favourite food</div>
+      <div class="auth-error" id="loginError"></div>
+      <div class="auth-success" id="loginSuccess"></div>
+      <div class="auth-field">
+        <label>Email or Phone</label>
+        <input type="text" id="loginEmail" placeholder="you@example.com" autocomplete="off">
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="off">
+      </div>
+      <button class="auth-btn" id="loginBtn">Sign In →</button>
+      <div class="auth-demo">
+        <strong>🎯 Demo Accounts:</strong><br>
+        <strong>Admin:</strong> admin@crave.com / admin123<br>
+        <strong>User:</strong> Create your own via Sign Up
+        <button id="quickAdminBtn">⚡ One-Click Admin Login</button>
+      </div>
+      <div class="auth-switch">
+        New here? <a data-switch="signup">Create an account</a>
+      </div>
+    </div>
+
+    <!-- SIGNUP -->
+    <div class="auth-form" id="signupForm">
+      <div class="auth-title">Create your account</div>
+      <div class="auth-sub">Join thousands of food lovers</div>
+      <div class="auth-error" id="signupError"></div>
+      <div class="auth-field">
+        <label>Full Name</label>
+        <input type="text" id="signupName" placeholder="e.g. Aarav Sharma" autocomplete="off">
+      </div>
+      <div class="auth-field">
+        <label>Email Address</label>
+        <input type="email" id="signupEmail" placeholder="you@example.com" autocomplete="off">
+      </div>
+      <div class="auth-field">
+        <label>Phone Number</label>
+        <input type="tel" id="signupPhone" placeholder="9876543210" autocomplete="off">
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="signupPassword" placeholder="Minimum 6 characters" autocomplete="off">
+        <div class="hint">Use at least 6 characters</div>
+      </div>
+      <button class="auth-btn" id="signupBtn">Create Account →</button>
+      <div class="auth-switch">
+        Already have an account? <a data-switch="login">Sign in</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== HEADER ==================== -->
+<header class="header" id="mainHeader" style="display:none">
+  <div class="header-inner">
+    <div class="logo" id="logoHome">
+      <a href="landing.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit"><div class="logo-mark">🍽️</div><div class="logo-text">Cra<span>ve</span></div></a>
+    </div>
+    <nav class="nav">
+      <a class="nav-link" id="ordersLink">My Orders</a>
+      <a class="nav-link" data-page="help">Help</a>
+      <button class="icon-btn" id="historyOpen" title="Order History">📋<span class="dot"></span></button>
+      <button class="cart-btn" id="cartOpen">
+        <span>🛒</span><span class="lbl">Cart</span><span class="cart-count" id="cartCount">0</span>
+      </button>
+      <div class="user-menu" id="userMenu">
+        <div class="user-btn" id="userBtn">
+          <div class="user-avatar" id="userAvatar">U</div>
+          <span class="user-name" id="userName">User</span>
+        </div>
+        <div class="user-dropdown" id="userDropdown">
+          <div class="user-dropdown-head">
+            <div class="uname" id="ddName">User</div>
+            <div class="uemail" id="ddEmail">user@crave.com</div>
+          </div>
+          <button class="dropdown-item" id="ddOrders">📦 My Orders</button>
+          <button class="dropdown-item danger" id="logoutBtn">🚪 Logout</button>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ==================== HOME ==================== -->
+<div id="homeView" style="display:none">
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Hungry, <span id="heroUser">friend</span>? Order from the <em>best restaurants</em> near you</h1>
+      <p>Free delivery on your first order • Avg. delivery in 30 minutes</p>
+      <div class="search-wrap">
+        <div class="search-box">
+          <span class="s-icon">🔍</span>
+          <input type="text" id="search" placeholder="Search for restaurants, cuisines or dishes…" autocomplete="off">
+          <button class="search-clear" id="searchClear">✕</button>
+          <button class="search-btn" id="searchBtn">Search</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>26</b><span>Restaurants</span></div>
+        <div class="hero-stat"><b>30 min</b><span>Avg. Delivery</span></div>
+        <div class="hero-stat"><b>4.6 ★</b><span>Avg. Rating</span></div>
+        <div class="hero-stat"><b>₹0</b><span>Delivery Fee*</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="cats-section">
+    <div class="cats-head"><h2>What's on your mind?</h2><p>Pick a category and we'll show you the best nearby</p></div>
+    <div class="cats-grid" id="catsGrid"></div>
+  </section>
+  <div class="filterbar">
+    <div class="filterbar-inner">
+      <button class="active-pill idle" id="activePill">All Restaurants</button>
+      <div class="tools">
+        <button class="veg-toggle" id="vegToggle"><span class="box"></span> Veg Only</button>
+        <select class="sortsel" id="sort">
+          <option value="relevance">Sort: Relevance</option>
+          <option value="rating">Rating: High to Low</option>
+          <option value="time">Delivery Time (Low to High)</option>
+          <option value="priceLow">Cost: Low to High</option>
+          <option value="priceHigh">Cost: High to Low</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <main class="section">
+    <div class="section-head"><div><h2 id="sectionTitle">Restaurants with online food delivery</h2><p id="resultCount">Loading…</p></div></div>
+    <div class="grid" id="grid"></div>
+  </main>
+</div>
+
+<!-- ==================== PAGE VIEW ==================== -->
+<div id="pageView"></div>
+
+<!-- ==================== ADMIN ==================== -->
+<div id="adminView">
+  <div class="admin-header">
+    <div class="admin-header-inner">
+      <a href="landing.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit"><div class="logo-mark">🍽️</div><div class="logo-text">Cra<span>ve</span></div></a>
+      <span class="admin-badge">Admin</span>
+      <nav class="admin-nav">
+        <div class="admin-nav-item active" data-admin-tab="dashboard">📊 Dashboard</div>
+        <div class="admin-nav-item" data-admin-tab="orders">📦 Orders</div>
+        <div class="admin-nav-item" data-admin-tab="restaurants">🏪 Restaurants</div>
+        <div class="admin-nav-item" data-admin-tab="users">👥 Users</div>
+      </nav>
+      <div class="user-menu" style="margin-left:auto">
+        <div class="user-btn" id="adminUserBtn">
+          <div class="user-avatar" style="background:linear-gradient(135deg,#8E2DE2,#4A00E0)">A</div>
+          <span class="user-name" id="adminName">Admin</span>
+        </div>
+        <div class="user-dropdown" id="adminUserDropdown">
+          <div class="user-dropdown-head">
+            <div class="uname" id="adminDdName">Administrator</div>
+            <div class="uemail" id="adminDdEmail">admin@crave.com</div>
+          </div>
+          <button class="dropdown-item danger" id="adminLogoutBtn">🚪 Logout</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-container">
+    <div class="admin-page active" id="adminPageDashboard">
+      <div class="admin-head"><h1>Dashboard</h1><p>Overview of your platform's performance</p></div>
+      <div class="stat-cards">
+        <div class="stat-card"><div class="stat-card-head"><span class="stat-card-emoji">📦</span></div><b id="statOrders">0</b><span>Total Orders</span></div>
+        <div class="stat-card"><div class="stat-card-head"><span class="stat-card-emoji">💰</span></div><b id="statRevenue">₹0</b><span>Total Revenue</span></div>
+        <div class="stat-card"><div class="stat-card-head"><span class="stat-card-emoji">👥</span></div><b id="statUsers">0</b><span>Registered Users</span></div>
+        <div class="stat-card"><div class="stat-card-head"><span class="stat-card-emoji">🏪</span></div><b id="statRestaurants">0</b><span>Restaurants</span></div>
+      </div>
+      <div class="admin-card">
+        <div class="admin-card-head"><div><h3>Recent Orders</h3><p>Last 5 orders placed on the platform</p></div></div>
+        <div id="recentOrdersWrap"></div>
+      </div>
+    </div>
+
+    <div class="admin-page" id="adminPageOrders">
+      <div class="admin-head"><h1>All Orders</h1><p>Manage every order placed by users</p></div>
+      <div class="admin-card">
+        <div class="admin-card-head">
+          <div><h3>Order List</h3><p>Update status as orders progress</p></div>
+          <button class="btn-secondary" id="refreshOrdersBtn">🔄 Refresh</button>
+        </div>
+        <div id="allOrdersWrap"></div>
+      </div>
+    </div>
+
+    <div class="admin-page" id="adminPageRestaurants">
+      <div class="admin-head"><h1>Restaurants</h1><p>Add, edit, or remove restaurants from the platform</p></div>
+      <div class="admin-card">
+        <div class="admin-card-head">
+          <div><h3>Restaurant List</h3><p id="restaurantCount">0 restaurants</p></div>
+          <button class="btn-primary" id="addRestaurantBtn">➕ Add Restaurant</button>
+        </div>
+        <div id="allRestaurantsWrap"></div>
+      </div>
+    </div>
+
+    <div class="admin-page" id="adminPageUsers">
+      <div class="admin-head"><h1>Registered Users</h1><p>All customers who have signed up on Crave</p></div>
+      <div class="admin-card">
+        <div class="admin-card-head"><div><h3>User List</h3><p id="userCount">0 users</p></div></div>
+        <div id="allUsersWrap"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== FOOTER ==================== -->
+<footer class="footer" id="mainFooter" style="display:none">
+  <div class="footer-inner">
+    <div>
+      <a href="landing.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit"><div class="logo-mark">🍽️</div><div class="logo-text">Cra<span>ve</span></div></a>
+      <p>Order food online from the best restaurants in your city. Fresh, fast and delivered with a smile.</p>
+    </div>
+    <div><h5>Company</h5><ul>
+      <li><a data-page="about">About Us</a></li><li><a data-page="careers">Careers</a></li>
+      <li><a data-page="team">Team</a></li><li><a data-page="blog">Blog</a></li>
+    </ul></div>
+    <div><h5>Legal</h5><ul>
+      <li><a data-page="terms">Terms</a></li><li><a data-page="privacy">Privacy</a></li>
+      <li><a data-page="refund">Refund</a></li><li><a data-page="cookies">Cookies</a></li>
+    </ul></div>
+    <div><h5>Support</h5><ul>
+      <li><a data-page="help">Help Centre</a></li><li><a data-page="partner">Partner With Us</a></li>
+      <li><a data-page="ride">Ride With Us</a></li><li><a data-page="contact">Contact</a></li>
+    </ul></div>
+    <div><h5>Portals</h5><ul>
+      <li><a href="landing.html">🏠 Portal Home</a></li>
+      <li><a href="index1.html">🏪 Restaurant Partner</a></li>
+      <li><a href="index2.html">🍽️ Food Ordering</a></li>
+    </ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Crave — SDC Project Review Demo.</span>
+    <span>Made with 🧡 in India</span>
+  </div>
+</footer>
+
+<!-- ==================== OVERLAY, DRAWERS, MODAL ==================== -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div><h3>Your Cart</h3><small id="drawerSub">0 items</small></div>
+    <button class="close-x" id="cartClose">✕</button>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot" style="display:none">
+    <button class="checkout" id="checkout">Proceed to Checkout →</button>
+  </div>
+</aside>
+<aside class="drawer left" id="historyDrawer">
+  <div class="drawer-head">
+    <div><h3>Your Orders</h3><small id="historySub">No orders yet</small></div>
+    <div class="head-actions">
+      <button class="clear-btn" id="clearHistory" style="display:none">Clear all</button>
+      <button class="close-x" id="historyClose">✕</button>
+    </div>
+  </div>
+  <div class="drawer-body" id="historyBody"></div>
+</aside>
+<div class="admin-modal-wrap" id="adminModal">
+  <div class="admin-modal-bg" id="adminModalBg"></div>
+  <div class="admin-modal">
+    <div class="admin-modal-head">
+      <h3 id="adminModalTitle">Add Restaurant</h3>
+      <button class="close-x" id="adminModalClose">✕</button>
+    </div>
+    <div class="admin-modal-body" id="adminModalBody"></div>
+  </div>
+</div>
+<div class="toast-wrap" id="toasts"></div>
+
+<script>
+/* =========================================================
+   STORAGE HELPERS
+   ========================================================= */
+var LS_USERS = "crave_users";
+var LS_SESSION = "crave_session";
+var LS_RESTAURANTS = "crave_restaurants";
+var LS_ORDERS = "crave_orders";
+var LS_HISTORY = "crave_history";
+
+function lsGet(key, fallback){
+  try{
+    var raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  }catch(e){ return fallback; }
+}
+function lsSet(key, value){
+  try{ localStorage.setItem(key, JSON.stringify(value)); }catch(e){}
+}
+function lsDel(key){ try{ localStorage.removeItem(key); }catch(e){} }
+
+/* =========================================================
+   DEFAULT DATA
+   ========================================================= */
+var DEFAULT_RESTAURANTS = [
+  {id:1,name:"Babai Hotel",cuisines:["South Indian"],rating:4.7,time:22,price:250,emoji:"🥘",grad:"linear-gradient(135deg,#43cea2,#185a9d)",offer:"30% OFF up to ₹75",veg:true,tag:"Top Rated",cats:["Breakfast","Lunch","Vegetarian"],aliases:"dosai dose dosha masala dosa"},
+  {id:2,name:"S.S.S. Idly Hotel",cuisines:["South Indian","Healthy"],rating:4.5,time:19,price:200,emoji:"🍚",grad:"linear-gradient(135deg,#a8e063,#56ab2f)",offer:"Flat ₹50 OFF",veg:true,tag:"",cats:["Breakfast","Healthy","Vegetarian"],aliases:"idly iddly iddli idlii sambar vada"},
+  {id:3,name:"Platform 65 The Train Theme Restaurant",cuisines:["Italian","Pizza"],rating:4.4,time:30,price:450,emoji:"🍕",grad:"linear-gradient(135deg,#ffb26b,#ff6b6b)",offer:"50% OFF up to ₹100",veg:false,tag:"Bestseller",cats:["Late-Night","Dinner","Party Packs","Quick Bites"],aliases:"piza pizzas pizzza margherita"},
+  {id:4,name:"Blue Fox",cuisines:["Burger","American"],rating:4.1,time:28,price:400,emoji:"🍔",grad:"linear-gradient(135deg,#f7971e,#ffd200)",offer:"Buy 1 Get 1",veg:false,tag:"Bestseller",cats:["Late-Night","Quick Bites","Kids' Meals"],aliases:"burgar burgur hamburger"},
+  {id:5,name:"Ulavacharu",cuisines:["Biryani","Mughlai"],rating:4.6,time:35,price:550,emoji:"🍛",grad:"linear-gradient(135deg,#f7b733,#fc4a1a)",offer:"Flat ₹125 OFF",veg:false,tag:"Top Rated",cats:["Lunch","Dinner","Party Packs"],aliases:"biriyani biryanii briyani"},
+  {id:6,name:"Sri Ramaiah Mess And Caterers",cuisines:["Healthy","Salads"],rating:4.3,time:25,price:350,emoji:"🥗",grad:"linear-gradient(135deg,#a8e063,#56ab2f)",offer:"20% OFF",veg:true,tag:"",cats:["Healthy","Vegetarian","Vegan","Fitness","Lunch"],aliases:"salad bowl protein"},
+  {id:7,name:"Dolphin Hotel",cuisines:["Chinese","Asian"],rating:4.2,time:32,price:500,emoji:"🍜",grad:"linear-gradient(135deg,#ee0979,#ff6a00)",offer:"₹100 OFF above ₹399",veg:false,tag:"",cats:["Dinner","Late-Night","Lunch"],aliases:"noodles chinese hakka"},
+  {id:8,name:"Pullareddy Sweets",cuisines:["Desserts","Bakery"],rating:4.5,time:20,price:300,emoji:"🍰",grad:"linear-gradient(135deg,#ff9a9e,#fad0c4)",offer:"Free Brownie",veg:true,tag:"New",cats:["Desserts","Evening Snacks"],aliases:"cake pastry brownie chocolate"},
+  {id:9,name:"Rayalaseema Ruchulu",cuisines:["North Indian","Kebabs"],rating:4.4,time:38,price:650,emoji:"🍢",grad:"linear-gradient(135deg,#c31432,#240b36)",offer:"Flat 40% OFF",veg:false,tag:"",cats:["Dinner","Lunch","Party Packs"],aliases:"kebab tandoori chicken curry"},
+  {id:10,name:"The Park Visakhapatnam",cuisines:["Japanese","Sushi"],rating:4.6,time:40,price:850,emoji:"🍣",grad:"linear-gradient(135deg,#2193b0,#6dd5ed)",offer:"15% OFF",veg:false,tag:"Premium",cats:["Dinner","Healthy","Fitness"],aliases:"sushi japanese ramen"},
+  {id:11,name:"Chutneys",cuisines:["Street Food","Snacks"],rating:4.0,time:18,price:200,emoji:"🥟",grad:"linear-gradient(135deg,#f12711,#f5af19)",offer:"₹50 OFF above ₹199",veg:true,tag:"",cats:["Evening Snacks","Quick Bites","Vegetarian"],aliases:"chaat samosa panipuri golgappa"},
+  {id:12,name:"Hotel Daspalla",cuisines:["Italian","Continental"],rating:4.3,time:34,price:600,emoji:"🍝",grad:"linear-gradient(135deg,#e96443,#904e95)",offer:"25% OFF",veg:false,tag:"",cats:["Dinner","Lunch","Brunch"],aliases:"pasta spaghetti penne"},
+  {id:13,name:"Radisson Blu Resort Visakhapatnam",cuisines:["Mexican","Burger"],rating:4.2,time:29,price:420,emoji:"🌮",grad:"linear-gradient(135deg,#fdc830,#f37335)",offer:"Combo at ₹199",veg:false,tag:"New",cats:["Late-Night","Quick Bites","Evening Snacks"],aliases:"taco burrito nachos"},
+  {id:14,name:"Hotel Bhimas",cuisines:["Beverages","Juices"],rating:4.4,time:16,price:220,emoji:"🥤",grad:"linear-gradient(135deg,#00b09b,#96c93d)",offer:"Buy 2 Get 1",veg:true,tag:"",cats:["Beverages","Fruits","Healthy","Fitness"],aliases:"juice smoothie shake"},
+  {id:15,name:"Hotel Green Park",cuisines:["Cafe","Coffee"],rating:4.5,time:24,price:380,emoji:"☕",grad:"linear-gradient(135deg,#8E2DE2,#4A00E0)",offer:"20% OFF on Coffee",veg:true,tag:"Bestseller",cats:["Tea & Coffee","Brunch","Desserts","Evening Snacks"],aliases:"coffee latte cappuccino coffe cofee"},
+  {id:16,name:"Bombay Sweets",cuisines:["Desserts","Waffles"],rating:4.3,time:26,price:340,emoji:"🧇",grad:"linear-gradient(135deg,#fc5c7d,#6a82fb)",offer:"Free Topping",veg:true,tag:"New",cats:["Desserts","Brunch","Kids' Meals"],aliases:"waffle pancake"},
+  {id:17,name:"Hotel Meghalaya",cuisines:["Tibetan","Momos"],rating:4.2,time:27,price:280,emoji:"🥟",grad:"linear-gradient(135deg,#f7971e,#ffd200)",offer:"₹60 OFF",veg:false,tag:"",cats:["Quick Bites","Evening Snacks","Late-Night"],aliases:"momo momos mamus dumpling"},
+  {id:18,name:"Subbayya Gari Hotel",cuisines:["North Indian","Thali"],rating:4.5,time:31,price:380,emoji:"🍱",grad:"linear-gradient(135deg,#f7b733,#fc4a1a)",offer:"Unlimited Thali ₹249",veg:true,tag:"Top Rated",cats:["Lunch","Dinner","Vegetarian","Meals & Combos"],aliases:"thali meal combo"},
+  {id:19,name:"Hotel Sindhuri Park",cuisines:["Fitness","Healthy"],rating:4.6,time:28,price:520,emoji:"🏋️",grad:"linear-gradient(135deg,#00b09b,#96c93d)",offer:"Flat 30% OFF",veg:false,tag:"",cats:["Fitness","Healthy","Lunch"],aliases:"protein gym fit"},
+  {id:20,name:"Welcomhotel By ITC Hotels, Devee Grand Bay",cuisines:["Party","Multi-cuisine"],rating:4.4,time:45,price:900,emoji:"🎉",grad:"linear-gradient(135deg,#8E2DE2,#4A00E0)",offer:"20% OFF above ₹999",veg:false,tag:"",cats:["Party Packs","Meals & Combos","Dinner"],aliases:"party platter family pack"},
+  {id:21,name:"Hotel Ilapuram",cuisines:["Fruits","Juices"],rating:4.5,time:15,price:240,emoji:"🍎",grad:"linear-gradient(135deg,#a8e063,#56ab2f)",offer:"Free Honey Drizzle",veg:true,tag:"",cats:["Fruits","Healthy","Vegan","Breakfast"],aliases:"fruit apple banana"},
+  {id:22,name:"The Gateway Hotel Beach Road",cuisines:["Kids","Fast Food"],rating:4.3,time:22,price:260,emoji:"🧒",grad:"linear-gradient(135deg,#ff9a9e,#fad0c4)",offer:"Free Toy with Meal",veg:false,tag:"",cats:["Kids' Meals","Brunch","Desserts"],aliases:"kids child small portion"},
+  {id:23,name:"Hotel Manorama",cuisines:["Vegan","Plant-based"],rating:4.4,time:30,price:420,emoji:"🌿",grad:"linear-gradient(135deg,#a8e063,#56ab2f)",offer:"15% OFF",veg:true,tag:"New",cats:["Vegan","Healthy","Lunch","Dinner"],aliases:"vegan plant based"},
+  {id:24,name:"Hotel Deepa Comforts",cuisines:["Breakfast","Eggs"],rating:4.2,time:18,price:220,emoji:"🍳",grad:"linear-gradient(135deg,#fdc830,#f37335)",offer:"₹40 OFF",veg:false,tag:"",cats:["Breakfast","Brunch","Fitness"],aliases:"omelet omlete egg"},
+  {id:25,name:"Four Points by Sheraton Visakhapatnam",cuisines:["Beverages","Healthy"],rating:4.5,time:17,price:280,emoji:"🥤",grad:"linear-gradient(135deg,#fc5c7d,#6a82fb)",offer:"Buy 1 Get 1",veg:true,tag:"",cats:["Beverages","Healthy","Fruits","Fitness"],aliases:"smoothie shake milkshake"},
+  {id:26,name:"Novotel Visakhapatnam Varun Beach",cuisines:["Tea","Snacks"],rating:4.6,time:14,price:180,emoji:"🍵",grad:"linear-gradient(135deg,#f7971e,#ffd200)",offer:"Chai at ₹10",veg:true,tag:"Bestseller",cats:["Tea & Coffee","Breakfast","Evening Snacks"],aliases:"chai tea cutting"}
+];
+
+var CATEGORIES = [
+  {key:"All",emoji:"🍽️",desc:"Everything"},{key:"Breakfast",emoji:"🌅",desc:"Idli, Dosa, Poha"},
+  {key:"Brunch",emoji:"☀️",desc:"Wraps, Omelets"},{key:"Lunch",emoji:"🍛",desc:"Thali, Biryani"},
+  {key:"Evening Snacks",emoji:"🌆",desc:"Samosa, Chaat"},{key:"Dinner",emoji:"🌙",desc:"Roti, Curries"},
+  {key:"Late-Night",emoji:"🌃",desc:"Burgers, Pizza"},{key:"Beverages",emoji:"🥤",desc:"Juices, Shakes"},
+  {key:"Tea & Coffee",emoji:"☕",desc:"Chai, Latte"},{key:"Desserts",emoji:"🍰",desc:"Cakes, Ice Cream"},
+  {key:"Healthy",emoji:"🥗",desc:"Salads, Bowls"},{key:"Vegetarian",emoji:"🌱",desc:"Veg Meals"},
+  {key:"Vegan",emoji:"🌿",desc:"Plant-based"},{key:"Meals & Combos",emoji:"🍱",desc:"Meal Boxes"},
+  {key:"Quick Bites",emoji:"🍿",desc:"Fries, Rolls"},{key:"Fruits",emoji:"🍎",desc:"Fruit Bowls"},
+  {key:"Kids' Meals",emoji:"🧒",desc:"Small Portions"},{key:"Fitness",emoji:"🏋️",desc:"High Protein"},
+  {key:"Party Packs",emoji:"🎉",desc:"Family Packs"}
+];
+var CAT_BG = [
+  "linear-gradient(135deg,#fff3e0,#ffe0b2)","linear-gradient(135deg,#e8f5e9,#c8e6c9)",
+  "linear-gradient(135deg,#e3f2fd,#bbdefb)","linear-gradient(135deg,#fce4ec,#f8bbd0)",
+  "linear-gradient(135deg,#f3e5f5,#e1bee7)","linear-gradient(135deg,#fff8e1,#ffecb3)",
+  "linear-gradient(135deg,#e0f7fa,#b2ebf2)","linear-gradient(135deg,#fbe9e7,#ffccbc)",
+  "linear-gradient(135deg,#ede7f6,#d1c4e9)","linear-gradient(135deg,#f1f8e9,#dcedc8)"
+];
+var SEARCH_ALIASES = {"idly":"idli","iddly":"idli","iddli":"idli","idlii":"idli","dosai":"dosa","dose":"dosa","biriyani":"biryani","biryanii":"biryani","briyani":"biryani","burgar":"burger","burgur":"burger","piza":"pizza","pizzas":"pizza","pizzza":"pizza","mamus":"momos","momus":"momos","coffe":"coffee","cofee":"coffee","dumplings":"momo","noodles":"noodle"};
+
+/* =========================================================
+   DEFAULT MENUS (food items per restaurant)
+   ========================================================= */
+var DEFAULT_MENUS = {
+  1:[{n:"Idli (2 pcs)",p:40,v:true},{n:"Plain Dosa",p:60,v:true},{n:"Masala Dosa",p:90,v:true},{n:"Rava Dosa",p:85,v:true},{n:"Pesarattu",p:80,v:true},{n:"Upma",p:50,v:true},{n:"Sambar Vada (2 pcs)",p:60,v:true},{n:"Filter Coffee",p:25,v:true}],
+  2:[{n:"Idli (2 pcs)",p:35,v:true},{n:"Ghee Kunda Idly",p:65,v:true},{n:"Guntur Idly",p:70,v:true},{n:"Butter Idly",p:65,v:true},{n:"Sambar Vada",p:55,v:true},{n:"Pongal",p:70,v:true},{n:"Idly Sambar (3 pcs)",p:60,v:true},{n:"Filter Coffee",p:20,v:true}],
+  3:[{n:"Margherita Pizza",p:199,v:true},{n:"Veg Farmhouse Pizza",p:249,v:true},{n:"Chicken Tikka Pizza",p:299,v:false},{n:"Paneer Makhani Pizza",p:289,v:true},{n:"Garlic Bread Sticks",p:119,v:true},{n:"Peri Peri Fries",p:129,v:true},{n:"Cold Coffee",p:99,v:true},{n:"Choco Lava Cake",p:99,v:true}],
+  4:[{n:"Classic Veg Burger",p:99,v:true},{n:"Chicken Zinger Burger",p:149,v:false},{n:"Blue Fox Double Decker",p:199,v:false},{n:"Cheese Burger",p:129,v:true},{n:"Peri Peri Fries",p:119,v:true},{n:"Chocolate Thick Shake",p:129,v:true},{n:"Lemon Iced Tea",p:99,v:true}],
+  5:[{n:"Ulavacharu Chicken Biryani",p:280,v:false},{n:"Boneless Chicken Biryani",p:300,v:false},{n:"Mutton Biryani",p:380,v:false},{n:"Veg Biryani",p:220,v:true},{n:"Chicken 65",p:240,v:false},{n:"Ulavacharu Soup",p:120,v:true},{n:"Double ka Meetha",p:110,v:true},{n:"Rumali Roti",p:25,v:true}],
+  6:[{n:"Veg Meals (Full)",p:180,v:true},{n:"Veg Meals (Half)",p:120,v:true},{n:"Sambar Rice",p:100,v:true},{n:"Curd Rice",p:90,v:true},{n:"Gunpowder Rice",p:80,v:true},{n:"Rasam",p:60,v:true},{n:"Appadam",p:15,v:true},{n:"Buttermilk",p:25,v:true}],
+  7:[{n:"Veg Manchuria",p:180,v:true},{n:"Chicken Manchuria",p:220,v:false},{n:"Veg Fried Rice",p:190,v:true},{n:"Chicken Fried Rice",p:240,v:false},{n:"Dragon Chicken",p:280,v:false},{n:"Gobi 65",p:160,v:true},{n:"Veg Hakka Noodles",p:200,v:true},{n:"Chicken Noodles",p:250,v:false},{n:"Veg Sweet Corn Soup",p:120,v:true}],
+  8:[{n:"Kaja Box (500g)",p:220,v:true},{n:"Kaju Katli (500g)",p:450,v:true},{n:"Laddu Box (500g)",p:160,v:true},{n:"Mysore Pak (500g)",p:240,v:true},{n:"Badusha (250g)",p:130,v:true},{n:"Dry Fruit Laddu (250g)",p:200,v:true},{n:"Rose Milk",p:50,v:true}],
+  9:[{n:"Rayalaseema Chicken Fry",p:260,v:false},{n:"Natu Kodi Pulusu",p:320,v:false},{n:"Kebab Platter",p:340,v:false},{n:"Chicken Tikka",p:270,v:false},{n:"Mutton Rogan Josh",p:360,v:false},{n:"Paneer Butter Masala",p:240,v:true},{n:"Butter Naan",p:45,v:true},{n:"Gulab Jamun (2 pcs)",p:90,v:true}],
+  10:[{n:"California Roll",p:450,v:false},{n:"Veg Sushi Platter",p:380,v:true},{n:"Salmon Nigiri",p:520,v:false},{n:"Miso Ramen",p:420,v:true},{n:"Chicken Ramen",p:460,v:false},{n:"Edamame",p:220,v:true},{n:"Japanese Cheesecake",p:250,v:true}],
+  11:[{n:"Chutneys Special Dosa",p:120,v:true},{n:"Idli Sambar (2 pcs)",p:50,v:true},{n:"Upma Pesarattu",p:95,v:true},{n:"Karam Dosa",p:85,v:true},{n:"Rava Dosa",p:90,v:true},{n:"Mysore Bonda",p:60,v:true},{n:"Sambar Vada",p:55,v:true},{n:"Filter Coffee",p:30,v:true}],
+  12:[{n:"Alfredo Pasta",p:320,v:true},{n:"Arrabiata Penne",p:300,v:true},{n:"Grilled Chicken Steak",p:450,v:false},{n:"Margherita Flatbread",p:340,v:true},{n:"Caesar Salad",p:260,v:false},{n:"New York Cheesecake",p:220,v:true},{n:"Cappuccino",p:150,v:true}],
+  13:[{n:"Chicken Quesadilla",p:380,v:false},{n:"Veg Burrito Bowl",p:320,v:true},{n:"Mexican Tacos (2 pcs)",p:340,v:false},{n:"Classic Cheese Burger",p:330,v:false},{n:"Nachos with Salsa",p:280,v:true},{n:"Virgin Mojito",p:220,v:true},{n:"Churros with Chocolate",p:240,v:true}],
+  14:[{n:"Fresh Lime Soda",p:60,v:true},{n:"Mango Lassi",p:90,v:true},{n:"Watermelon Juice",p:80,v:true},{n:"Sweet Lassi",p:70,v:true},{n:"Masala Buttermilk",p:45,v:true},{n:"Filter Coffee",p:30,v:true},{n:"Banana Honey Shake",p:110,v:true}],
+  15:[{n:"Cappuccino",p:160,v:true},{n:"Cafe Latte",p:170,v:true},{n:"Espresso",p:120,v:true},{n:"Iced Americano",p:180,v:true},{n:"Hazelnut Mocha",p:220,v:true},{n:"Grilled Veg Sandwich",p:150,v:true},{n:"Chocolate Brownie",p:160,v:true},{n:"Blueberry Muffin",p:130,v:true}],
+  16:[{n:"Belgian Waffle",p:180,v:true},{n:"Chocolate Waffle",p:220,v:true},{n:"Ice Cream Sundae",p:160,v:true},{n:"Gulab Jamun (2 pcs)",p:60,v:true},{n:"Rasmalai (2 pcs)",p:90,v:true},{n:"Kesar Falooda",p:130,v:true},{n:"Brownie with Ice Cream",p:190,v:true}],
+  17:[{n:"Steamed Veg Momos (6 pcs)",p:80,v:true},{n:"Steamed Chicken Momos (6 pcs)",p:110,v:false},{n:"Fried Veg Momos",p:100,v:true},{n:"Pan Fried Chicken Momos",p:120,v:false},{n:"Veg Thukpa",p:130,v:true},{n:"Chicken Thukpa",p:150,v:false},{n:"Momo Soup Bowl",p:140,v:true}],
+  18:[{n:"Veg Thali (Unlimited)",p:250,v:true},{n:"Special Meals",p:300,v:true},{n:"Sambar",p:70,v:true},{n:"Rasam",p:50,v:true},{n:"Curd Rice",p:80,v:true},{n:"Appadam",p:15,v:true},{n:"Gulab Jamun",p:40,v:true},{n:"Buttermilk",p:25,v:true}],
+  19:[{n:"Grilled Chicken Protein Bowl",p:320,v:false},{n:"Paneer Protein Bowl",p:290,v:true},{n:"Quinoa Salad",p:260,v:true},{n:"Egg White Omelette",p:180,v:false},{n:"Protein Smoothie",p:220,v:true},{n:"Oats Idli",p:150,v:true},{n:"Soya Chunk Curry",p:200,v:true}],
+  20:[{n:"Chicken Biryani (Serves 2)",p:650,v:false},{n:"Paneer Tikka Platter",p:550,v:true},{n:"Mixed Grill Platter",p:750,v:false},{n:"Butter Chicken",p:560,v:false},{n:"Dal Makhani",p:420,v:true},{n:"Garden Salad",p:280,v:true},{n:"Naan Basket (4 pcs)",p:250,v:true},{n:"Chocolate Fondant",p:320,v:true}],
+  21:[{n:"Mixed Fruit Juice",p:90,v:true},{n:"Pomegranate Juice",p:110,v:true},{n:"Sweet Lime Juice",p:85,v:true},{n:"Papaya Juice",p:80,v:true},{n:"Fresh Fruit Bowl",p:120,v:true},{n:"Fruit Salad with Ice Cream",p:140,v:true},{n:"Banana Honey Shake",p:100,v:true}],
+  22:[{n:"Chicken Nuggets (6 pcs)",p:180,v:false},{n:"Mini Cheese Burger",p:190,v:false},{n:"French Fries",p:130,v:true},{n:"Pasta in Tomato Sauce",p:220,v:true},{n:"Fish Fingers",p:240,v:false},{n:"Chocolate Milkshake",p:150,v:true},{n:"Fresh Fruit Cup",p:110,v:true}],
+  23:[{n:"Tofu Stir Fry",p:240,v:true},{n:"Vegan Buddha Bowl",p:280,v:true},{n:"Coconut Veg Curry",p:260,v:true},{n:"Vegan Berry Smoothie",p:180,v:true},{n:"Millet Upma",p:130,v:true},{n:"Soya Chaap Masala",p:240,v:true},{n:"Vegan Banana Bread",p:120,v:true}],
+  24:[{n:"Egg Dosa",p:90,v:false},{n:"Plain Omelette",p:60,v:false},{n:"Masala Omelette",p:80,v:false},{n:"Egg Bhurji",p:70,v:false},{n:"Half Boil Eggs (2)",p:40,v:false},{n:"Boiled Eggs (2)",p:50,v:false},{n:"Egg Fried Rice",p:150,v:false}],
+  25:[{n:"Avocado Smoothie",p:320,v:true},{n:"Cold Pressed Juice",p:280,v:true},{n:"Green Detox Juice",p:260,v:true},{n:"Protein Shake",p:340,v:true},{n:"Virgin Mojito",p:240,v:true},{n:"Fresh Coconut Water",p:150,v:true}],
+  26:[{n:"Masala Chai",p:90,v:true},{n:"Ginger Tea",p:80,v:true},{n:"Green Tea",p:110,v:true},{n:"Veg Samosa (2 pcs)",p:70,v:true},{n:"Veg Sandwich",p:160,v:true},{n:"Pakoda Plate",p:110,v:true},{n:"Bun Maska",p:60,v:true}]
+};
+
+/* =========================================================
+   SEED ADMIN + RESTAURANTS
+   ========================================================= */
+(function seedData(){
+  // Always ensure admin exists
+  var users = lsGet(LS_USERS, []);
+  if(!Array.isArray(users)) users = [];
+  var hasAdmin = false;
+  for(var i = 0; i < users.length; i++){
+    if(users[i] && users[i].email === "admin@crave.com"){
+      hasAdmin = true;
+      // Ensure correct password and role
+      users[i].password = "admin123";
+      users[i].role = "admin";
+      break;
+    }
+  }
+  if(!hasAdmin){
+    users.push({
+      id: "admin_1",
+      name: "Administrator",
+      email: "admin@crave.com",
+      phone: "0000000000",
+      password: "admin123",
+      role: "admin",
+      createdAt: Date.now()
+    });
+  }
+  lsSet(LS_USERS, users);
+
+  // Seed restaurants if missing
+  if(!localStorage.getItem(LS_RESTAURANTS)){
+    lsSet(LS_RESTAURANTS, DEFAULT_RESTAURANTS);
+  }
+})();
+
+/* =========================================================
+   RUNTIME STATE
+   ========================================================= */
+var RESTAURANTS = lsGet(LS_RESTAURANTS, DEFAULT_RESTAURANTS);
+(function ensureMenus(){
+  var changed = false;
+  for(var i = 0; i < RESTAURANTS.length; i++){
+    if(!Array.isArray(RESTAURANTS[i].menu)){
+      RESTAURANTS[i].menu = (DEFAULT_MENUS[RESTAURANTS[i].id] || []).slice();
+      changed = true;
+    }
+  }
+  if(changed) lsSet(LS_RESTAURANTS, RESTAURANTS);
+})();
+var currentUser = null;
+var activeCategory = "All", vegOnly = false, query = "", sortBy = "relevance";
+var cart = {}, favourites = {}, orderHistory = [];
+var DELIVERY_FEE = 40, PLATFORM_FEE = 6, GST_RATE = 0.05, FREE_DELIVERY_ABOVE = 500, HISTORY_LIMIT = 50;
+
+function itemPrice(r){ return Math.round(r.price / 2 / 10) * 10; }
+function inr(n){ return "₹" + Number(n).toLocaleString("en-IN"); }
+function $(id){ return document.getElementById(id); }
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+function toast(msg, icon){
+  icon = icon || "✅";
+  var el = document.createElement("div");
+  el.className = "toast";
+  el.innerHTML = "<span>" + icon + "</span><span>" + msg + "</span>";
+  var wrap = $("toasts");
+  if(wrap) wrap.appendChild(el);
+  setTimeout(function(){
+    el.classList.add("out");
+    setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); }, 300);
+  }, 2200);
+}
+
+/* =========================================================
+   AUTH MODULE
+   ========================================================= */
+function getUsers(){
+  var u = lsGet(LS_USERS, []);
+  return Array.isArray(u) ? u : [];
+}
+function saveUsers(list){ lsSet(LS_USERS, list); }
+
+function showAuthError(elId, msg){
+  var el = $(elId);
+  if(!el) return;
+  el.textContent = msg;
+  el.classList.add("show");
+}
+function hideAuthError(elId){
+  var el = $(elId);
+  if(el) el.classList.remove("show");
+}
+function showAuthSuccess(elId, msg){
+  var el = $(elId);
+  if(!el) return;
+  el.textContent = msg;
+  el.classList.add("show");
+}
+
+function findUserByEmail(email){
+  var users = getUsers();
+  for(var i = 0; i < users.length; i++){
+    if(users[i].email && users[i].email.toLowerCase() === email.toLowerCase()){
+      return users[i];
+    }
+  }
+  return null;
+}
+function findUserByEmailOrPhone(input){
+  var q = String(input).toLowerCase().trim();
+  var clean = q.replace(/\D/g, "");
+  var users = getUsers();
+  for(var i = 0; i < users.length; i++){
+    var u = users[i];
+    if(!u) continue;
+    if(u.email && u.email.toLowerCase() === q) return u;
+    if(u.phone && String(u.phone).replace(/\D/g, "") === clean) return u;
+  }
+  return null;
+}
+
+function handleSignup(){
+  hideAuthError("signupError");
+  var name = $("signupName").value.trim();
+  var email = $("signupEmail").value.trim();
+  var phone = $("signupPhone").value.trim();
+  var password = $("signupPassword").value;
+
+  if(!name){ return showAuthError("signupError", "Please enter your full name"); }
+  if(!email || !/^\S+@\S+\.\S+$/.test(email)){ return showAuthError("signupError", "Please enter a valid email address"); }
+  if(!phone || phone.replace(/\D/g, "").length < 10){ return showAuthError("signupError", "Please enter a valid 10-digit phone number"); }
+  if(!password || password.length < 6){ return showAuthError("signupError", "Password must be at least 6 characters"); }
+
+  if(findUserByEmail(email)){
+    return showAuthError("signupError", "This email is already registered. Please sign in.");
+  }
+
+  var users = getUsers();
+  var newUser = {
+    id: "user_" + Date.now(),
+    name: name,
+    email: email,
+    phone: phone,
+    password: password,
+    role: "user",
+    createdAt: Date.now()
+  };
+  users.push(newUser);
+  saveUsers(users);
+
+  // Auto-login
+  performLogin(newUser);
+  toast("Welcome to Crave, " + name.split(" ")[0] + "!", "🎉");
+}
+
+function handleLogin(){
+  hideAuthError("loginError");
+  hideAuthError("loginSuccess");
+  var input = $("loginEmail").value.trim();
+  var password = $("loginPassword").value;
+
+  if(!input){ return showAuthError("loginError", "Please enter your email or phone"); }
+  if(!password){ return showAuthError("loginError", "Please enter your password"); }
+
+  var user = findUserByEmailOrPhone(input);
+  if(!user){
+    return showAuthError("loginError", "No account found. Please click 'Create an account' below.");
+  }
+  if(user.password !== password){
+    return showAuthError("loginError", "Incorrect password. Please try again.");
+  }
+
+  performLogin(user);
+  toast("Welcome back, " + user.name.split(" ")[0] + "!", "👋");
+}
+
+function performLogin(user){
+  lsSet(LS_SESSION, { userId: user.id, role: user.role, loginAt: Date.now() });
+  cart = {};
+  favourites = {};
+  if(user.role === "admin") routeToAdmin(user);
+  else routeToUser(user);
+}
+
+function quickAdminLogin(){
+  var admin = findUserByEmail("admin@crave.com");
+  if(!admin){
+    // Recreate if missing
+    var users = getUsers();
+    admin = {
+      id: "admin_" + Date.now(),
+      name: "Administrator",
+      email: "admin@crave.com",
+      phone: "0000000000",
+      password: "admin123",
+      role: "admin",
+      createdAt: Date.now()
+    };
+    users.push(admin);
+    saveUsers(users);
+  }
+  performLogin(admin);
+  toast("Signed in as Admin", "👑");
+}
+
+function logout(){
+  lsDel(LS_SESSION);
+  currentUser = null;
+  cart = {};
+  favourites = {};
+  orderHistory = [];
+
+  $("authScreen").classList.remove("hidden");
+  $("mainHeader").style.display = "none";
+  $("homeView").style.display = "none";
+  $("mainFooter").style.display = "none";
+  $("adminView").classList.remove("active");
+  $("pageView").classList.remove("active");
+  $("pageView").innerHTML = "";
+
+  $("loginEmail").value = "";
+  $("loginPassword").value = "";
+  $("signupName").value = "";
+  $("signupEmail").value = "";
+  $("signupPhone").value = "";
+  $("signupPassword").value = "";
+
+  switchAuthTab("login");
+  toast("Logged out successfully", "👋");
+}
+
+function switchAuthTab(tab){
+  var tabs = document.querySelectorAll(".auth-tab");
+  for(var i = 0; i < tabs.length; i++){
+    tabs[i].classList.toggle("active", tabs[i].getAttribute("data-tab") === tab);
+  }
+  $("loginForm").classList.toggle("active", tab === "login");
+  $("signupForm").classList.toggle("active", tab === "signup");
+  hideAuthError("loginError");
+  hideAuthError("signupError");
+  hideAuthError("loginSuccess");
+}
+
+/* =========================================================
+   ROUTING
+   ========================================================= */
+function routeToUser(user){
+  currentUser = user;
+  $("authScreen").classList.add("hidden");
+  $("adminView").classList.remove("active");
+  $("mainHeader").style.display = "block";
+  $("homeView").style.display = "block";
+  $("mainFooter").style.display = "block";
+  $("pageView").classList.remove("active");
+
+  var initials = user.name.split(" ").map(function(w){ return w.charAt(0); }).join("").slice(0, 2).toUpperCase();
+  $("userAvatar").textContent = initials || "U";
+  $("userName").textContent = user.name.split(" ")[0];
+  $("ddName").textContent = user.name;
+  $("ddEmail").textContent = user.email;
+  $("heroUser").textContent = user.name.split(" ")[0];
+
+  loadUserHistory();
+  renderCategories();
+  renderActivePill();
+  renderGrid();
+  renderCart();
+  renderHistory();
+  updateHistoryBadge();
+  window.scrollTo(0, 0);
+}
+
+function routeToAdmin(user){
+  currentUser = user;
+  $("authScreen").classList.add("hidden");
+  $("mainHeader").style.display = "none";
+  $("homeView").style.display = "none";
+  $("mainFooter").style.display = "none";
+  $("adminView").classList.add("active");
+
+  $("adminName").textContent = user.name.split(" ")[0];
+  $("adminDdName").textContent = user.name;
+  $("adminDdEmail").textContent = user.email;
+
+  switchAdminTab("dashboard");
+  window.scrollTo(0, 0);
+}
+
+function tryAutoLogin(){
+  var session = lsGet(LS_SESSION, null);
+  if(!session || !session.userId) return false;
+  var users = getUsers();
+  var user = null;
+  for(var i = 0; i < users.length; i++){
+    if(users[i].id === session.userId){ user = users[i]; break; }
+  }
+  if(!user){ lsDel(LS_SESSION); return false; }
+  currentUser = user;
+  if(user.role === "admin") routeToAdmin(user);
+  else routeToUser(user);
+  return true;
+}
+
+/* =========================================================
+   USER HISTORY
+   ========================================================= */
+function getAllHistories(){
+  var h = lsGet(LS_HISTORY, {});
+  return (h && typeof h === "object") ? h : {};
+}
+function saveAllHistories(h){ lsSet(LS_HISTORY, h); }
+
+function loadUserHistory(){
+  if(!currentUser){ orderHistory = []; return; }
+  var all = getAllHistories();
+  var list = all[currentUser.id];
+  orderHistory = Array.isArray(list) ? list : [];
+}
+function saveUserHistory(){
+  if(!currentUser) return;
+  var all = getAllHistories();
+  all[currentUser.id] = orderHistory.slice(0, HISTORY_LIMIT);
+  saveAllHistories(all);
+}
+
+/* =========================================================
+   DRAWERS
+   ========================================================= */
+function hideDrawers(){
+  $("drawer").classList.remove("open");
+  $("historyDrawer").classList.remove("open");
+  $("overlay").classList.remove("open");
+  document.body.style.overflow = "";
+}
+function showDrawer(el){
+  hideDrawers();
+  el.classList.add("open");
+  $("overlay").classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+function editDistance(a, b){
+  var m = a.length, n = b.length;
+  if(Math.abs(m - n) > 2) return 99;
+  var dp = [];
+  for(var i = 0; i <= m; i++){ dp[i] = []; for(var j = 0; j <= n; j++) dp[i][j] = 0; }
+  for(var i = 0; i <= m; i++) dp[i][0] = i;
+  for(var j = 0; j <= n; j++) dp[0][j] = j;
+  for(var i = 1; i <= m; i++){
+    for(var j = 1; j <= n; j++){
+      dp[i][j] = a.charAt(i-1) === b.charAt(j-1) ? dp[i-1][j-1] : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+    }
+  }
+  return dp[m][n];
+}
+function normalizeQuery(q){
+  return q.toLowerCase().trim().split(/\s+/).map(function(w){ return SEARCH_ALIASES[w] || w; }).join(" ");
+}
+function fuzzyMatch(haystack, q){
+  if(!q) return true;
+  haystack = haystack.toLowerCase();
+  if(haystack.indexOf(q) >= 0) return true;
+  var tw = haystack.split(/[\s,•\/-]+/).filter(Boolean);
+  var qw = q.split(/\s+/).filter(Boolean);
+  return qw.every(function(x){
+    return tw.some(function(y){
+      if(y.indexOf(x) >= 0 || x.indexOf(y) >= 0) return true;
+      if(x.length >= 3 && y.indexOf(x) === 0) return true;
+      if(x.length >= 4 && y.length >= 4 && editDistance(y, x) <= 1) return true;
+      return false;
+    });
+  });
+}
+
+/* =========================================================
+   CATEGORIES + GRID
+   ========================================================= */
+function renderCategories(){
+  var html = "";
+  for(var i = 0; i < CATEGORIES.length; i++){
+    var c = CATEGORIES[i];
+    var isAll = c.key === "All";
+    var active = activeCategory === c.key;
+    var bg = isAll ? "linear-gradient(135deg,#fc8019,#ff9a4d)" : CAT_BG[i % CAT_BG.length];
+    html += '<div class="cat ' + (active ? 'active' : '') + '" data-cat="' + c.key + '"><div class="cat-icon" style="background:' + bg + '">' + c.emoji + '</div><div class="cat-label">' + (isAll ? 'All' : c.key) + '</div><div class="cat-desc">' + c.desc + '</div></div>';
+  }
+  $("catsGrid").innerHTML = html;
+}
+$("catsGrid").addEventListener("click", function(e){
+  var card = e.target.closest(".cat");
+  if(!card) return;
+  var key = card.getAttribute("data-cat");
+  activeCategory = (key === activeCategory && key !== "All") ? "All" : key;
+  renderCategories(); renderActivePill(); renderGrid();
+});
+
+function renderActivePill(){
+  if(activeCategory === "All"){
+    $("activePill").className = "active-pill idle";
+    $("activePill").innerHTML = "All Restaurants";
+  } else {
+    $("activePill").className = "active-pill";
+    $("activePill").innerHTML = activeCategory + ' <span class="x">✕</span>';
+  }
+}
+$("activePill").addEventListener("click", function(){
+  if(activeCategory === "All") return;
+  activeCategory = "All";
+  renderCategories(); renderActivePill(); renderGrid();
+});
+
+function getFiltered(){
+  var list = RESTAURANTS.filter(function(r){
+    if(vegOnly && !r.veg) return false;
+    if(activeCategory !== "All" && r.cats.indexOf(activeCategory) === -1) return false;
+    if(query){
+      var hay = [r.name, r.cuisines.join(" "), r.tag || "", r.cats.join(" "), r.aliases || ""].join(" ");
+      if(!fuzzyMatch(hay, query)) return false;
+    }
+    return true;
+  });
+  var sorters = {
+    relevance: function(a, b){ return b.rating - a.rating; },
+    rating: function(a, b){ return b.rating - a.rating; },
+    time: function(a, b){ return a.time - b.time; },
+    priceLow: function(a, b){ return a.price - b.price; },
+    priceHigh: function(a, b){ return b.price - a.price; }
+  };
+  return list.sort(sorters[sortBy] || sorters.relevance);
+}
+
+function footHTML(r){
+  var qty = cart[r.id] || 0;
+  if(qty === 0) return '<button class="add-btn" data-add="' + r.id + '">ADD</button>';
+  return '<div class="stepper"><button data-dec="' + r.id + '">−</button><span>' + qty + '</span><button data-inc="' + r.id + '">+</button></div>';
+}
+function cardHTML(r){
+  var ratingClass = r.rating < 4.2 ? "low" : "";
+  var fav = favourites[r.id] ? "on" : "";
+  var favIcon = favourites[r.id] ? "♥" : "♡";
+  var tagHTML = r.tag ? '<span class="badge-tag">' + r.tag + '</span>' : '<span class="badge-tag" style="background:#f4f4f5;color:#7e808c">Free Delivery</span>';
+  return '<article class="card" data-id="' + r.id + '"><div class="card-img" style="background:' + r.grad + '"><span class="card-emoji">' + r.emoji + '</span><button class="fav ' + fav + '" data-fav="' + r.id + '">' + favIcon + '</button><div class="offer-badge">' + r.offer + '</div></div><div class="card-body"><div class="card-row"><h3>' + r.name + '</h3><span class="rating ' + ratingClass + '">★ ' + r.rating.toFixed(1) + '</span></div><p class="cuisines">' + r.cuisines.join(", ") + '</p><p class="meta">' + inr(r.price) + ' for two • ' + r.time + ' min</p><button class="view-menu-btn" data-menu="' + r.id + '">📖 View Menu</button><div class="card-foot">' + tagHTML + '<span id="foot-' + r.id + '">' + footHTML(r) + '</span></div></div></article>';
+}
+function renderGrid(){
+  var list = getFiltered();
+  if(query) $("sectionTitle").textContent = 'Results for "' + query + '"';
+  else if(activeCategory === "All") $("sectionTitle").textContent = "Restaurants with online food delivery";
+  else $("sectionTitle").textContent = activeCategory + " places near you";
+
+  if(list.length === 0){
+    $("grid").innerHTML = '<div class="empty"><div class="big">🔍</div><h3>No restaurants found</h3><p>Try a different spelling or browse a category.</p><button class="empty-btn" id="emptyReset">Clear search</button></div>';
+    var btn = $("emptyReset");
+    if(btn) btn.addEventListener("click", function(){
+      query = ""; $("search").value = ""; $("searchClear").classList.remove("show");
+      renderGrid();
+    });
+  } else {
+    $("grid").innerHTML = list.map(cardHTML).join("");
+  }
+  $("resultCount").textContent = list.length + " restaurant" + (list.length !== 1 ? "s" : "");
+}
+function refreshFoot(id){
+  var el = $("foot-" + id);
+  if(!el) return;
+  var r = null;
+  for(var i = 0; i < RESTAURANTS.length; i++){ if(RESTAURANTS[i].id === id){ r = RESTAURANTS[i]; break; } }
+  if(!r) return;
+  el.innerHTML = footHTML(r);
+}
+
+$("grid").addEventListener("click", function(e){
+  var add = e.target.closest("[data-add]");
+  var inc = e.target.closest("[data-inc]");
+  var dec = e.target.closest("[data-dec]");
+  var fav = e.target.closest("[data-fav]");
+  var mbtn = e.target.closest("[data-menu]");
+  if(mbtn){ openCustomerMenu(parseInt(mbtn.getAttribute("data-menu"), 10)); return; }
+  if(add){ addToCart(parseInt(add.getAttribute("data-add"), 10)); return; }
+  if(inc){ addToCart(parseInt(inc.getAttribute("data-inc"), 10)); return; }
+  if(dec){ removeFromCart(parseInt(dec.getAttribute("data-dec"), 10)); return; }
+  if(fav){
+    e.stopPropagation();
+    var id = parseInt(fav.getAttribute("data-fav"), 10);
+    if(favourites[id]){ delete favourites[id]; toast("Removed from favourites", "💔"); }
+    else { favourites[id] = true; toast("Added to favourites", "❤️"); }
+    fav.classList.toggle("on");
+    fav.textContent = favourites[id] ? "♥" : "♡";
+  }
+});
+
+/* =========================================================
+   CART
+   ========================================================= */
+function addToCart(id){
+  cart[id] = (cart[id] || 0) + 1;
+  refreshFoot(id); renderCart();
+  var r = null;
+  for(var i = 0; i < RESTAURANTS.length; i++){ if(RESTAURANTS[i].id === id){ r = RESTAURANTS[i]; break; } }
+  if(r) toast(r.name + " added to cart", "🛒");
+}
+function removeFromCart(id){
+  if(!cart[id]) return;
+  cart[id]--;
+  if(cart[id] <= 0) delete cart[id];
+  refreshFoot(id); renderCart();
+}
+function cartTotals(){
+  var subtotal = 0, count = 0;
+  for(var id in cart){
+    if(!cart.hasOwnProperty(id)) continue;
+    var r = null;
+    for(var i = 0; i < RESTAURANTS.length; i++){ if(RESTAURANTS[i].id === parseInt(id, 10)){ r = RESTAURANTS[i]; break; } }
+    if(!r) continue;
+    subtotal += itemPrice(r) * cart[id];
+    count += cart[id];
+  }
+  var delivery = subtotal === 0 ? 0 : (subtotal >= FREE_DELIVERY_ABOVE ? 0 : DELIVERY_FEE);
+  var gst = Math.round(subtotal * GST_RATE);
+  var total = subtotal + delivery + gst + (subtotal ? PLATFORM_FEE : 0);
+  return { subtotal: subtotal, count: count, delivery: delivery, gst: gst, total: total, platform: subtotal ? PLATFORM_FEE : 0 };
+}
+function renderCart(){
+  var t = cartTotals();
+  $("cartCount").textContent = t.count;
+  $("drawerSub").textContent = t.count === 0 ? "0 items" : t.count + " item" + (t.count > 1 ? "s" : "");
+  if(t.count === 0){
+    $("cartBody").innerHTML = '<div class="cart-empty"><div class="big">🛒</div><h4>Your cart is empty</h4><p>Good food is always a good idea.<br>Add something delicious!</p></div>';
+    $("cartFoot").style.display = "none";
+    return;
+  }
+  var html = "";
+  for(var id in cart){
+    if(!cart.hasOwnProperty(id)) continue;
+    var r = null;
+    for(var i = 0; i < RESTAURANTS.length; i++){ if(RESTAURANTS[i].id === parseInt(id, 10)){ r = RESTAURANTS[i]; break; } }
+    if(!r) continue;
+    var line = itemPrice(r) * cart[id];
+    html += '<div class="c-item"><div class="c-emoji" style="background:' + r.grad + '">' + r.emoji + '</div><div class="c-info"><h4>' + r.name + '</h4><span>' + r.cuisines[0] + ' • ' + inr(itemPrice(r)) + ' each</span></div><div class="c-right"><div class="stepper sm"><button data-cdec="' + r.id + '">−</button><span>' + cart[id] + '</span><button data-cinc="' + r.id + '">+</button></div><div class="c-price">' + inr(line) + '</div></div></div>';
+  }
+  var saved = t.delivery === 0 ? DELIVERY_FEE : 0;
+  html += '<div class="bill"><h4>Bill Details</h4><div class="bill-row"><span>Item Total</span><span>' + inr(t.subtotal) + '</span></div><div class="bill-row"><span>Delivery Fee ' + (t.delivery === 0 ? '<span class="free">(FREE)</span>' : '') + '</span><span>' + (t.delivery === 0 ? '<span class="strike">' + inr(DELIVERY_FEE) + '</span>' + inr(0) : inr(t.delivery)) + '</span></div><div class="bill-row"><span>Platform Fee</span><span>' + inr(t.platform) + '</span></div><div class="bill-row"><span>GST &amp; Charges (5%)</span><span>' + inr(t.gst) + '</span></div><div class="bill-row total"><span>To Pay</span><span>' + inr(t.total) + '</span></div>' + (saved ? '<div class="savings">🎉 You saved ' + inr(saved) + ' on delivery!</div>' : '') + '</div>';
+  $("cartBody").innerHTML = html;
+  $("cartFoot").style.display = "block";
+  $("checkout").innerHTML = 'Proceed to Checkout • ' + inr(t.total) + ' →';
+}
+$("cartBody").addEventListener("click", function(e){
+  var inc = e.target.closest("[data-cinc]");
+  var dec = e.target.closest("[data-cdec]");
+  if(inc) addToCart(parseInt(inc.getAttribute("data-cinc"), 10));
+  if(dec) removeFromCart(parseInt(dec.getAttribute("data-cdec"), 10));
+});
+
+/* =========================================================
+   CHECKOUT
+   ========================================================= */
+$("checkout").addEventListener("click", function(){
+  if(!currentUser){ toast("Please sign in first", "⚠️"); return; }
+  var t = cartTotals();
+  if(t.count === 0) return;
+  var items = [];
+  for(var id in cart){
+    if(!cart.hasOwnProperty(id)) continue;
+    var r = null;
+    for(var i = 0; i < RESTAURANTS.length; i++){ if(RESTAURANTS[i].id === parseInt(id, 10)){ r = RESTAURANTS[i]; break; } }
+    if(!r) continue;
+    items.push({ id: r.id, name: r.name, qty: cart[id], price: itemPrice(r), emoji: r.emoji, grad: r.grad });
+  }
+  var order = {
+    id: "ORD" + Date.now().toString().slice(-8),
+    userId: currentUser.id,
+    userName: currentUser.name,
+    userEmail: currentUser.email,
+    ts: Date.now(),
+    items: items,
+    subtotal: t.subtotal,
+    delivery: t.delivery,
+    gst: t.gst,
+    platform: t.platform,
+    total: t.total,
+    status: "Preparing"
+  };
+
+  var allOrders = lsGet(LS_ORDERS, []);
+  if(!Array.isArray(allOrders)) allOrders = [];
+  allOrders.unshift(order);
+  lsSet(LS_ORDERS, allOrders);
+
+  orderHistory.unshift(order);
+  if(orderHistory.length > HISTORY_LIMIT) orderHistory.length = HISTORY_LIMIT;
+  saveUserHistory();
+  updateHistoryBadge();
+
+  toast("Order placed! " + inr(t.total) + " • arriving in ~30 min", "🎉");
+  cart = {};
+  for(var i = 0; i < RESTAURANTS.length; i++) refreshFoot(RESTAURANTS[i].id);
+  renderCart();
+  hideDrawers();
+});
+
+/* =========================================================
+   HISTORY
+   ========================================================= */
+function fmtDate(ts){
+  var d = new Date(ts);
+  var date = d.toLocaleDateString("en-IN", {day: "numeric", month: "short"});
+  var time = d.toLocaleTimeString("en-IN", {hour: "2-digit", minute: "2-digit"});
+  return date + ", " + time;
+}
+function statusClass(s){
+  if(s === "Preparing") return "status-preparing";
+  if(s === "Out for delivery") return "status-out";
+  if(s === "Delivered") return "status-delivered";
+  if(s === "Cancelled") return "status-cancelled";
+  return "status-preparing";
+}
+function statusStyle(s){
+  var c = statusClass(s);
+  var map = {
+    "status-preparing": "background:#fff3e0;color:#7a4b12",
+    "status-out": "background:#e3f2fd;color:#0c5fa5",
+    "status-delivered": "background:#eafaf0;color:#1f7a45",
+    "status-cancelled": "background:#ffe8ea;color:#c81e2b"
+  };
+  return map[c] || "";
+}
+function renderHistory(){
+  var n = orderHistory.length;
+  $("historySub").textContent = n === 0 ? "No orders yet" : n + " order" + (n > 1 ? "s" : "");
+  $("clearHistory").style.display = n === 0 ? "none" : "inline-block";
+  if(n === 0){
+    $("historyBody").innerHTML = '<div class="cart-empty"><div class="big">📦</div><h4>No orders yet</h4><p>Your past orders will show up here.<br>Time to place your first one!</p></div>';
+    return;
+  }
+  var html = "";
+  for(var i = 0; i < orderHistory.length; i++){
+    var o = orderHistory[i];
+    var itemsHTML = "";
+    for(var j = 0; j < o.items.length; j++){
+      var it = o.items[j];
+      itemsHTML += '<div class="h-item"><span class="h-item-emoji" style="background:' + it.grad + '">' + it.emoji + '</span><span class="h-item-name">' + it.name + '</span><span class="h-item-qty">× ' + it.qty + '</span></div>';
+    }
+    var totalQty = o.items.reduce(function(s, it){ return s + it.qty; }, 0);
+    var status = o.status || "Preparing";
+    html += '<div class="h-order"><div class="h-top"><div><div class="h-id">' + o.id + '</div><div class="h-date">' + fmtDate(o.ts) + '</div></div><div class="h-total">' + inr(o.total) + '</div></div><div class="h-items">' + itemsHTML + '</div><div class="h-foot"><span class="h-status" style="' + statusStyle(status) + '">● ' + status + ' • ' + totalQty + ' item' + (totalQty > 1 ? 's' : '') + '</span><button class="h-btn reorder" data-reorder="' + o.id + '">🔄 Reorder</button></div></div>';
+  }
+  $("historyBody").innerHTML = html;
+}
+function reorder(orderId){
+  var order = null;
+  for(var i = 0; i < orderHistory.length; i++){ if(orderHistory[i].id === orderId){ order = orderHistory[i]; break; } }
+  if(!order){ toast("Order not found", "⚠️"); return; }
+  var added = 0;
+  for(var j = 0; j < order.items.length; j++){
+    var it = order.items[j];
+    var r = null;
+    for(var k = 0; k < RESTAURANTS.length; k++){ if(RESTAURANTS[k].id === it.id){ r = RESTAURANTS[k]; break; } }
+    if(!r) continue;
+    cart[r.id] = (cart[r.id] || 0) + it.qty;
+    refreshFoot(r.id);
+    added += it.qty;
+  }
+  if(added === 0){ toast("Those restaurants are no longer available", "⚠️"); return; }
+  renderCart();
+  showDrawer($("drawer"));
+  toast(added + " item" + (added > 1 ? "s" : "") + " added back to cart", "🔄");
+}
+$("historyBody").addEventListener("click", function(e){
+  var btn = e.target.closest("[data-reorder]");
+  if(btn) reorder(btn.getAttribute("data-reorder"));
+});
+$("clearHistory").addEventListener("click", function(){
+  if(orderHistory.length === 0) return;
+  if(confirm("Clear all order history? This cannot be undone.")){
+    orderHistory = [];
+    saveUserHistory();
+    renderHistory();
+    updateHistoryBadge();
+    toast("Order history cleared", "🗑️");
+  }
+});
+function updateHistoryBadge(){
+  $("historyOpen").classList.toggle("has", orderHistory.length > 0);
+}
+
+/* =========================================================
+   DRAWER WIRING
+   ========================================================= */
+$("cartOpen").addEventListener("click", function(){ showDrawer($("drawer")); });
+$("cartClose").addEventListener("click", hideDrawers);
+$("historyOpen").addEventListener("click", function(){ renderHistory(); showDrawer($("historyDrawer")); });
+$("historyClose").addEventListener("click", hideDrawers);
+$("ordersLink").addEventListener("click", function(e){ e.preventDefault(); renderHistory(); showDrawer($("historyDrawer")); });
+$("overlay").addEventListener("click", hideDrawers);
+
+/* =========================================================
+   SEARCH + FILTERS
+   ========================================================= */
+var searchTimer;
+function runSearch(val, scroll){
+  query = normalizeQuery(val);
+  $("searchClear").classList.toggle("show", val.length > 0);
+  renderGrid();
+  if(scroll){
+    var s = document.querySelector(".section");
+    if(s) s.scrollIntoView({behavior: "smooth", block: "start"});
+  }
+}
+$("search").addEventListener("input", function(e){
+  var val = e.target.value;
+  $("searchClear").classList.toggle("show", val.length > 0);
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(function(){ runSearch(val, false); }, 220);
+});
+$("search").addEventListener("keydown", function(e){ if(e.key === "Enter") runSearch(e.target.value, true); });
+$("searchBtn").addEventListener("click", function(){ runSearch($("search").value, true); });
+$("searchClear").addEventListener("click", function(){
+  $("search").value = "";
+  $("searchClear").classList.remove("show");
+  runSearch("", false);
+  $("search").focus();
+});
+$("vegToggle").addEventListener("click", function(){
+  vegOnly = !vegOnly;
+  this.classList.toggle("on", vegOnly);
+  renderGrid();
+});
+$("sort").addEventListener("change", function(e){ sortBy = e.target.value; renderGrid(); });
+
+/* =========================================================
+   USER MENU
+   ========================================================= */
+$("userBtn").addEventListener("click", function(e){
+  e.stopPropagation();
+  $("userDropdown").classList.toggle("open");
+});
+document.addEventListener("click", function(e){
+  var m = $("userMenu");
+  if(m && !m.contains(e.target)) $("userDropdown").classList.remove("open");
+  var am = $("adminUserBtn");
+  if(am && !am.parentElement.contains(e.target)) $("adminUserDropdown").classList.remove("open");
+});
+$("ddOrders").addEventListener("click", function(){
+  $("userDropdown").classList.remove("open");
+  renderHistory();
+  showDrawer($("historyDrawer"));
+});
+$("logoutBtn").addEventListener("click", function(){
+  $("userDropdown").classList.remove("open");
+  if(confirm("Log out from Crave?")) logout();
+});
+
+/* =========================================================
+   ADMIN MODULE
+   ========================================================= */
+function switchAdminTab(tab){
+  var items = document.querySelectorAll(".admin-nav-item");
+  for(var i = 0; i < items.length; i++){
+    items[i].classList.toggle("active", items[i].getAttribute("data-admin-tab") === tab);
+  }
+  var pages = document.querySelectorAll(".admin-page");
+  for(var i = 0; i < pages.length; i++) pages[i].classList.remove("active");
+
+  var map = { dashboard: "adminPageDashboard", orders: "adminPageOrders", restaurants: "adminPageRestaurants", users: "adminPageUsers" };
+  var t = $(map[tab]);
+  if(t) t.classList.add("active");
+
+  if(tab === "dashboard") renderAdminDashboard();
+  if(tab === "orders") renderAdminOrders();
+  if(tab === "restaurants") renderAdminRestaurants();
+  if(tab === "users") renderAdminUsers();
+}
+document.querySelectorAll(".admin-nav-item").forEach(function(el){
+  el.addEventListener("click", function(){ switchAdminTab(el.getAttribute("data-admin-tab")); });
+});
+
+function renderAdminDashboard(){
+  var orders = lsGet(LS_ORDERS, []);
+  if(!Array.isArray(orders)) orders = [];
+  var users = getUsers().filter(function(u){ return u.role !== "admin"; });
+  var revenue = orders.reduce(function(s, o){ return s + (o.total || 0); }, 0);
+
+  $("statOrders").textContent = orders.length;
+  $("statRevenue").textContent = inr(revenue);
+  $("statUsers").textContent = users.length;
+  $("statRestaurants").textContent = RESTAURANTS.length;
+
+  var recent = orders.slice(0, 5);
+  if(recent.length === 0){
+    $("recentOrdersWrap").innerHTML = '<div class="admin-empty"><div class="big">📦</div><h4>No orders yet</h4><p>Orders placed by users will appear here.</p></div>';
+    return;
+  }
+  var html = '<table class="admin-table"><thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th></tr></thead><tbody>';
+  for(var i = 0; i < recent.length; i++){
+    var o = recent[i];
+    var qty = o.items.reduce(function(s, it){ return s + it.qty; }, 0);
+    html += '<tr><td class="cell-strong">' + o.id + '</td><td>' + (o.userName || "—") + '</td><td>' + qty + ' items</td><td class="cell-strong">' + inr(o.total) + '</td><td><span class="status-badge ' + statusClass(o.status || "Preparing") + '">' + (o.status || "Preparing") + '</span></td></tr>';
+  }
+  html += '</tbody></table>';
+  $("recentOrdersWrap").innerHTML = html;
+}
+
+function renderAdminOrders(){
+  var orders = lsGet(LS_ORDERS, []);
+  if(!Array.isArray(orders)) orders = [];
+  if(orders.length === 0){
+    $("allOrdersWrap").innerHTML = '<div class="admin-empty"><div class="big">📦</div><h4>No orders yet</h4><p>Once users place orders, you can manage them here.</p></div>';
+    return;
+  }
+  var html = '<table class="admin-table"><thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Placed</th><th>Status</th></tr></thead><tbody>';
+  for(var i = 0; i < orders.length; i++){
+    var o = orders[i];
+    var qty = o.items.reduce(function(s, it){ return s + it.qty; }, 0);
+    var st = o.status || "Preparing";
+    html += '<tr>' +
+      '<td class="cell-strong">' + o.id + '</td>' +
+      '<td>' + (o.userName || "—") + '<br><span style="font-size:11px;color:var(--muted)">' + (o.userEmail || "") + '</span></td>' +
+      '<td>' + qty + ' items</td>' +
+      '<td class="cell-strong">' + inr(o.total) + '</td>' +
+      '<td style="font-size:12px;color:var(--muted)">' + fmtDate(o.ts) + '</td>' +
+      '<td><select class="status-select" data-order-id="' + o.id + '">' +
+        '<option value="Preparing"' + (st === "Preparing" ? " selected" : "") + '>Preparing</option>' +
+        '<option value="Out for delivery"' + (st === "Out for delivery" ? " selected" : "") + '>Out for delivery</option>' +
+        '<option value="Delivered"' + (st === "Delivered" ? " selected" : "") + '>Delivered</option>' +
+        '<option value="Cancelled"' + (st === "Cancelled" ? " selected" : "") + '>Cancelled</option>' +
+      '</select></td>' +
+    '</tr>';
+  }
+  html += '</tbody></table>';
+  $("allOrdersWrap").innerHTML = html;
+
+  $("allOrdersWrap").querySelectorAll(".status-select").forEach(function(sel){
+    sel.addEventListener("change", function(){
+      var orderId = sel.getAttribute("data-order-id");
+      var newStatus = sel.value;
+      var all = lsGet(LS_ORDERS, []);
+      for(var k = 0; k < all.length; k++){
+        if(all[k].id === orderId){ all[k].status = newStatus; break; }
+      }
+      lsSet(LS_ORDERS, all);
+
+      var allH = getAllHistories();
+      for(var uid in allH){
+        if(!allH.hasOwnProperty(uid)) continue;
+        for(var z = 0; z < allH[uid].length; z++){
+          if(allH[uid][z].id === orderId) allH[uid][z].status = newStatus;
+        }
+      }
+      saveAllHistories(allH);
+      toast("Order " + orderId + " → " + newStatus, "✅");
+    });
+  });
+}
+$("refreshOrdersBtn").addEventListener("click", function(){ renderAdminOrders(); toast("Orders refreshed", "🔄"); });
+
+function renderAdminRestaurants(){
+  $("restaurantCount").textContent = RESTAURANTS.length + " restaurant" + (RESTAURANTS.length !== 1 ? "s" : "");
+  if(RESTAURANTS.length === 0){
+    $("allRestaurantsWrap").innerHTML = '<div class="admin-empty"><div class="big">🏪</div><h4>No restaurants</h4><p>Click "Add Restaurant" to create one.</p></div>';
+    return;
+  }
+  var html = '<table class="admin-table"><thead><tr><th>Restaurant</th><th>Cuisines</th><th>Rating</th><th>Price for Two</th><th>Type</th><th>Actions</th></tr></thead><tbody>';
+  for(var i = 0; i < RESTAURANTS.length; i++){
+    var r = RESTAURANTS[i];
+    html += '<tr>' +
+      '<td class="cell-strong"><span style="font-size:18px;margin-right:8px">' + r.emoji + '</span>' + r.name + '</td>' +
+      '<td style="font-size:12.5px">' + r.cuisines.join(", ") + '</td>' +
+      '<td>★ ' + r.rating.toFixed(1) + '</td>' +
+      '<td>' + inr(r.price) + '</td>' +
+      '<td>' + (r.veg ? '<span style="color:var(--green);font-weight:800">Veg</span>' : '<span style="color:var(--red);font-weight:800">Non-Veg</span>') + '</td>' +
+      '<td><button class="btn-menu" data-menu-btn="' + r.id + '">📋 Menu (' + ((r.menu && r.menu.length) || 0) + ')</button> <button class="btn-edit" data-edit="' + r.id + '">Edit</button> <button class="btn-danger" data-delete="' + r.id + '">Delete</button></td>' +
+    '</tr>';
+  }
+  html += '</tbody></table>';
+  $("allRestaurantsWrap").innerHTML = html;
+
+  $("allRestaurantsWrap").querySelectorAll("[data-edit]").forEach(function(btn){
+    btn.addEventListener("click", function(){ openRestaurantModal(parseInt(btn.getAttribute("data-edit"), 10)); });
+  });
+  $("allRestaurantsWrap").querySelectorAll("[data-menu-btn]").forEach(function(btn){
+    btn.addEventListener("click", function(){ openMenuModal(parseInt(btn.getAttribute("data-menu-btn"), 10)); });
+  });
+  $("allRestaurantsWrap").querySelectorAll("[data-delete]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var id = parseInt(btn.getAttribute("data-delete"), 10);
+      var r = null;
+      for(var j = 0; j < RESTAURANTS.length; j++){ if(RESTAURANTS[j].id === id){ r = RESTAURANTS[j]; break; } }
+      if(!r) return;
+      if(confirm('Delete "' + r.name + '"? This cannot be undone.')){
+        RESTAURANTS = RESTAURANTS.filter(function(x){ return x.id !== id; });
+        lsSet(LS_RESTAURANTS, RESTAURANTS);
+        renderAdminRestaurants();
+        toast("Restaurant deleted", "🗑️");
+      }
+    });
+  });
+}
+
+function renderAdminUsers(){
+  var users = getUsers().filter(function(u){ return u.role !== "admin"; });
+  $("userCount").textContent = users.length + " user" + (users.length !== 1 ? "s" : "");
+  if(users.length === 0){
+    $("allUsersWrap").innerHTML = '<div class="admin-empty"><div class="big">👥</div><h4>No users yet</h4><p>Users who sign up will appear here.</p></div>';
+    return;
+  }
+  var html = '<table class="admin-table"><thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Joined</th></tr></thead><tbody>';
+  for(var i = 0; i < users.length; i++){
+    var u = users[i];
+    html += '<tr><td class="cell-strong">' + u.name + '</td><td>' + u.email + '</td><td>' + u.phone + '</td><td style="font-size:12px;color:var(--muted)">' + fmtDate(u.createdAt) + '</td></tr>';
+  }
+  html += '</tbody></table>';
+  $("allUsersWrap").innerHTML = html;
+}
+
+/* =========================================================
+   RESTAURANT MODAL
+   ========================================================= */
+function openRestaurantModal(id){
+  var editing = (id != null);
+  var r = null;
+  if(editing){
+    for(var i = 0; i < RESTAURANTS.length; i++){ if(RESTAURANTS[i].id === id){ r = RESTAURANTS[i]; break; } }
+  }
+
+  $("adminModalTitle").textContent = editing ? "Edit Restaurant" : "Add Restaurant";
+
+  var html = '' +
+    '<div class="admin-form-field"><label>Name</label><input type="text" id="rName" value="' + (r ? r.name : "") + '" placeholder="e.g. Spice Garden"></div>' +
+    '<div class="admin-form-row">' +
+      '<div class="admin-form-field"><label>Cuisines (comma-separated)</label><input type="text" id="rCuisines" value="' + (r ? r.cuisines.join(", ") : "") + '" placeholder="North Indian, Chinese"></div>' +
+      '<div class="admin-form-field"><label>Emoji</label><input type="text" id="rEmoji" value="' + (r ? r.emoji : "🍽️") + '"></div>' +
+    '</div>' +
+    '<div class="admin-form-row">' +
+      '<div class="admin-form-field"><label>Rating (0–5)</label><input type="number" step="0.1" min="0" max="5" id="rRating" value="' + (r ? r.rating : "4.0") + '"></div>' +
+      '<div class="admin-form-field"><label>Delivery Time (min)</label><input type="number" id="rTime" value="' + (r ? r.time : "30") + '"></div>' +
+    '</div>' +
+    '<div class="admin-form-row">' +
+      '<div class="admin-form-field"><label>Price for Two (₹)</label><input type="number" id="rPrice" value="' + (r ? r.price : "400") + '"></div>' +
+      '<div class="admin-form-field"><label>Type</label><select id="rVeg"><option value="true"' + ((r && r.veg) ? " selected" : "") + '>Vegetarian</option><option value="false"' + ((!r || !r.veg) ? " selected" : "") + '>Non-Vegetarian</option></select></div>' +
+    '</div>' +
+    '<div class="admin-form-field"><label>Offer Text</label><input type="text" id="rOffer" value="' + (r ? r.offer : "Free Delivery") + '"></div>' +
+    '<div class="admin-form-actions">' +
+      '<button class="btn-primary" id="saveRestaurantBtn">' + (editing ? "💾 Save Changes" : "➕ Add Restaurant") + '</button>' +
+      '<button class="btn-secondary" id="cancelRestaurantBtn">Cancel</button>' +
+    '</div>';
+
+  $("adminModalBody").innerHTML = html;
+  $("adminModal").classList.add("open");
+
+  $("adminModalClose").onclick = closeRestaurantModal;
+  $("adminModalBg").onclick = closeRestaurantModal;
+  $("cancelRestaurantBtn").onclick = closeRestaurantModal;
+  $("saveRestaurantBtn").onclick = function(){
+    var name = $("rName").value.trim();
+    var cuisines = $("rCuisines").value.split(",").map(function(c){ return c.trim(); }).filter(Boolean);
+    var emoji = $("rEmoji").value.trim() || "🍽️";
+    var rating = parseFloat($("rRating").value) || 4.0;
+    var time = parseInt($("rTime").value, 10) || 30;
+    var price = parseInt($("rPrice").value, 10) || 400;
+    var veg = $("rVeg").value === "true";
+    var offer = $("rOffer").value.trim() || "Free Delivery";
+
+    if(!name){ toast("Please enter a restaurant name", "⚠️"); return; }
+    if(cuisines.length === 0){ toast("Please enter at least one cuisine", "⚠️"); return; }
+
+    if(editing){
+      for(var i = 0; i < RESTAURANTS.length; i++){
+        if(RESTAURANTS[i].id === id){
+          RESTAURANTS[i].name = name;
+          RESTAURANTS[i].cuisines = cuisines;
+          RESTAURANTS[i].emoji = emoji;
+          RESTAURANTS[i].rating = Math.min(5, Math.max(0, rating));
+          RESTAURANTS[i].time = time;
+          RESTAURANTS[i].price = price;
+          RESTAURANTS[i].veg = veg;
+          RESTAURANTS[i].offer = offer;
+          break;
+        }
+      }
+      toast("Restaurant updated", "💾");
+    } else {
+      var newId = RESTAURANTS.reduce(function(m, x){ return Math.max(m, x.id); }, 0) + 1;
+      RESTAURANTS.push({
+        id: newId,
+        name: name,
+        cuisines: cuisines,
+        rating: Math.min(5, Math.max(0, rating)),
+        time: time,
+        price: price,
+        emoji: emoji,
+        grad: "linear-gradient(135deg,#fc8019,#ff9a4d)",
+        offer: offer,
+        veg: veg,
+        tag: "New",
+        cats: ["Quick Bites"],
+        aliases: name.toLowerCase(),
+        menu: []
+      });
+      toast("Restaurant added", "🎉");
+    }
+
+    lsSet(LS_RESTAURANTS, RESTAURANTS);
+    renderAdminRestaurants();
+    closeRestaurantModal();
+  };
+}
+function closeRestaurantModal(){ $("adminModal").classList.remove("open"); }
+
+/* =========================================================
+   MENU (FOOD ITEMS) MANAGEMENT
+   ========================================================= */
+function esc(s){
+  return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;");
+}
+function getRestaurantById(id){
+  for(var i = 0; i < RESTAURANTS.length; i++){ if(RESTAURANTS[i].id === id) return RESTAURANTS[i]; }
+  return null;
+}
+var menuDraft = [];
+function openMenuModal(id){
+  var r = getRestaurantById(id);
+  if(!r) return;
+  menuDraft = (Array.isArray(r.menu) ? r.menu : []).map(function(m){ return {n: m.n, p: m.p, v: !!m.v}; });
+  $("adminModalTitle").textContent = "📋 Menu — " + r.name;
+  $("adminModalBody").innerHTML =
+    '<div class="menu-editor-hint">Add food items with prices for <b>' + esc(r.name) + '</b>. Customers will see these on "View Menu".</div>' +
+    '<table class="admin-table menu-edit-table"><thead><tr><th>Item Name</th><th style="width:110px">Price (₹)</th><th style="width:120px">Type</th><th style="width:48px"></th></tr></thead><tbody id="menuEditBody"></tbody></table>' +
+    '<button class="btn-secondary" id="addMenuRowBtn" style="width:100%;margin-top:12px">➕ Add Item</button>' +
+    '<div class="admin-form-actions"><button class="btn-primary" id="saveMenuBtn">💾 Save Menu</button><button class="btn-secondary" id="cancelMenuBtn">Cancel</button></div>';
+  renderMenuDraft();
+  $("adminModal").classList.add("open");
+  $("adminModalClose").onclick = closeRestaurantModal;
+  $("adminModalBg").onclick = closeRestaurantModal;
+  $("cancelMenuBtn").onclick = closeRestaurantModal;
+  $("addMenuRowBtn").onclick = function(){ readMenuRows(); menuDraft.push({n: "", p: 0, v: true}); renderMenuDraft(); };
+  $("menuEditBody").addEventListener("click", function(e){
+    var del = e.target.closest("[data-del-idx]");
+    if(del){ readMenuRows(); menuDraft.splice(parseInt(del.getAttribute("data-del-idx"), 10), 1); renderMenuDraft(); }
+  });
+  $("saveMenuBtn").onclick = function(){
+    readMenuRows();
+    var cleaned = menuDraft.filter(function(m){ return m.n; });
+    if(cleaned.length === 0){ toast("Add at least one food item", "⚠️"); return; }
+    r.menu = cleaned.map(function(m){ return {n: m.n, p: Math.max(0, m.p), v: m.v}; });
+    lsSet(LS_RESTAURANTS, RESTAURANTS);
+    renderAdminRestaurants();
+    closeRestaurantModal();
+    toast("Menu saved for " + r.name, "📋");
+  };
+}
+function readMenuRows(){
+  var rows = $("menuEditBody").querySelectorAll("tr");
+  var out = [];
+  for(var i = 0; i < rows.length; i++){
+    var nameEl = rows[i].querySelector(".me-name");
+    if(!nameEl) continue;
+    out.push({
+      n: nameEl.value.trim(),
+      p: parseInt(rows[i].querySelector(".me-price").value, 10) || 0,
+      v: rows[i].querySelector(".me-veg").value === "true"
+    });
+  }
+  menuDraft = out;
+}
+function renderMenuDraft(){
+  var html = "";
+  for(var i = 0; i < menuDraft.length; i++){
+    var m = menuDraft[i];
+    html += '<tr>' +
+      '<td><input class="me-name" type="text" value="' + esc(m.n) + '" placeholder="e.g. Masala Dosa"></td>' +
+      '<td><input class="me-price" type="number" min="0" value="' + m.p + '"></td>' +
+      '<td><select class="me-veg"><option value="true"' + (m.v ? " selected" : "") + '>Veg</option><option value="false"' + (!m.v ? " selected" : "") + '>Non-Veg</option></select></td>' +
+      '<td><button class="btn-danger" data-del-idx="' + i + '">✕</button></td>' +
+    '</tr>';
+  }
+  if(menuDraft.length === 0) html = '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:24px">No items yet — click "Add Item" below</td></tr>';
+  $("menuEditBody").innerHTML = html;
+}
+function openCustomerMenu(id){
+  var r = getRestaurantById(id);
+  if(!r) return;
+  $("adminModalTitle").textContent = "Menu — " + r.name;
+  var menu = Array.isArray(r.menu) ? r.menu : [];
+  var html = '<div class="cust-menu-head"><span class="cm-emoji">' + r.emoji + '</span><div><b>' + esc(r.cuisines.join(", ")) + '</b><small>★ ' + r.rating.toFixed(1) + ' • ' + inr(r.price) + ' for two • ' + r.time + ' min</small></div></div>';
+  if(menu.length === 0){
+    html += '<div class="admin-empty"><div class="big">🍽️</div><h4>Menu coming soon</h4><p>This restaurant has not added food items yet.</p></div>';
+  } else {
+    html += '<div class="cust-menu-list">';
+    for(var i = 0; i < menu.length; i++){
+      var m = menu[i];
+      html += '<div class="menu-item"><span class="' + (m.v ? "mveg" : "mnon") + '"></span><span class="mi-name">' + esc(m.n) + '</span><span class="mi-dots"></span><span class="mi-price">' + inr(m.p) + '</span></div>';
+    }
+    html += '</div>';
+  }
+  $("adminModalBody").innerHTML = html;
+  $("adminModal").classList.add("open");
+  $("adminModalClose").onclick = closeRestaurantModal;
+  $("adminModalBg").onclick = closeRestaurantModal;
+}
+
+$("addRestaurantBtn").addEventListener("click", function(){ openRestaurantModal(null); });
+
+/* =========================================================
+   ADMIN MENU
+   ========================================================= */
+$("adminUserBtn").addEventListener("click", function(e){
+  e.stopPropagation();
+  $("adminUserDropdown").classList.toggle("open");
+});
+$("adminLogoutBtn").addEventListener("click", function(){
+  $("adminUserDropdown").classList.remove("open");
+  if(confirm("Log out from Admin Panel?")) logout();
+});
+
+/* =========================================================
+   FOOTER PAGES
+   ========================================================= */
+var PAGES = {
+  about: {emoji: "🏢", title: "About Us", subtitle: "How Crave brings your favourite food to your door", html: '<div class="page-block"><h2>Our story</h2><p>Crave started in 2020 in a tiny Bengaluru apartment with one idea: good food should reach your door fast, hot and hassle-free.</p><p>Today we connect millions of hungry customers with the restaurants they love.</p></div>'},
+  careers: {emoji: "💼", title: "Careers", subtitle: "Join a team that\'s redefining food delivery", html: '<div class="page-block"><h2>Why Crave?</h2><p>We\'re a small, fast-moving team that ships every week.</p><ul><li>Competitive salary + ESOPs</li><li>Health insurance for you and your family</li><li>Flexible hours</li></ul></div>'},
+  team: {emoji: "👥", title: "Our Team", subtitle: "The people building Crave, one order at a time", html: '<div class="page-block"><h2>The people behind Crave</h2><p>240+ across engineering, design, operations and support — all obsessed with making food delivery delightful.</p></div>'},
+  blog: {emoji: "📰", title: "Blog", subtitle: "Stories, recipes and updates from the Crave kitchen", html: '<div class="page-block"><h2>Latest from the kitchen</h2><p>Stories, recipes, and behind-the-scenes updates from our team and partners.</p></div>'},
+  terms: {emoji: "📄", title: "Terms & Conditions", subtitle: "The rules that govern your use of Crave", html: '<div class="page-block"><h2>Acceptance of terms</h2><p>By accessing or using Crave you agree to these terms. All orders are subject to restaurant acceptance.</p></div>'},
+  privacy: {emoji: "🔒", title: "Privacy Policy", subtitle: "How we collect, use and protect your data", html: '<div class="page-block"><h2>Information we collect</h2><p>We collect only what\'s needed to deliver your orders. We never sell your personal data.</p></div>'},
+  refund: {emoji: "💸", title: "Refund Policy", subtitle: "When and how you get your money back", html: '<div class="page-block"><h2>Refund eligibility</h2><p>Refunds are issued for cancelled orders, missing items, or quality issues. UPI/wallets: 1–2 days. Cards: 5–7 business days.</p></div>'},
+  cookies: {emoji: "🍪", title: "Cookie Policy", subtitle: "How we use cookies on Crave", html: '<div class="page-block"><h2>Our cookies</h2><p>We use essential cookies for login and cart, and analytics cookies to improve the app.</p></div>'},
+  partner: {emoji: "🤝", title: "Partner With Us", subtitle: "Bring your restaurant to millions of hungry customers", html: '<div class="page-block"><h2>Grow with Crave</h2><p>Join 2,400+ restaurants. Zero onboarding fee, weekly payouts, and marketing support.</p></div>'},
+  ride: {emoji: "🛵", title: "Ride With Us", subtitle: "Earn on your schedule as a Crave delivery partner", html: '<div class="page-block"><h2>Earn on your schedule</h2><p>Up to ₹35,000 a month. Daily payouts, flexible hours, insurance cover.</p></div>'},
+  contact: {emoji: "📞", title: "Contact Us", subtitle: "We\'re here 24×7 — reach out anytime", html: '<div class="page-block"><h2>Get in touch</h2><p>Toll free: 1800-123-4567 • Email: support@crave.com</p></div>'},
+  help: {emoji: "🎧", title: "Help Centre", subtitle: "Find answers and get support", html: '<div class="page-block"><h2>Help topics</h2><p>Track order • Payments & refunds • Cancel order • Restaurant issues • Coupons • Account</p></div>'}
+};
+
+function showPage(key){
+  var page = PAGES[key];
+  if(!page){ toast("Page not found", "⚠️"); return; }
+  $("homeView").style.display = "none";
+  $("pageView").classList.add("active");
+  $("pageView").innerHTML =
+    '<button class="page-back" id="pageBackBtn">← Back to home</button>' +
+    '<div class="page-hero"><div class="page-hero-emoji">' + page.emoji + '</div><h1>' + page.title + '</h1><p>' + page.subtitle + '</p></div>' +
+    '<div class="page-content">' + page.html + '</div>';
+  $("pageBackBtn").addEventListener("click", showHome);
+  window.scrollTo(0, 0);
+}
+function showHome(){
+  $("pageView").classList.remove("active");
+  $("pageView").innerHTML = "";
+  $("homeView").style.display = "block";
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll("[data-page]").forEach(function(el){
+  el.addEventListener("click", function(e){
+    e.preventDefault();
+    showPage(el.getAttribute("data-page"));
+  });
+});
+$("logoHome").addEventListener("click", showHome);
+
+/* =========================================================
+   BOOT
+   ========================================================= */
+(function boot(){
+  // Wire auth tabs
+  document.querySelectorAll(".auth-tab").forEach(function(t){
+    t.addEventListener("click", function(){ switchAuthTab(t.getAttribute("data-tab")); });
+  });
+  document.querySelectorAll("[data-switch]").forEach(function(el){
+    el.addEventListener("click", function(){ switchAuthTab(el.getAttribute("data-switch")); });
+  });
+
+  // Wire auth buttons
+  $("loginBtn").addEventListener("click", handleLogin);
+  $("signupBtn").addEventListener("click", handleSignup);
+  $("loginPassword").addEventListener("keydown", function(e){ if(e.key === "Enter") handleLogin(); });
+  $("signupPassword").addEventListener("keydown", function(e){ if(e.key === "Enter") handleSignup(); });
+  $("quickAdminBtn").addEventListener("click", quickAdminLogin);
+
+  // Try session restore
+  if(!tryAutoLogin()){
+    $("authScreen").classList.remove("hidden");
+  }
+})();
+</script>
+</body>
+</html>

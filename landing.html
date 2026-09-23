@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crave — Choose Your Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#fc8019;--orange-dk:#e5700f;--ink:#282c3f;--ink-2:#3d4152;--muted:#7e808c;--line:#e9e9eb;--white:#fff;--green:#48c479;--purple:#8E2DE2;--purple-dk:#4A00E0;--radius:20px;--shadow-md:0 8px 24px rgba(40,44,63,.12);--shadow-lg:0 20px 50px rgba(40,44,63,.18)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--ink);background:#fafafa;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+
+.hero{background:linear-gradient(135deg,#fff8f2 0%,#fff 50%,#f3e5f5 100%);padding:60px 24px 40px;text-align:center;border-bottom:1px solid var(--line)}
+.hero-logo{display:flex;align-items:center;gap:12px;justify-content:center;margin-bottom:20px}
+.hero-logo .logo-mark{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--orange),#ff9a4d);display:grid;place-items:center;font-size:30px;box-shadow:0 6px 18px rgba(252,128,25,.35)}
+.hero-logo .logo-text{font-size:32px;font-weight:800;letter-spacing:-.5px}
+.hero-logo .logo-text span{color:var(--orange)}
+.hero h1{font-size:clamp(26px,4vw,40px);font-weight:800;letter-spacing:-1px;line-height:1.2;margin-bottom:10px}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero p{font-size:16px;color:var(--muted);font-weight:500;max-width:500px;margin:0 auto;line-height:1.6}
+
+.container{max-width:1000px;margin:0 auto;padding:50px 24px 80px;width:100%;flex:1}
+
+.portals{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:24px}
+
+.portal{background:#fff;border-radius:var(--radius);border:2px solid var(--line);overflow:hidden;transition:.3s;cursor:pointer;text-decoration:none;color:inherit;position:relative}
+.portal:hover{transform:translateY(-6px);box-shadow:var(--shadow-lg);border-color:transparent}
+.portal:hover .portal-banner{filter:brightness(1.05)}
+
+.portal-banner{height:120px;display:grid;place-items:center;font-size:52px;position:relative;overflow:hidden}
+.portal-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.3))}
+.portal-banner span{position:relative;z-index:2;filter:drop-shadow(0 4px 12px rgba(0,0,0,.25))}
+
+.portal-body{padding:24px}
+.portal-badge{display:inline-block;padding:4px 10px;border-radius:100px;font-size:11px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;margin-bottom:12px}
+.portal-body h2{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px}
+.portal-body p{font-size:14px;color:var(--ink-2);line-height:1.6;font-weight:500;margin-bottom:18px}
+.portal-features{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.portal-feature{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.portal-feature span{font-size:15px;flex-shrink:0}
+.portal-arrow{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:800;transition:.15s}
+.portal:hover .portal-arrow{gap:12px}
+
+.p-user .portal-banner{background:linear-gradient(135deg,#fff3e0,#ffe0b2)}
+.p-user .portal-badge{background:#fff3e0;color:#e65100}
+.p-user:hover{border-color:#ffb74d}
+.p-user .portal-arrow{color:var(--orange)}
+
+.p-partner .portal-banner{background:linear-gradient(135deg,#f3e5f5,#e1bee7)}
+.p-partner .portal-badge{background:#f3e5f5;color:#6a1b9a}
+.p-partner:hover{border-color:#ce93d8}
+.p-partner .portal-arrow{color:var(--purple)}
+
+.p-admin .portal-banner{background:linear-gradient(135deg,#e3f2fd,#bbdefb)}
+.p-admin .portal-badge{background:#e3f2fd;color:#0c5fa5}
+.p-admin:hover{border-color:#90caf9}
+.p-admin .portal-arrow{color:#1976d2}
+
+.footer{text-align:center;padding:28px 24px;border-top:1px solid var(--line);background:#fff}
+.footer span{font-size:13px;color:var(--muted);font-weight:500}
+.footer a{color:var(--orange);font-weight:700;text-decoration:none}
+
+@media(max-width:700px){
+  .hero{padding:40px 18px 30px}
+  .container{padding:30px 16px 60px}
+  .portals{grid-template-columns:1fr;gap:18px}
+  .portal-banner{height:100px;font-size:42px}
+  .portal-body{padding:20px}
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-logo">
+    <div class="logo-mark">🍽️</div>
+    <div class="logo-text">Cra<span>ve</span></div>
+  </div>
+  <h1>Choose your <em>portal</em></h1>
+  <p>Order food, manage your restaurant, or run the platform — all from one place.</p>
+</div>
+
+<div class="container">
+  <div class="portals">
+
+    <a href="index.html" class="portal p-admin">
+      <div class="portal-banner"><span>🛒</span></div>
+      <div class="portal-body">
+        <div class="portal-badge">Admin</div>
+        <h2>Admin Dashboard</h2>
+        <p>Manage restaurants, oversee orders, handle users, and monitor platform performance.</p>
+        <div class="portal-features">
+          <div class="portal-feature"><span>📊</span> Dashboard &amp; analytics</div>
+          <div class="portal-feature"><span>📦</span> Order management</div>
+          <div class="portal-feature"><span>🏪</span> Restaurant management</div>
+          <div class="portal-feature"><span>👥</span> User management</div>
+        </div>
+        <div class="portal-arrow">Open Admin Dashboard →</div>
+      </div>
+    </a>
+
+    <a href="index2.html" class="portal p-admin">
+      <div class="portal-banner"><span>🍽️</span></div>
+      <div class="portal-body">
+        <div class="portal-badge">User Portal</div>
+        <h2>Quick Food Ordering</h2>
+        <p>A simplified food ordering experience with search, categories, offers, and order history.</p>
+        <div class="portal-features">
+          <div class="portal-feature"><span>🔍</span> Smart search &amp; filters</div>
+          <div class="portal-feature"><span>🥗</span> Veg-only toggle</div>
+          <div class="portal-feature"><span>🎉</span> Deals &amp; coupons</div>
+          <div class="portal-feature"><span>💬</span> Help &amp; support</div>
+        </div>
+        <div class="portal-arrow">Open User Portal →</div>
+      </div>
+    </a>
+
+    <a href="index1.html" class="portal p-partner">
+      <div class="portal-banner"><span>🏪</span></div>
+      <div class="portal-body">
+        <div class="portal-badge">Restaurant</div>
+        <h2>Restaurant Partner Panel</h2>
+        <p>Manage your restaurant, update your menu, track incoming orders, and view analytics.</p>
+        <div class="portal-features">
+          <div class="portal-feature"><span>📊</span> Dashboard &amp; analytics</div>
+          <div class="portal-feature"><span>📦</span> Order management</div>
+          <div class="portal-feature"><span>🍽️</span> Menu editor</div>
+          <div class="portal-feature"><span>⚙️</span> Restaurant settings</div>
+        </div>
+        <div class="portal-arrow">Open Partner Panel →</div>
+      </div>
+    </a>
+
+  </div>
+</div>
+
+<div class="footer">
+  <span>© 2026 Crave — SDC Project Review Demo. Made with 🧡 in India</span>
+</div>
+
+<script>
+/* Animate cards on scroll */
+if(typeof IntersectionObserver!=='undefined'){
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='none';obs.unobserve(e.target);}
+    });
+  },{threshold:.15});
+  document.querySelectorAll('.portal').forEach(function(el,i){
+    el.style.opacity='0';el.style.transform='translateY(24px)';
+    el.style.transition='opacity .5s '+(i*.12)+'s ease, transform .5s '+(i*.12)+'s ease';
+    obs.observe(el);
+  });
+}
+</script>
+
+</body>
+</html>

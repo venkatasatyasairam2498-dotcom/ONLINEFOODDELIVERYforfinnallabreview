@@ -1,0 +1,2677 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crave — Order Food Online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--orange:#fc8019;--orange-dk:#e5700f;--ink:#282c3f;--ink-2:#3d4152;--muted:#7e808c;--line:#e9e9eb;--white:#fff;--green:#48c479;--radius:16px;--shadow-sm:0 2px 8px rgba(40,44,63,.08);--shadow-md:0 8px 24px rgba(40,44,63,.12);--shadow-lg:0 20px 50px rgba(40,44,63,.18)}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:var(--ink);background:var(--white);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+input,select,textarea{font-family:inherit;outline:none;border:none}
+a{text-decoration:none;color:inherit}
+::selection{background:var(--orange);color:#fff}
+.header{position:sticky;top:0;z-index:60;background:#fff;box-shadow:0 2px 12px rgba(40,44,63,.08)}
+.header-inner{max-width:1280px;margin:0 auto;padding:0 24px;height:80px;display:flex;align-items:center;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;flex-shrink:0;cursor:pointer}
+.logo-mark{width:40px;height:40px;border-radius:12px;flex-shrink:0;background:linear-gradient(135deg,var(--orange),#ff9a4d);display:grid;place-items:center;font-size:22px;box-shadow:0 4px 12px rgba(252,128,25,.35)}
+.logo-text{font-size:22px;font-weight:800;letter-spacing:-.5px}
+.logo-text span{color:var(--orange)}
+.nav{margin-left:auto;display:flex;align-items:center;gap:6px}
+.nav-link{padding:10px 16px;font-size:14.5px;font-weight:600;color:var(--ink-2);border-radius:10px;transition:.18s;white-space:nowrap;cursor:pointer}
+.nav-link:hover{color:var(--orange);background:#fff5ec}
+.icon-btn{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:18px;background:#f4f4f5;transition:.18s;position:relative}
+.icon-btn:hover{background:#e9e9eb}
+.icon-btn .dot{position:absolute;top:7px;right:7px;width:9px;height:9px;border-radius:50%;background:var(--orange);border:2px solid #fff;display:none}
+.icon-btn.has .dot{display:block}
+.cart-btn{display:flex;align-items:center;gap:9px;padding:11px 20px;border-radius:12px;background:var(--orange);color:#fff;font-weight:700;font-size:14.5px;transition:.2s;box-shadow:0 4px 14px rgba(252,128,25,.35)}
+.cart-btn:hover{background:var(--orange-dk)}
+.cart-count{background:rgba(255,255,255,.28);border-radius:20px;padding:1px 8px;font-size:12.5px;min-width:22px;text-align:center}
+.hero{background:radial-gradient(900px 380px at 12% -10%,rgba(252,128,25,.22),transparent 60%),linear-gradient(180deg,#fff8f2,#ffffff);padding:52px 24px 34px;border-bottom:1px solid var(--line)}
+.hero-inner{max-width:1280px;margin:0 auto;text-align:center}
+.hero h1{font-size:clamp(28px,4.4vw,46px);font-weight:800;letter-spacing:-1.2px;line-height:1.15}
+.hero h1 em{font-style:normal;color:var(--orange)}
+.hero p{margin-top:12px;color:var(--muted);font-size:15.5px;font-weight:500}
+.search-wrap{max-width:640px;margin:28px auto 0}
+.search-box{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--line);border-radius:14px;padding:0 8px 0 18px;height:58px;box-shadow:0 8px 26px rgba(40,44,63,.08);transition:.2s}
+.search-box:focus-within{border-color:var(--orange)}
+.search-box .s-icon{font-size:17px;color:var(--muted)}
+.search-box input{flex:1;height:100%;font-size:15px;color:var(--ink);background:transparent}
+.search-box input::placeholder{color:#a5a7b0}
+.search-clear{width:28px;height:28px;border-radius:50%;background:#f4f4f5;display:none;place-items:center;font-size:13px;color:var(--muted)}
+.search-clear.show{display:grid}
+.search-btn{background:var(--orange);color:#fff;font-weight:700;font-size:14.5px;padding:0 26px;height:44px;border-radius:11px}
+.search-btn:hover{background:var(--orange-dk)}
+.hero-stats{display:flex;justify-content:center;gap:44px;margin-top:30px;flex-wrap:wrap}
+.hero-stat b{display:block;font-size:22px;font-weight:800}
+.hero-stat span{font-size:12.5px;color:var(--muted);font-weight:500}
+.cats-section{max-width:1280px;margin:0 auto;padding:40px 24px 10px}
+.cats-head{margin-bottom:24px}
+.cats-head h2{font-size:clamp(20px,2.6vw,26px);font-weight:800;letter-spacing:-.6px}
+.cats-head p{font-size:13.5px;color:var(--muted);font-weight:500;margin-top:4px}
+.cats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(106px,1fr));gap:22px 10px}
+.cat{display:flex;flex-direction:column;align-items:center;text-align:center;cursor:pointer;user-select:none}
+.cat-icon{width:88px;height:88px;border-radius:50%;display:grid;place-items:center;font-size:40px;background:#fff;border:3px solid transparent;box-shadow:var(--shadow-sm);transition:.25s}
+.cat:hover .cat-icon{transform:translateY(-5px) scale(1.06)}
+.cat.active .cat-icon{border-color:var(--orange);transform:translateY(-3px)}
+.cat-label{margin-top:11px;font-size:13px;font-weight:700;color:var(--ink);line-height:1.25}
+.cat.active .cat-label{color:var(--orange)}
+.cat-desc{margin-top:3px;font-size:10.5px;color:var(--muted);font-weight:500}
+.filterbar{position:sticky;top:80px;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);margin-top:26px}
+.filterbar-inner{max-width:1280px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.active-pill{display:inline-flex;align-items:center;gap:9px;padding:9px 16px;border-radius:100px;background:linear-gradient(135deg,var(--orange),#ff9a4d);color:#fff;font-size:13px;font-weight:700;cursor:pointer}
+.active-pill.idle{background:#f4f4f5;color:var(--ink-2);cursor:default}
+.active-pill .x{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,.3);display:grid;place-items:center;font-size:11px}
+.tools{display:flex;align-items:center;gap:12px;margin-left:auto}
+.veg-toggle{display:flex;align-items:center;gap:9px;padding:9px 16px;border-radius:100px;border:1.5px solid var(--line);font-size:13px;font-weight:600;background:#fff}
+.veg-toggle .box{width:16px;height:16px;border:2px solid var(--green);border-radius:4px;display:grid;place-items:center}
+.veg-toggle .box::after{content:'';width:8px;height:8px;border-radius:50%;background:var(--green);transform:scale(0);transition:.15s}
+.veg-toggle.on .box::after{transform:scale(1)}
+.sortsel{padding:9px 16px;border-radius:100px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:var(--ink-2);cursor:pointer}
+.section{max-width:1280px;margin:0 auto;padding:34px 24px 70px}
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.section-head h2{font-size:clamp(19px,2.4vw,25px);font-weight:800}
+.section-head p{font-size:13.5px;color:var(--muted);font-weight:500;margin-top:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:26px 22px}
+.card{border-radius:var(--radius);cursor:pointer;transition:.25s;animation:pop .35s ease both}
+@keyframes pop{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.card:hover{transform:translateY(-4px)}
+.card-img{position:relative;height:172px;border-radius:var(--radius);overflow:hidden;display:grid;place-items:center}
+.card-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.55))}
+.card-emoji{font-size:74px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.22));transition:transform .35s}
+.card:hover .card-emoji{transform:scale(1.12) rotate(-5deg)}
+.offer-badge{position:absolute;bottom:10px;left:12px;z-index:2;color:#fff;font-size:14px;font-weight:800;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.fav{position:absolute;top:10px;right:10px;z-index:2;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.9);display:grid;place-items:center;font-size:15px}
+.fav.on{color:#e23744}
+.card-body{padding:12px 2px 0}
+.card-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.card-row h3{font-size:16.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rating{display:flex;align-items:center;gap:3px;font-size:12.5px;font-weight:700;color:#fff;background:var(--green);padding:3px 7px;border-radius:6px;flex-shrink:0}
+.rating.low{background:#db7c38}
+.cuisines{margin-top:5px;font-size:13px;color:var(--muted);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta{margin-top:5px;font-size:13px;color:var(--muted);font-weight:500}
+.card-foot{margin-top:12px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.add-btn{padding:9px 26px;border-radius:10px;border:1.5px solid var(--line);background:#fff;font-size:13.5px;font-weight:800;letter-spacing:.6px;color:var(--green);box-shadow:var(--shadow-sm)}
+.add-btn:hover{background:#f0fdf4;border-color:#b6e3c4}
+.stepper{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;background:#fff}
+.stepper button{width:34px;height:34px;font-size:17px;font-weight:700;color:var(--green);display:grid;place-items:center}
+.stepper span{min-width:26px;text-align:center;font-size:14px;font-weight:800}
+.badge-tag{font-size:11px;font-weight:700;color:#7a4b12;background:#fff3e0;border-radius:6px;padding:4px 9px;white-space:nowrap}
+.empty{grid-column:1/-1;text-align:center;padding:70px 20px;color:var(--muted)}
+.empty .big{font-size:60px;margin-bottom:14px}
+.empty h3{font-size:19px;color:var(--ink);font-weight:700;margin-bottom:6px}
+.empty p{font-size:14px;margin-bottom:16px}
+.empty-btn{padding:11px 22px;border-radius:11px;background:var(--orange);color:#fff;font-weight:700;font-size:13.5px}
+
+/* PAGE VIEW */
+#pageView{display:none;max-width:960px;margin:0 auto;padding:40px 24px 90px;animation:pageIn .35s ease}
+#pageView.active{display:block}
+@keyframes pageIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.page-back{display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:10px;background:#f4f4f5;color:var(--ink-2);font-size:13.5px;font-weight:700;margin-bottom:24px;transition:.15s;cursor:pointer}
+.page-back:hover{background:#e9e9eb}
+.page-hero{padding:32px;border-radius:20px;margin-bottom:28px;background:linear-gradient(135deg,#fff8f2,#fff);border:1px solid var(--line);position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(252,128,25,.18),transparent 70%)}
+.page-hero-emoji{font-size:52px;margin-bottom:12px;position:relative}
+.page-hero h1{font-size:clamp(26px,3.6vw,38px);font-weight:800;letter-spacing:-.9px;line-height:1.15;position:relative}
+.page-hero p{margin-top:10px;font-size:15px;color:var(--muted);font-weight:500;max-width:620px;line-height:1.55;position:relative}
+.page-block{margin-bottom:28px}
+.page-block h2{font-size:20px;font-weight:800;letter-spacing:-.4px;margin-bottom:12px;color:var(--ink)}
+.page-block p{font-size:14.5px;color:var(--ink-2);line-height:1.7;font-weight:500;margin-bottom:12px}
+.page-block ul{margin:8px 0 12px 20px}
+.page-block li{font-size:14.5px;color:var(--ink-2);line-height:1.75;font-weight:500;margin-bottom:5px}
+.page-block li::marker{color:var(--orange)}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:20px 0 8px}
+.stat-box{padding:20px;border-radius:14px;background:#fafafa;border:1px solid var(--line);text-align:center}
+.stat-box b{display:block;font-size:26px;font-weight:800;color:var(--orange);letter-spacing:-.5px}
+.stat-box span{display:block;font-size:12.5px;color:var(--muted);font-weight:600;margin-top:6px}
+.value-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px}
+.value-card{padding:20px;border-radius:14px;background:#fff;border:1px solid var(--line)}
+.value-emoji{font-size:28px;margin-bottom:10px}
+.value-title{font-size:15px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.value-desc{font-size:13.5px;color:var(--ink-2);line-height:1.6;font-weight:500}
+.job-card{display:flex;align-items:center;gap:16px;padding:18px;border-radius:14px;background:#fff;border:1px solid var(--line);margin-bottom:12px}
+.job-card:hover{border-color:#ffd9b8;box-shadow:var(--shadow-sm)}
+.job-emoji{font-size:26px;flex-shrink:0}
+.job-info{flex:1;min-width:0}
+.job-title{font-size:15px;font-weight:800;color:var(--ink)}
+.job-meta{font-size:12.5px;color:var(--muted);font-weight:600;margin-top:4px}
+.job-apply{padding:10px 18px;border-radius:10px;background:var(--orange);color:#fff;font-size:13px;font-weight:800;flex-shrink:0;cursor:pointer}
+.job-apply:hover{background:var(--orange-dk)}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.team-card{padding:22px 18px;border-radius:16px;background:#fff;border:1px solid var(--line);text-align:center}
+.team-card:hover{border-color:#ffd9b8;box-shadow:var(--shadow-md);transform:translateY(-3px);transition:.2s}
+.team-avatar{width:76px;height:76px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;font-size:36px;background:linear-gradient(135deg,#fff3e0,#ffe0b2)}
+.team-name{font-size:15px;font-weight:800;color:var(--ink)}
+.team-role{font-size:12.5px;color:var(--orange);font-weight:700;margin-top:4px}
+.team-bio{font-size:12.5px;color:var(--muted);line-height:1.5;font-weight:500;margin-top:8px}
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.blog-card{border-radius:16px;background:#fff;border:1px solid var(--line);overflow:hidden}
+.blog-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-md);transition:.25s}
+.blog-thumb{height:130px;display:grid;place-items:center;font-size:52px}
+.blog-body{padding:16px}
+.blog-tag{display:inline-block;font-size:10.5px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:var(--orange);background:#fff3e0;padding:4px 9px;border-radius:6px}
+.blog-body h3{font-size:15px;font-weight:800;color:var(--ink);margin-top:10px;line-height:1.35}
+.blog-body p{font-size:13px;color:var(--ink-2);line-height:1.55;font-weight:500;margin-top:8px}
+.blog-meta{font-size:11.5px;color:var(--muted);font-weight:600;margin-top:12px}
+.legal-updated{font-size:12.5px;color:var(--muted);font-weight:600;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.legal-section{margin-bottom:24px;padding-bottom:22px;border-bottom:1px dashed var(--line)}
+.legal-section:last-child{border-bottom:none}
+.legal-section h3{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:10px}
+.legal-section p{font-size:14px;color:var(--ink-2);line-height:1.7;font-weight:500;margin-bottom:10px}
+.legal-section ul{margin:8px 0 10px 20px}
+.legal-section li{font-size:14px;color:var(--ink-2);line-height:1.7;font-weight:500;margin-bottom:5px}
+.help-page-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.benefit-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:16px 0 24px}
+.benefit-card{padding:18px;border-radius:14px;background:linear-gradient(135deg,#fffaf5,#fff3e8);border:1.5px dashed #ffd9b8}
+.benefit-emoji{font-size:26px;margin-bottom:8px}
+.benefit-title{font-size:14px;font-weight:800;color:var(--ink)}
+.benefit-desc{font-size:12.5px;color:var(--ink-2);line-height:1.55;font-weight:500;margin-top:6px}
+.page-form{background:#fafafa;border-radius:16px;padding:22px;border:1px solid var(--line);margin-top:12px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.page-cta{display:inline-block;padding:14px 26px;border-radius:12px;background:var(--orange);color:#fff;font-weight:800;font-size:14.5px;margin-top:6px;cursor:pointer}
+.page-cta:hover{background:var(--orange-dk)}
+
+/* FOOTER */
+.footer{background:#1c1c1c;color:#b9b9b9;padding:54px 24px 30px;margin-top:20px}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:1.6fr repeat(4,1fr);gap:36px}
+.footer .logo-text{color:#fff}
+.footer p{font-size:13.5px;line-height:1.7;margin-top:14px;max-width:320px;color:#8f8f8f}
+.footer h5{color:#fff;font-size:14px;font-weight:700;margin-bottom:16px}
+.footer ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.footer li a{font-size:13.5px;color:#9d9d9d;transition:.15s;cursor:pointer;display:inline-block}
+.footer li a:hover{color:var(--orange)}
+.footer-bottom{max-width:1280px;margin:40px auto 0;padding-top:22px;border-top:1px solid #2e2e2e;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-size:12.5px;color:#7a7a7a}
+
+/* DRAWERS */
+.overlay{position:fixed;inset:0;background:rgba(28,28,28,.55);opacity:0;visibility:hidden;transition:.25s;z-index:90}
+.overlay.open{opacity:1;visibility:visible}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:#fff;z-index:100;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .32s}
+.drawer.open{transform:translateX(0)}
+.drawer.left{right:auto;left:0;transform:translateX(-100%)}
+.drawer.left.open{transform:translateX(0)}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:22px 24px;border-bottom:1px solid var(--line);gap:12px}
+.drawer-head h3{font-size:17px;font-weight:800}
+.drawer-head small{display:block;font-size:12px;color:var(--muted);font-weight:500;margin-top:3px}
+.head-actions{display:flex;align-items:center;gap:8px}
+.clear-btn{font-size:12px;font-weight:700;color:#e23744;padding:7px 11px;border-radius:8px}
+.clear-btn:hover{background:#ffe8ea}
+.close-x{width:36px;height:36px;border-radius:50%;background:#f4f4f5;display:grid;place-items:center;font-size:17px}
+.close-x:hover{background:#e9e9eb}
+.drawer-body{flex:1;overflow-y:auto;padding:18px 24px}
+.c-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px dashed var(--line)}
+.c-emoji{width:52px;height:52px;border-radius:12px;display:grid;place-items:center;font-size:26px;flex-shrink:0}
+.c-info{flex:1;min-width:0}
+.c-info h4{font-size:14px;font-weight:700;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.c-info span{font-size:12.5px;color:var(--muted);font-weight:500}
+.c-right{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.c-price{font-size:14px;font-weight:800}
+.stepper.sm button{width:28px;height:28px;font-size:15px}
+.stepper.sm span{min-width:22px;font-size:13px}
+.cart-empty{text-align:center;padding:70px 20px;color:var(--muted)}
+.cart-empty .big{font-size:56px;margin-bottom:14px;opacity:.5}
+.cart-empty h4{color:var(--ink);font-size:16px;font-weight:700;margin-bottom:6px}
+.cart-empty p{font-size:13.5px;line-height:1.6}
+.bill{margin-top:22px;background:#fafafa;border-radius:14px;padding:18px}
+.bill h4{font-size:13px;font-weight:800;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;margin-bottom:14px}
+.bill-row{display:flex;justify-content:space-between;font-size:13.5px;color:var(--ink-2);margin-bottom:10px;font-weight:500}
+.bill-row.total{border-top:1px dashed #d9d9d9;padding-top:12px;margin-top:14px;font-size:16px;font-weight:800;color:var(--ink)}
+.free{color:var(--green);font-weight:700}
+.strike{text-decoration:line-through;color:#b0b0b0;margin-right:6px}
+.savings{margin-top:14px;background:#eafaf0;color:#1f7a45;border-radius:10px;padding:11px 14px;font-size:12.5px;font-weight:700;text-align:center}
+.drawer-foot{padding:18px 24px 22px;border-top:1px solid var(--line);background:#fff}
+.checkout{width:100%;padding:16px;border-radius:13px;background:var(--orange);color:#fff;font-size:15.5px;font-weight:800}
+.checkout:hover{background:var(--orange-dk)}
+.h-order{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px;background:#fff}
+.h-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.h-id{font-size:12.5px;font-weight:800;color:var(--ink)}
+.h-date{font-size:11.5px;color:var(--muted);font-weight:500;margin-top:3px}
+.h-total{font-size:16px;font-weight:800;flex-shrink:0}
+.h-items{display:flex;flex-direction:column;gap:8px;padding:12px 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line);margin-top:12px}
+.h-item{display:flex;align-items:center;gap:10px;font-size:13px}
+.h-item-emoji{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;font-size:15px;flex-shrink:0}
+.h-item-name{flex:1;font-weight:600;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.h-item-qty{font-weight:700;color:var(--muted);font-size:12.5px}
+.h-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:12px}
+.h-status{font-size:11.5px;font-weight:700;color:#1f7a45;background:#eafaf0;padding:5px 11px;border-radius:100px}
+.h-btn{padding:9px 18px;border-radius:10px;font-size:12.5px;font-weight:800}
+.h-btn.reorder{background:var(--orange);color:#fff}
+.h-btn.reorder:hover{background:var(--orange-dk)}
+
+/* MODAL */
+.modal-wrap{position:fixed;inset:0;z-index:150;display:grid;place-items:center;padding:20px;opacity:0;visibility:hidden;transition:.25s}
+.modal-wrap.open{opacity:1;visibility:visible}
+.modal-backdrop{position:absolute;inset:0;background:rgba(28,28,28,.6)}
+.modal{position:relative;background:#fff;border-radius:20px;width:min(520px,100%);max-height:88vh;overflow-y:auto;box-shadow:var(--shadow-lg);transform:scale(.94);transition:.28s}
+.modal-wrap.open .modal{transform:none}
+.modal-head{padding:24px 26px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:14px;position:sticky;top:0;background:#fff;border-radius:20px 20px 0 0;z-index:2}
+.modal-head h3{font-size:19px;font-weight:800;letter-spacing:-.4px}
+.modal-head p{font-size:13px;color:var(--muted);font-weight:500;margin-top:4px}
+.modal-close{width:34px;height:34px;border-radius:50%;background:#f4f4f5;display:grid;place-items:center;font-size:16px;flex-shrink:0}
+.modal-close:hover{background:#e9e9eb}
+.modal-body{padding:22px 26px 26px}
+.offer-card{display:flex;gap:14px;padding:16px;border-radius:14px;margin-bottom:12px;border:1.5px dashed #ffd9b8;background:linear-gradient(135deg,#fffaf5,#fff3e8);cursor:pointer;align-items:center}
+.offer-card:hover{border-color:var(--orange)}
+.offer-emoji{font-size:32px;flex-shrink:0}
+.offer-title{font-size:14.5px;font-weight:800;color:var(--ink)}
+.offer-desc{font-size:12.5px;color:var(--ink-2);font-weight:500;margin-top:3px;line-height:1.4}
+.offer-code{display:inline-block;margin-top:8px;font-size:11.5px;font-weight:800;color:var(--orange);background:#fff;border:1px dashed var(--orange);padding:4px 10px;border-radius:6px}
+.back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:#f4f4f5;color:var(--ink-2);font-size:13px;font-weight:700;margin-bottom:16px;cursor:pointer}
+.back-btn:hover{background:#e9e9eb}
+.elig-head{display:flex;gap:14px;align-items:center;padding:16px;border-radius:14px;background:linear-gradient(135deg,#fffaf5,#fff3e8);border:1.5px dashed #ffd9b8;margin-bottom:16px}
+.elig-title{font-size:16px;font-weight:800;color:var(--ink)}
+.elig-desc{font-size:12.5px;color:var(--ink-2);font-weight:500;margin-top:4px;line-height:1.4}
+.elig-summary{padding:12px 16px;background:#eafaf0;color:#1f7a45;border-radius:11px;font-size:13px;font-weight:600;margin-bottom:16px}
+.elig-list{display:flex;flex-direction:column;gap:8px}
+.elig-item{display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:12px;background:#fafafa;cursor:pointer;border:1.5px solid transparent}
+.elig-item:hover{background:#fff5ec;border-color:#ffd9b8}
+.elig-emoji{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;font-size:22px;flex-shrink:0}
+.elig-name{font-size:14px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.elig-meta{font-size:11.5px;color:var(--muted);font-weight:500;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.elig-rating{font-size:11.5px;font-weight:800;color:#fff;background:var(--green);padding:3px 8px;border-radius:6px;flex-shrink:0}
+.elig-copy{width:100%;padding:14px;border-radius:12px;background:var(--orange);color:#fff;font-size:14.5px;font-weight:800;margin-top:18px}
+.elig-copy:hover{background:var(--orange-dk)}
+.help-cat{display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:12px;background:#fafafa;margin-bottom:10px;cursor:pointer;border:1px solid transparent}
+.help-cat:hover{background:#fff5ec;border-color:#ffe0b2}
+.help-cat .hc-emoji{font-size:22px;flex-shrink:0}
+.help-cat .hc-title{font-size:14px;font-weight:700;color:var(--ink)}
+.help-cat .hc-sub{font-size:12px;color:var(--muted);font-weight:500;margin-top:2px}
+.help-cat .hc-arrow{margin-left:auto;color:var(--muted);font-size:16px}
+.help-back{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:10px;background:#f4f4f5;color:var(--ink-2);font-size:13px;font-weight:700;margin-bottom:16px;cursor:pointer;border:none;font-family:inherit}
+.help-topic-head{display:flex;gap:14px;align-items:center;padding:16px;border-radius:14px;background:linear-gradient(135deg,#fffaf5,#fff3e8);border:1.5px dashed #ffd9b8;margin-bottom:18px}
+.help-topic-emoji{font-size:34px;flex-shrink:0}
+.help-topic-title{font-size:16px;font-weight:800;color:var(--ink)}
+.help-topic-sub{font-size:12.5px;color:var(--ink-2);font-weight:500;margin-top:4px;line-height:1.4}
+.help-section-title{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;margin:6px 0 10px}
+.help-card{padding:16px;border-radius:14px;background:#fafafa;border:1px solid var(--line);margin-bottom:12px}
+.help-card-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.help-card-text{font-size:13px;color:var(--ink-2);line-height:1.55;font-weight:500}
+.faq-item{border:1px solid var(--line);border-radius:12px;background:#fff;margin-bottom:10px;overflow:hidden}
+.faq-item.open{border-color:#ffd9b8;background:#fffaf5}
+.faq-q{padding:14px 16px;font-size:13.5px;font-weight:700;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer;user-select:none}
+.faq-q .chev{font-size:14px;color:var(--muted);transition:.2s;flex-shrink:0}
+.faq-item.open .chev{transform:rotate(180deg);color:var(--orange)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;font-size:13px;color:var(--ink-2);line-height:1.6;font-weight:500;padding:0 16px}
+.faq-item.open .faq-a{max-height:400px;padding:0 16px 14px}
+.help-field{margin-bottom:12px}
+.help-field label{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:6px}
+.help-field input,.help-field select,.help-field textarea{width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:13.5px;color:var(--ink);background:#fff;font-family:inherit}
+.help-field input:focus,.help-field select:focus,.help-field textarea:focus{border-color:var(--orange)}
+.help-field textarea{resize:vertical;min-height:80px}
+.help-submit{width:100%;padding:13px;border-radius:11px;background:var(--orange);color:#fff;font-size:14px;font-weight:800;margin-top:6px;border:none;cursor:pointer;font-family:inherit}
+.help-submit:hover{background:var(--orange-dk)}
+.track-card{padding:14px;border-radius:12px;background:#fff;border:1px solid var(--line);margin-bottom:12px}
+.track-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
+.track-id{font-size:12.5px;font-weight:800;color:var(--ink)}
+.track-eta{font-size:11.5px;color:var(--green);font-weight:800;background:#eafaf0;padding:4px 10px;border-radius:100px;flex-shrink:0}
+.track-steps{display:flex;flex-direction:column}
+.track-step{display:flex;gap:12px;align-items:flex-start;position:relative;padding-bottom:14px}
+.track-step:last-child{padding-bottom:0}
+.track-step::before{content:'';position:absolute;left:11px;top:22px;bottom:0;width:2px;background:#e9e9eb}
+.track-step:last-child::before{display:none}
+.track-step.done::before{background:var(--green)}
+.track-dot{width:22px;height:22px;border-radius:50%;background:#e9e9eb;flex-shrink:0;display:grid;place-items:center;font-size:11px;color:#fff;z-index:1;border:2px solid #fff}
+.track-step.done .track-dot{background:var(--green)}
+.track-step.active .track-dot{background:var(--orange)}
+.track-text{font-size:13px;font-weight:600;color:var(--muted);padding-top:2px}
+.track-step.done .track-text,.track-step.active .track-text{color:var(--ink);font-weight:700}
+.track-time{font-size:11px;color:var(--muted);font-weight:500;margin-top:2px}
+.chat-window{background:#f7f7f8;border-radius:14px;padding:16px;height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin-bottom:12px}
+.chat-msg{max-width:78%;padding:10px 14px;border-radius:14px;font-size:13px;line-height:1.45;font-weight:500;word-wrap:break-word}
+.chat-msg.bot{background:#fff;color:var(--ink);align-self:flex-start;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.chat-msg.user{background:var(--orange);color:#fff;align-self:flex-end}
+.chat-input-row{display:flex;gap:8px}
+.chat-input{flex:1;padding:11px 14px;border:1.5px solid var(--line);border-radius:11px;font-size:13.5px;background:#fff;font-family:inherit}
+.chat-input:focus{border-color:var(--orange)}
+.chat-send{padding:0 20px;border-radius:11px;background:var(--orange);color:#fff;font-weight:800;font-size:13.5px;border:none;cursor:pointer;font-family:inherit}
+.chat-send:hover{background:var(--orange-dk)}
+.contact-row{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:12px;background:#fafafa;border:1px solid var(--line);margin-bottom:10px;cursor:pointer}
+.contact-row:hover{background:#fff5ec;border-color:#ffe0b2}
+.contact-emoji{font-size:22px;flex-shrink:0}
+.contact-text{flex:1;min-width:0}
+.contact-label{font-size:11.5px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+.contact-value{font-size:14px;font-weight:800;color:var(--ink);margin-top:2px;word-break:break-all}
+.contact-action{padding:7px 14px;border-radius:9px;background:var(--orange);color:#fff;font-size:12px;font-weight:800;flex-shrink:0}
+.coupon-item{display:flex;gap:12px;padding:12px;border-radius:12px;border:1.5px dashed #ffd9b8;background:linear-gradient(135deg,#fffaf5,#fff3e8);margin-bottom:10px;align-items:center}
+.coupon-emoji{font-size:26px;flex-shrink:0}
+.coupon-title{font-size:13.5px;font-weight:800;color:var(--ink)}
+.coupon-code-text{display:inline-block;margin-top:5px;font-size:11px;font-weight:800;color:var(--orange);background:#fff;border:1px dashed var(--orange);padding:3px 9px;border-radius:5px}
+.profile-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--orange),#ff9a4d);display:grid;place-items:center;font-size:32px;margin:0 auto 14px}
+.help-success{text-align:center;padding:24px 12px}
+.help-success .big{font-size:52px;margin-bottom:10px}
+.help-success h4{font-size:16px;font-weight:800;color:var(--ink);margin-bottom:6px}
+.help-success p{font-size:13px;color:var(--muted);line-height:1.55;font-weight:500}
+.auth-tabs{display:flex;gap:6px;padding:5px;background:#f4f4f5;border-radius:12px;margin-bottom:22px}
+.auth-tab{flex:1;padding:10px;border-radius:9px;font-size:13.5px;font-weight:700;color:var(--muted);text-align:center;cursor:pointer}
+.auth-tab.active{background:#fff;color:var(--ink);box-shadow:var(--shadow-sm)}
+
+/* Profile */
+.profile-header{text-align:center;padding:20px 0 16px}
+.profile-avatar-lg{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--orange),#ff9a4d);display:grid;place-items:center;font-size:36px;margin:0 auto 12px;box-shadow:0 6px 18px rgba(252,128,25,.3)}
+.profile-name{font-size:20px;font-weight:800;color:var(--ink);letter-spacing:-.4px}
+.profile-email{font-size:13px;color:var(--muted);font-weight:500;margin-top:4px}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.profile-field{background:#fafafa;border-radius:12px;padding:14px 16px;border:1px solid var(--line)}
+.profile-field b{display:block;font-size:10.5px;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.profile-field span{font-size:15px;font-weight:700;color:var(--ink)}
+.profile-actions{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.profile-btn{width:100%;padding:13px;border-radius:11px;font-size:14px;font-weight:800;border:none;cursor:pointer;font-family:inherit;transition:.18s}
+.profile-btn.edit{background:var(--orange);color:#fff}
+.profile-btn.edit:hover{background:var(--orange-dk)}
+.profile-btn.danger{background:#ffe8ea;color:#e23744}
+.profile-btn.danger:hover{background:#ffd4d9}
+.profile-section{margin-top:20px}
+.profile-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.profile-section-head h4{font-size:14px;font-weight:800;color:var(--ink)}
+.profile-section-head button{padding:7px 14px;border-radius:8px;font-size:12px;font-weight:800;background:var(--orange);color:#fff;border:none;cursor:pointer;font-family:inherit}
+.profile-section-head button:hover{background:var(--orange-dk)}
+.address-card,.payment-card{padding:14px 16px;border-radius:12px;border:1.5px solid var(--line);background:#fff;margin-bottom:10px;position:relative;transition:.18s;cursor:pointer}
+.address-card:hover,.payment-card:hover{border-color:#ffd9b8;box-shadow:0 2px 8px rgba(252,128,25,.08)}
+.address-card.default,.payment-card.default{border-color:var(--orange);background:#fffbf5}
+.addr-type{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--orange);margin-bottom:4px}
+.addr-label{font-size:14px;font-weight:800;color:var(--ink)}
+.addr-text{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:4px;line-height:1.5}
+.addr-phone{font-size:12px;color:var(--ink-2);font-weight:600;margin-top:6px}
+.addr-actions,.pay-actions{display:flex;gap:6px;margin-top:10px}
+.addr-actions button,.pay-actions button{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;border:1px solid var(--line);background:#fafafa;color:var(--ink-2);cursor:pointer;font-family:inherit;transition:.15s}
+.addr-actions button:hover,.pay-actions button:hover{background:#e9e9eb}
+.addr-actions button.del,.pay-actions button.del{color:#e23744;border-color:#ffe8ea}
+.addr-actions button.del:hover,.pay-actions button.del:hover{background:#ffe8ea}
+.addr-actions button.set-default,.pay-actions button.set-default{color:var(--orange);border-color:#ffd9b8}
+.default-badge{display:inline-block;padding:2px 7px;border-radius:5px;font-size:9.5px;font-weight:800;background:var(--orange);color:#fff;text-transform:uppercase;letter-spacing:.3px;margin-left:8px}
+.pay-icon{width:44px;height:30px;border-radius:6px;display:grid;place-items:center;font-size:14px;flex-shrink:0;margin-right:10px}
+.pay-details{flex:1;min-width:0}
+.pay-type{font-size:14px;font-weight:800;color:var(--ink)}
+.pay-meta{font-size:12px;color:var(--muted);font-weight:500;margin-top:2px}
+.pay-card-row{display:flex;align-items:center}
+.no-items{text-align:center;padding:20px;color:var(--muted);font-size:13px;font-weight:500}
+
+/* Auto Refresh */
+.auto-refresh-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;background:#eafaf0;color:#1f7a45;font-size:11px;font-weight:700;margin-top:8px}
+.auto-refresh-badge .pulse{width:6px;height:6px;border-radius:50%;background:#48c479;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* Rating */
+.rating-modal{text-align:center;padding:10px 0}
+.rating-modal .rate-emoji{font-size:48px;margin-bottom:8px}
+.rating-modal .rate-title{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.rating-modal .rate-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.star-row{display:flex;justify-content:center;gap:6px;margin-bottom:16px}
+.star-btn{font-size:36px;cursor:pointer;transition:.2s;background:none;border:none;padding:4px}
+.star-btn:hover{transform:scale(1.2)}
+.star-btn.selected{filter:none}
+.rating-tags{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
+.rating-tag{padding:7px 14px;border-radius:100px;border:1.5px solid var(--line);background:#fff;font-size:12px;font-weight:700;color:var(--ink-2);cursor:pointer;transition:.15s}
+.rating-tag:hover{border-color:var(--orange);background:#fff5ec}
+.rating-tag.selected{border-color:var(--orange);background:var(--orange);color:#fff}
+.rating-textarea{width:100%;padding:12px 14px;border:1.5px solid var(--line);border-radius:11px;font-size:13.5px;font-family:inherit;resize:vertical;min-height:70px;margin-bottom:14px}
+.rating-textarea:focus{border-color:var(--orange)}
+.rating-submit{width:100%;padding:14px;border-radius:12px;background:var(--orange);color:#fff;font-size:14px;font-weight:800;border:none;cursor:pointer;font-family:inherit;transition:.15s}
+.rating-submit:hover{background:var(--orange-dk)}
+.rating-done{text-align:center;padding:16px}
+.rating-done .big{font-size:48px;margin-bottom:8px}
+.rating-done h4{font-size:17px;font-weight:800;color:var(--ink);margin-bottom:4px}
+.rating-done p{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* Favourites */
+.fav-section{margin-top:14px}
+.fav-section-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.fav-section-head h4{font-size:14px;font-weight:800;color:var(--ink)}
+.fav-section-head span{font-size:12px;color:var(--muted);font-weight:600}
+.fav-card{display:flex;gap:12px;padding:12px;border-radius:12px;border:1.5px solid var(--line);background:#fff;margin-bottom:10px;align-items:center;transition:.15s}
+.fav-card:hover{border-color:#ffd9b8;box-shadow:0 2px 8px rgba(252,128,25,.08)}
+.fav-card-emoji{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-size:26px;flex-shrink:0}
+.fav-card-info{flex:1;min-width:0}
+.fav-card-name{font-size:14px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fav-card-meta{font-size:12px;color:var(--muted);font-weight:500;margin-top:2px}
+.fav-card-rating{font-size:11.5px;font-weight:800;color:#fff;background:var(--green);padding:3px 8px;border-radius:6px;flex-shrink:0}
+.fav-card-rating.low{background:#db7c38}
+.fav-remove{width:30px;height:30px;border-radius:8px;background:#ffe8ea;border:none;display:grid;place-items:center;font-size:14px;cursor:pointer;flex-shrink:0;transition:.15s}
+.fav-remove:hover{background:#ffd4d9}
+
+
+/* Live Countdown */
+.countdown-bar{display:flex;justify-content:center;gap:16px;margin:16px 0 10px}
+.countdown-unit{text-align:center}
+.countdown-num{display:block;font-size:28px;font-weight:800;color:var(--orange);letter-spacing:-1px;line-height:1.1}
+.countdown-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.countdown-sep{font-size:24px;font-weight:800;color:var(--line);align-self:flex-start;margin-top:2px}
+
+/* Promo Code */
+.promo-wrap{margin-top:16px;padding:14px;border-radius:12px;border:1.5px dashed #ffd9b8;background:linear-gradient(135deg,#fffaf5,#fff3e8)}
+.promo-row{display:flex;gap:8px}
+.promo-input{flex:1;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:13.5px;font-family:inherit;background:#fff;color:var(--ink)}
+.promo-input:focus{border-color:var(--orange)}
+.promo-btn{padding:11px 18px;border-radius:10px;background:var(--orange);color:#fff;font-size:13px;font-weight:800;border:none;cursor:pointer;font-family:inherit;white-space:nowrap;transition:.15s}
+.promo-btn:hover{background:var(--orange-dk)}
+.promo-btn.applied{background:var(--green)}
+.promo-msg{margin-top:8px;font-size:12.5px;font-weight:600;display:none}
+.promo-msg.success{color:#1f7a45;display:block}
+.promo-msg.error{color:#e23744;display:block}
+.promo-saved{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-radius:8px;background:#eafaf0;margin-top:8px}
+.promo-saved span{font-size:13px;font-weight:700;color:#1f7a45}
+.promo-saved button{background:none;border:none;color:#e23744;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit}
+.profile-stat-row{display:flex;gap:12px;margin-top:16px}
+.profile-stat{flex:1;text-align:center;padding:14px 8px;border-radius:12px;background:linear-gradient(135deg,#fff8f2,#fff3e0);border:1px solid var(--line)}
+.profile-stat b{display:block;font-size:22px;font-weight:800;color:var(--orange);letter-spacing:-.5px}
+.profile-stat span{display:block;font-size:11.5px;color:var(--muted);font-weight:600;margin-top:4px}
+
+/* Order Tracking */
+.track-order-card{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:14px;transition:.2s}
+.track-order-card:hover{box-shadow:0 4px 16px rgba(40,44,63,.08)}
+.track-order-head{display:flex;justify-content:space-between;align-items:flex-start;padding:14px 16px;border-bottom:1px dashed var(--line)}
+.track-order-id{font-size:13px;font-weight:800;color:var(--ink)}
+.track-order-date{font-size:11.5px;color:var(--muted);font-weight:500;margin-top:3px}
+.track-order-total{font-size:16px;font-weight:800;color:var(--ink);flex-shrink:0}
+.track-order-items{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.track-order-items::-webkit-scrollbar{display:none}
+.track-item-chip{display:flex;align-items:center;gap:6px;padding:6px 10px;border-radius:100px;background:#fafafa;border:1px solid var(--line);flex-shrink:0;font-size:12px;font-weight:600;color:var(--ink-2)}
+.track-item-chip .ti-emoji{font-size:16px}
+.track-progress{padding:16px}
+.track-steps{display:flex;justify-content:space-between;position:relative;margin-bottom:4px}
+.track-steps::before{content:'';position:absolute;top:14px;left:28px;right:28px;height:3px;background:#e9e9eb;border-radius:4px}
+.track-steps .step-fill{position:absolute;top:14px;left:28px;height:3px;border-radius:4px;background:var(--orange);transition:width .6s ease}
+.track-step{text-align:center;flex:1;position:relative;z-index:1}
+.track-step .step-dot{width:28px;height:28px;border-radius:50%;background:#e9e9eb;display:grid;place-items:center;margin:0 auto 6px;font-size:13px;color:#fff;border:3px solid #fff;transition:.3s}
+.track-step.done .step-dot{background:var(--green)}
+.track-step.active .step-dot{background:var(--orange);box-shadow:0 0 0 3px rgba(252,128,25,.25)}
+.track-step .step-label{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.track-step.done .step-label,.track-step.active .step-label{color:var(--ink)}
+.track-step .step-time{font-size:10px;color:var(--muted);font-weight:500;margin-top:2px}
+.track-eta-bar{margin-top:12px;padding:10px 14px;border-radius:10px;background:linear-gradient(135deg,#eafaf0,#f0fdf4);border:1px dashed #b6e3c4;text-align:center;font-size:13px;font-weight:700;color:#1f7a45}
+.track-btn{width:100%;padding:12px;border-radius:11px;background:var(--orange);color:#fff;font-size:13.5px;font-weight:800;border:none;cursor:pointer;font-family:inherit;margin-top:12px;transition:.18s}
+.track-btn:hover{background:var(--orange-dk)}
+.auth-field{margin-bottom:14px}
+.auth-field label{display:block;font-size:12px;font-weight:700;color:var(--ink-2);margin-bottom:6px}
+.auth-field input{width:100%;height:48px;padding:0 16px;border:1.5px solid var(--line);border-radius:11px;font-size:14px;background:#fff;font-family:inherit}
+.auth-field input:focus{border-color:var(--orange)}
+.auth-btn{width:100%;padding:14px;border-radius:12px;background:var(--orange);color:#fff;font-size:15px;font-weight:800;margin-top:6px;border:none;cursor:pointer;font-family:inherit}
+.auth-btn:hover{background:var(--orange-dk)}
+.auth-or{display:flex;align-items:center;gap:12px;margin:22px 0 18px;font-size:11.5px;color:var(--muted);font-weight:600}
+.auth-or::before,.auth-or::after{content:'';flex:1;height:1px;background:var(--line)}
+.social-row{display:flex;gap:10px}
+.social-btn{flex:1;padding:12px;border-radius:11px;border:1.5px solid var(--line);background:#fff;font-size:13px;font-weight:700;color:var(--ink-2);display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;cursor:pointer}
+.social-btn:hover{border-color:var(--orange);background:#fffaf5}
+.toast-wrap{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:10px;align-items:center;pointer-events:none}
+.toast{background:#1c1c1c;color:#fff;padding:13px 22px;border-radius:12px;font-size:13.5px;font-weight:600;display:flex;align-items:center;gap:10px;animation:toastIn .3s both}
+@keyframes toastIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.toast.out{animation:toastOut .25s forwards}
+@keyframes toastOut{to{opacity:0;transform:translateY(12px)}}
+@media(max-width:1024px){.nav-link{display:none}.footer-inner{grid-template-columns:1fr 1fr}}
+@media(max-width:760px){
+  .header-inner{height:auto;padding:14px 16px;gap:12px;flex-wrap:wrap}
+  .logo-text{font-size:19px}
+  .nav{margin-left:auto;gap:8px}
+  .cart-btn{padding:10px 14px;font-size:13.5px}
+  .cart-btn .lbl{display:none}
+  .hero{padding:36px 18px 26px}
+  .hero-stats{gap:24px}
+  .cats-section{padding:30px 0 6px}
+  .cats-head{padding:0 16px;margin-bottom:18px}
+  .cats-grid{display:flex;overflow-x:auto;gap:16px;padding:0 16px 14px;scrollbar-width:none}
+  .cats-grid::-webkit-scrollbar{display:none}
+  .cat{flex:0 0 84px;width:84px}
+  .cat-icon{width:72px;height:72px;font-size:33px}
+  .cat-label{font-size:11.5px}
+  .cat-desc{display:none}
+  .filterbar{position:static;margin-top:10px}
+  .filterbar-inner{padding:12px 16px}
+  .section{padding:24px 16px 60px}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:20px 14px}
+  .card-img{height:130px}
+  .card-emoji{font-size:54px}
+  .card-row h3{font-size:14.5px}
+  .add-btn{padding:8px 18px;font-size:12.5px}
+  .footer-inner{grid-template-columns:1fr}
+  .drawer{width:100%}
+  .modal-head{padding:20px 20px 14px}
+  .modal-body{padding:18px 20px 22px}
+  #pageView{padding:28px 16px 70px}
+  .page-hero{padding:22px}
+  .page-hero-emoji{font-size:40px}
+  .help-page-grid{grid-template-columns:1fr}
+  .form-row{grid-template-columns:1fr}
+}
+
+/* Auth tabs in modal */
+.auth-tabs{display:flex;gap:6px;padding:5px;background:#f4f4f5;border-radius:12px;margin-bottom:22px}
+.auth-tab{flex:1;padding:10px;border-radius:9px;font-size:13.5px;font-weight:700;color:var(--muted);text-align:center;cursor:pointer;transition:.2s}
+.auth-tab.active{background:#fff;color:var(--ink);box-shadow:var(--shadow-sm)}
+
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <div class="logo" id="logoHome">
+      <a href="landing.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit"><div class="logo-mark">🍽️</div><div class="logo-text">Cra<span>ve</span></div></a>
+    </div>
+    <nav class="nav">
+      <a class="nav-link" id="ordersLink">My Orders</a>
+      <a class="nav-link" id="offersLink">Offers</a>
+      <a class="nav-link" data-page="help">Help</a>
+      <a class="nav-link" href="landing.html">🏠 Home</a>
+      <a class="nav-link" id="favLink">❤️ Favourites</a>
+      <a class="nav-link" id="profileLink" style="display:none">👤 Profile</a>
+      <a class="nav-link" id="signInLink">Sign In</a>
+      <button class="icon-btn" id="historyOpen" title="Order History">📋<span class="dot"></span></button>
+      <button class="cart-btn" id="cartOpen">
+        <span>🛒</span><span class="lbl">Cart</span><span class="cart-count" id="cartCount">0</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<div id="homeView">
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>Hungry? Order food from the <em>best restaurants</em> near you</h1>
+      <p>Free delivery on your first order • Avg. delivery in 30 minutes</p>
+      <div class="search-wrap">
+        <div class="search-box">
+          <span class="s-icon">🔍</span>
+          <input type="text" id="search" placeholder="Search for restaurants, cuisines or dishes…" autocomplete="off">
+          <button class="search-clear" id="searchClear">✕</button>
+          <button class="search-btn" id="searchBtn">Search</button>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>2,400+</b><span>Restaurants</span></div>
+        <div class="hero-stat"><b>30 min</b><span>Avg. Delivery</span></div>
+        <div class="hero-stat"><b>4.6 ★</b><span>Avg. Rating</span></div>
+        <div class="hero-stat"><b>₹0</b><span>Delivery Fee*</span></div>
+      </div>
+    </div>
+  </section>
+  <section class="cats-section">
+    <div class="cats-head"><h2>What's on your mind?</h2><p>Pick a category and we'll show you the best nearby</p></div>
+    <div class="cats-grid" id="catsGrid"></div>
+  </section>
+  <div class="filterbar">
+    <div class="filterbar-inner">
+      <button class="active-pill idle" id="activePill">All Restaurants</button>
+      <div class="tools">
+        <button class="veg-toggle" id="vegToggle"><span class="box"></span> Veg Only</button>
+        <select class="sortsel" id="sort">
+          <option value="relevance">Sort: Relevance</option>
+          <option value="rating">Rating: High to Low</option>
+          <option value="time">Delivery Time (Low to High)</option>
+          <option value="priceLow">Cost: Low to High</option>
+          <option value="priceHigh">Cost: High to Low</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <main class="section">
+    <div class="section-head"><div><h2 id="sectionTitle">Restaurants with online food delivery</h2><p id="resultCount">Loading…</p></div></div>
+    <div class="grid" id="grid"></div>
+  </main>
+</div>
+
+<div id="pageView"></div>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div>
+      <a href="landing.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit"><div class="logo-mark">🍽️</div><div class="logo-text">Cra<span>ve</span></div></a>
+      <p>Order food online from the best restaurants in your city. Fresh, fast and delivered with a smile.</p>
+    </div>
+    <div>
+      <h5>Company</h5>
+      <ul>
+        <li><a data-page="about">About Us</a></li>
+        <li><a data-page="careers">Careers</a></li>
+        <li><a data-page="team">Team</a></li>
+        <li><a data-page="blog">Blog</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Legal</h5>
+      <ul>
+        <li><a data-page="terms">Terms</a></li>
+        <li><a data-page="privacy">Privacy</a></li>
+        <li><a data-page="refund">Refund</a></li>
+        <li><a data-page="cookies">Cookies</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Support</h5>
+      <ul>
+        <li><a data-page="help">Help Centre</a></li>
+        <li><a href="index1.html">Restaurant Partner Portal</a></li>
+        <li><a data-page="partner">Partner With Us</a></li>
+        <li><a data-page="ride">Ride With Us</a></li>
+        <li><a data-page="contact">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h5>Portals</h5>
+      <ul>
+        <li><a href="landing.html">🏠 Portal Home</a></li>
+        <li><a href="index.html">🛒 Customer App</a></li>
+        <li><a href="index1.html">🏪 Partner Panel</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Crave — demo only.</span>
+    <span>Made with 🧡 in India</span>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div><h3>Your Cart</h3><small id="drawerSub">0 items</small></div>
+    <button class="close-x" id="cartClose">✕</button>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot" style="display:none">
+    <button class="checkout" id="checkout">Proceed to Checkout →</button>
+  </div>
+</aside>
+<aside class="drawer left" id="historyDrawer">
+  <div class="drawer-head">
+    <div><h3>Your Orders</h3><small id="historySub">No orders yet</small></div>
+    <div class="head-actions">
+      <button class="clear-btn" id="clearHistory" style="display:none">Clear all</button>
+      <button class="close-x" id="historyClose">✕</button>
+    </div>
+  </div>
+  <div class="drawer-body" id="historyBody"></div>
+</aside>
+<div class="modal-wrap" id="modalWrap">
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <div class="modal" role="dialog">
+    <div class="modal-head">
+      <div><h3 id="modalTitle">Title</h3><p id="modalSubtitle">Subtitle</p></div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+<div class="toast-wrap" id="toasts"></div>
+
+<script>
+/* =========================================================
+   DATA
+   ========================================================= */
+var CATEGORIES = [
+  {key:"All",emoji:"🍽️",desc:"Everything"},
+  {key:"Breakfast",emoji:"🌅",desc:"Idli, Dosa, Poha"},
+  {key:"Brunch",emoji:"☀️",desc:"Wraps, Omelets"},
+  {key:"Lunch",emoji:"🍛",desc:"Thali, Biryani"},
+  {key:"Evening Snacks",emoji:"🌆",desc:"Samosa, Chaat"},
+  {key:"Dinner",emoji:"🌙",desc:"Roti, Curries"},
+  {key:"Late-Night",emoji:"🌃",desc:"Burgers, Pizza"},
+  {key:"Beverages",emoji:"🥤",desc:"Juices, Shakes"},
+  {key:"Tea & Coffee",emoji:"☕",desc:"Chai, Latte"},
+  {key:"Desserts",emoji:"🍰",desc:"Cakes, Ice Cream"},
+  {key:"Healthy",emoji:"🥗",desc:"Salads, Bowls"},
+  {key:"Vegetarian",emoji:"🌱",desc:"Veg Meals"},
+  {key:"Vegan",emoji:"🌿",desc:"Plant-based"},
+  {key:"Meals & Combos",emoji:"🍱",desc:"Meal Boxes"},
+  {key:"Quick Bites",emoji:"🍿",desc:"Fries, Rolls"},
+  {key:"Fruits",emoji:"🍎",desc:"Fruit Bowls"},
+  {key:"Kids' Meals",emoji:"🧒",desc:"Small Portions"},
+  {key:"Fitness",emoji:"🏋️",desc:"High Protein"},
+  {key:"Party Packs",emoji:"🎉",desc:"Family Packs"}
+];
+var CAT_BG = [
+  "linear-gradient(135deg,#fff3e0,#ffe0b2)","linear-gradient(135deg,#e8f5e9,#c8e6c9)",
+  "linear-gradient(135deg,#e3f2fd,#bbdefb)","linear-gradient(135deg,#fce4ec,#f8bbd0)",
+  "linear-gradient(135deg,#f3e5f5,#e1bee7)","linear-gradient(135deg,#fff8e1,#ffecb3)",
+  "linear-gradient(135deg,#e0f7fa,#b2ebf2)","linear-gradient(135deg,#fbe9e7,#ffccbc)",
+  "linear-gradient(135deg,#ede7f6,#d1c4e9)","linear-gradient(135deg,#f1f8e9,#dcedc8)"
+];
+var RESTAURANTS = [
+  {id:1,name:"Dosa Delight",cuisines:["South Indian"],rating:4.7,time:22,price:250,emoji:"🥘",grad:"linear-gradient(135deg,#43cea2,#185a9d)",offer:"30% OFF up to ₹75",veg:true,tag:"Top Rated",cats:["Breakfast","Lunch","Vegetarian"],aliases:"dosai dose dosha masala dosa"},
+  {id:2,name:"Idli Express",cuisines:["South Indian","Healthy"],rating:4.5,time:19,price:200,emoji:"🍚",grad:"linear-gradient(135deg,#a8e063,#56ab2f)",offer:"Flat ₹50 OFF",veg:true,tag:"",cats:["Breakfast","Healthy","Vegetarian"],aliases:"idly iddly iddli idlii sambar vada"},
+  {id:3,name:"Pizza Paradise",cuisines:["Italian","Pizza"],rating:4.4,time:30,price:450,emoji:"🍕",grad:"linear-gradient(135deg,#ffb26b,#ff6b6b)",offer:"50% OFF up to ₹100",veg:false,tag:"Bestseller",cats:["Late-Night","Dinner","Party Packs","Quick Bites"],aliases:"piza pizzas pizzza margherita"},
+  {id:4,name:"Burger Barn",cuisines:["Burger","American"],rating:4.1,time:28,price:400,emoji:"🍔",grad:"linear-gradient(135deg,#f7971e,#ffd200)",offer:"Buy 1 Get 1",veg:false,tag:"Bestseller",cats:["Late-Night","Quick Bites","Kids' Meals"],aliases:"burgar burgur hamburger"},
+  {id:5,name:"Biryani Junction",cuisines:["Biryani","Mughlai"],rating:4.6,time:35,price:550,emoji:"🍛",grad:"linear-gradient(135deg,#f7b733,#fc4a1a)",offer:"Flat ₹125 OFF",veg:false,tag:"Top Rated",cats:["Lunch","Dinner","Party Packs"],aliases:"biriyani biryanii briyani"},
+  {id:6,name:"Green Bowl Co.",cuisines:["Healthy","Salads"],rating:4.3,time:25,price:350,emoji:"🥗",grad:"linear-gradient(135deg,#a8e063,#56ab2f)",offer:"20% OFF",veg:true,tag:"",cats:["Healthy","Vegetarian","Vegan","Fitness","Lunch"],aliases:"salad bowl protein"},
+  {id:7,name:"Dragon Wok",cuisines:["Chinese","Asian"],rating:4.2,time:32,price:500,emoji:"🍜",grad:"linear-gradient(135deg,#ee0979,#ff6a00)",offer:"₹100 OFF above ₹399",veg:false,tag:"",cats:["Dinner","Late-Night","Lunch"],aliases:"noodles chinese hakka"},
+  {id:8,name:"Sweet Cravings",cuisines:["Desserts","Bakery"],rating:4.5,time:20,price:300,emoji:"🍰",grad:"linear-gradient(135deg,#ff9a9e,#fad0c4)",offer:"Free Brownie",veg:true,tag:"New",cats:["Desserts","Evening Snacks"],aliases:"cake pastry brownie chocolate"},
+  {id:9,name:"Tandoori Nights",cuisines:["North Indian","Kebabs"],rating:4.4,time:38,price:650,emoji:"🍢",grad:"linear-gradient(135deg,#c31432,#240b36)",offer:"Flat 40% OFF",veg:false,tag:"",cats:["Dinner","Lunch","Party Packs"],aliases:"kebab tandoori chicken curry"},
+  {id:10,name:"Sushi Sensei",cuisines:["Japanese","Sushi"],rating:4.6,time:40,price:850,emoji:"🍣",grad:"linear-gradient(135deg,#2193b0,#6dd5ed)",offer:"15% OFF",veg:false,tag:"Premium",cats:["Dinner","Healthy","Fitness"],aliases:"sushi japanese ramen"},
+  {id:11,name:"Chaat Corner",cuisines:["Street Food","Snacks"],rating:4.0,time:18,price:200,emoji:"🥟",grad:"linear-gradient(135deg,#f12711,#f5af19)",offer:"₹50 OFF above ₹199",veg:true,tag:"",cats:["Evening Snacks","Quick Bites","Vegetarian"],aliases:"chaat samosa panipuri golgappa"},
+  {id:12,name:"Pasta La Vista",cuisines:["Italian","Continental"],rating:4.3,time:34,price:600,emoji:"🍝",grad:"linear-gradient(135deg,#e96443,#904e95)",offer:"25% OFF",veg:false,tag:"",cats:["Dinner","Lunch","Brunch"],aliases:"pasta spaghetti penne"},
+  {id:13,name:"Taco Fiesta",cuisines:["Mexican","Burger"],rating:4.2,time:29,price:420,emoji:"🌮",grad:"linear-gradient(135deg,#fdc830,#f37335)",offer:"Combo at ₹199",veg:false,tag:"New",cats:["Late-Night","Quick Bites","Evening Snacks"],aliases:"taco burrito nachos"},
+  {id:14,name:"Juice Junction",cuisines:["Beverages","Juices"],rating:4.4,time:16,price:220,emoji:"🥤",grad:"linear-gradient(135deg,#00b09b,#96c93d)",offer:"Buy 2 Get 1",veg:true,tag:"",cats:["Beverages","Fruits","Healthy","Fitness"],aliases:"juice smoothie shake"},
+  {id:15,name:"Cafe Mocha",cuisines:["Cafe","Coffee"],rating:4.5,time:24,price:380,emoji:"☕",grad:"linear-gradient(135deg,#8E2DE2,#4A00E0)",offer:"20% OFF on Coffee",veg:true,tag:"Bestseller",cats:["Tea & Coffee","Brunch","Desserts","Evening Snacks"],aliases:"coffee latte cappuccino coffe cofee"},
+  {id:16,name:"Waffle House",cuisines:["Desserts","Waffles"],rating:4.3,time:26,price:340,emoji:"🧇",grad:"linear-gradient(135deg,#fc5c7d,#6a82fb)",offer:"Free Topping",veg:true,tag:"New",cats:["Desserts","Brunch","Kids' Meals"],aliases:"waffle pancake"},
+  {id:17,name:"Momo Mania",cuisines:["Tibetan","Momos"],rating:4.2,time:27,price:280,emoji:"🥟",grad:"linear-gradient(135deg,#f7971e,#ffd200)",offer:"₹60 OFF",veg:false,tag:"",cats:["Quick Bites","Evening Snacks","Late-Night"],aliases:"momo momos mamus dumpling"},
+  {id:18,name:"Thali House",cuisines:["North Indian","Thali"],rating:4.5,time:31,price:380,emoji:"🍱",grad:"linear-gradient(135deg,#f7b733,#fc4a1a)",offer:"Unlimited Thali ₹249",veg:true,tag:"Top Rated",cats:["Lunch","Dinner","Vegetarian","Meals & Combos"],aliases:"thali meal combo"},
+  {id:19,name:"Protein Kitchen",cuisines:["Fitness","Healthy"],rating:4.6,time:28,price:520,emoji:"🏋️",grad:"linear-gradient(135deg,#00b09b,#96c93d)",offer:"Flat 30% OFF",veg:false,tag:"",cats:["Fitness","Healthy","Lunch"],aliases:"protein gym fit"},
+  {id:20,name:"Party Platter Co.",cuisines:["Party","Multi-cuisine"],rating:4.4,time:45,price:900,emoji:"🎉",grad:"linear-gradient(135deg,#8E2DE2,#4A00E0)",offer:"20% OFF above ₹999",veg:false,tag:"",cats:["Party Packs","Meals & Combos","Dinner"],aliases:"party platter family pack"},
+  {id:21,name:"Fruit Bowl",cuisines:["Fruits","Juices"],rating:4.5,time:15,price:240,emoji:"🍎",grad:"linear-gradient(135deg,#a8e063,#56ab2f)",offer:"Free Honey Drizzle",veg:true,tag:"",cats:["Fruits","Healthy","Vegan","Breakfast"],aliases:"fruit apple banana"},
+  {id:22,name:"Kids' Corner",cuisines:["Kids","Fast Food"],rating:4.3,time:22,price:260,emoji:"🧒",grad:"linear-gradient(135deg,#ff9a9e,#fad0c4)",offer:"Free Toy with Meal",veg:false,tag:"",cats:["Kids' Meals","Brunch","Desserts"],aliases:"kids child small portion"},
+  {id:23,name:"Vegan Vibes",cuisines:["Vegan","Plant-based"],rating:4.4,time:30,price:420,emoji:"🌿",grad:"linear-gradient(135deg,#a8e063,#56ab2f)",offer:"15% OFF",veg:true,tag:"New",cats:["Vegan","Healthy","Lunch","Dinner"],aliases:"vegan plant based"},
+  {id:24,name:"Omelette Hub",cuisines:["Breakfast","Eggs"],rating:4.2,time:18,price:220,emoji:"🍳",grad:"linear-gradient(135deg,#fdc830,#f37335)",offer:"₹40 OFF",veg:false,tag:"",cats:["Breakfast","Brunch","Fitness"],aliases:"omelet omlete egg"},
+  {id:25,name:"Smoothie Stop",cuisines:["Beverages","Healthy"],rating:4.5,time:17,price:280,emoji:"🥤",grad:"linear-gradient(135deg,#fc5c7d,#6a82fb)",offer:"Buy 1 Get 1",veg:true,tag:"",cats:["Beverages","Healthy","Fruits","Fitness"],aliases:"smoothie shake milkshake"},
+  {id:26,name:"Chai Point",cuisines:["Tea","Snacks"],rating:4.6,time:14,price:180,emoji:"🍵",grad:"linear-gradient(135deg,#f7971e,#ffd200)",offer:"Chai at ₹10",veg:true,tag:"Bestseller",cats:["Tea & Coffee","Breakfast","Evening Snacks"],aliases:"chai tea cutting"}
+];
+var SEARCH_ALIASES = {
+  "idly":"idli","iddly":"idli","iddli":"idli","idlii":"idli",
+  "dosai":"dosa","dose":"dosa","dosha":"dosa",
+  "biriyani":"biryani","biryanii":"biryani","briyani":"biryani",
+  "burgar":"burger","burgur":"burger","hamburger":"burger",
+  "piza":"pizza","pizzas":"pizza","pizzza":"pizza",
+  "mamus":"momos","momus":"momos","momo":"momos",
+  "coffe":"coffee","cofee":"coffee","coffie":"coffee",
+  "juices":"juice","shakes":"shake","smoothies":"smoothie",
+  "cakes":"cake","pastries":"pastry","waffles":"waffle",
+  "dumplings":"momo","noodles":"noodle"
+};
+function editDistance(a,b){var m=a.length,n=b.length;if(Math.abs(m-n)>2)return 99;var dp=[];for(var i=0;i<=m;i++){dp[i]=[];for(var j=0;j<=n;j++)dp[i][j]=0;}for(var i=0;i<=m;i++)dp[i][0]=i;for(var j=0;j<=n;j++)dp[0][j]=j;for(var i=1;i<=m;i++)for(var j=1;j<=n;j++){dp[i][j]=a[i-1]===b[j-1]?dp[i-1][j-1]:1+Math.min(dp[i-1][j],dp[i][j-1],dp[i-1][j-1]);}return dp[m][n];}
+function normalizeQuery(q){return q.toLowerCase().trim().split(/\s+/).map(function(w){return SEARCH_ALIASES[w]||w;}).join(" ");}
+function fuzzyMatch(haystack,q){
+  if(!q)return true;haystack=haystack.toLowerCase();
+  if(haystack.indexOf(q)>=0)return true;
+  var tw=haystack.split(/[\s,•\/-]+/).filter(Boolean);
+  var qw=q.split(/\s+/).filter(Boolean);
+  return qw.every(function(x){return tw.some(function(y){
+    if(y.indexOf(x)>=0||x.indexOf(y)>=0)return true;
+    if(x.length>=3&&y.indexOf(x)===0)return true;
+    if(x.length>=3&&x.indexOf(y)===0)return true;
+    if(x.length>=4&&y.length>=4&&editDistance(y,x)<=1)return true;
+    return false;
+  });});
+}
+
+/* =========================================================
+   STATE
+   ========================================================= */
+var activeCategory="All",vegOnly=false,query="",sortBy="relevance";
+var cart={},orderHistory=[];
+
+/* =========================================================
+   AUTH STATE
+   ========================================================= */
+var LS_USERS2="crave_users";
+var LS_SESSION2="crave_session2";
+var LS_ADDRESSES="crave_addresses";
+var LS_PAYMENTS="crave_payments";
+var currentUser2=null;
+var signedIn=!!localStorage.getItem(LS_SESSION2);
+
+function getUsers2(){try{var u=JSON.parse(localStorage.getItem(LS_USERS2));return Array.isArray(u)?u:[];}catch(e){return [];}}
+function saveUsers2(list){localStorage.setItem(LS_USERS2,JSON.stringify(list));}
+
+function setSignedIn(user){
+  if(user){
+    currentUser2=user;
+    signedIn=true;
+    localStorage.setItem(LS_SESSION2,JSON.stringify({userId:user.id,loginAt:Date.now()}));
+  } else {
+    currentUser2=null;
+    signedIn=false;
+    localStorage.removeItem(LS_SESSION2);
+  }
+  updateSignInUI();
+}
+
+function updateSignInUI(){
+  var link=$("signInLink");
+  var prof=$("profileLink");
+  if(!link) return;
+  if(signedIn && currentUser2){
+    link.textContent="Sign Out";
+    if(prof){prof.style.display="inline-block";prof.textContent="👤 "+currentUser2.name.split(" ")[0];}
+  } else if(signedIn){
+    link.textContent="Sign Out";
+    if(prof) prof.style.display="none";
+  } else {
+    link.textContent="Sign In";
+    if(prof) prof.style.display="none";
+  }
+}
+
+function tryAutoLogin2(){
+  var s=JSON.parse(localStorage.getItem(LS_SESSION2)||"null");
+  if(!s||!s.userId) return false;
+  var users=getUsers2();
+  for(var i=0;i<users.length;i++){
+    if(users[i].id===s.userId){currentUser2=users[i];signedIn=true;updateSignInUI();return true;}
+  }
+  localStorage.removeItem(LS_SESSION2);
+  return false;
+}
+
+function requireAuth(){
+  if(!signedIn){
+    openSignInModal();
+    return false;
+  }
+  return true;
+}
+/* =========================================================
+   ADDRESSES & PAYMENTS
+   ========================================================= */
+function getAddresses(){try{var a=JSON.parse(localStorage.getItem(LS_ADDRESSES));return a&&typeof a==='object'?a:{};}catch(e){return {};}}
+function saveAddresses(a){localStorage.setItem(LS_ADDRESSES,JSON.stringify(a));}
+function getUserAddresses(){var uid=currentUser2?currentUser2.id:"";var all=getAddresses();return all[uid]||[];}
+function saveUserAddresses(list){var uid=currentUser2?currentUser2.id:"";var all=getAddresses();all[uid]=list;saveAddresses(all);}
+
+function getPayments(){try{var p=JSON.parse(localStorage.getItem(LS_PAYMENTS));return p&&typeof p==='object'?p:{};}catch(e){return {};}}
+function savePayments(p){localStorage.setItem(LS_PAYMENTS,JSON.stringify(p));}
+function getUserPayments(){var uid=currentUser2?currentUser2.id:"";var all=getPayments();return all[uid]||[];}
+function saveUserPayments(list){var uid=currentUser2?currentUser2.id:"";var all=getPayments();all[uid]=list;savePayments(all);}
+
+var DELIVERY_FEE=40,PLATFORM_FEE=6,GST_RATE=0.05,FREE_DELIVERY_ABOVE=500,HISTORY_LIMIT=20;
+var itemPrice=function(r){return Math.round(r.price/2/10)*10;};
+var inr=function(n){return "₹"+n.toLocaleString("en-IN");};
+
+/* =========================================================
+   DOM
+   ========================================================= */
+function $(id){return document.getElementById(id);}
+var grid=$("grid"),catsGrid=$("catsGrid"),searchInput=$("search");
+var cartDrawer=$("drawer"),historyDrawer=$("historyDrawer");
+var overlayEl=$("overlay"),cartBody=$("cartBody");
+var cartFoot=$("cartFoot"),cartCount=$("cartCount"),drawerSub=$("drawerSub");
+var resultCount=$("resultCount"),sectionTitle=$("sectionTitle");
+var activePill=$("activePill");
+var historyBody=$("historyBody"),historySub=$("historySub");
+var clearHistoryBtn=$("clearHistory");
+var modalWrap=$("modalWrap"),modalTitle=$("modalTitle"),modalSubtitle=$("modalSubtitle"),modalBody=$("modalBody");
+var pageView=$("pageView"),homeView=$("homeView");
+
+function toast(msg,icon){
+  icon=icon||"✅";
+  var el=document.createElement("div");
+  el.className="toast";
+  el.innerHTML="<span>"+icon+"</span><span>"+msg+"</span>";
+  $("toasts").appendChild(el);
+  setTimeout(function(){el.classList.add("out");setTimeout(function(){el.remove();},250);},1900);
+}
+
+/* =========================================================
+   LOCALSTORAGE
+   ========================================================= */
+function loadHistory(){
+  try{var raw=localStorage.getItem("crave_history");orderHistory=raw?JSON.parse(raw):[];if(!Array.isArray(orderHistory))orderHistory=[];}catch(e){orderHistory=[];}
+}
+function saveHistory(){
+  try{localStorage.setItem("crave_history",JSON.stringify(orderHistory.slice(0,HISTORY_LIMIT)));}catch(e){}
+}
+
+/* =========================================================
+   DRAWERS + MODAL
+   ========================================================= */
+function hideDrawers(){
+  cartDrawer.classList.remove("open");
+  historyDrawer.classList.remove("open");
+  overlayEl.classList.remove("open");
+  document.body.style.overflow="";
+}
+function showDrawer(el){
+  hideDrawers();
+  el.classList.add("open");
+  overlayEl.classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function openModal(title,subtitle,bodyHTML){
+  modalTitle.textContent=title;
+  modalSubtitle.textContent=subtitle;
+  modalBody.innerHTML=bodyHTML;
+  modalWrap.classList.add("open");
+  document.body.style.overflow="hidden";
+}
+function closeModal(){
+  stopCountdown();
+  stopAutoRefresh();
+  modalWrap.classList.remove("open");
+  document.body.style.overflow="";
+}
+$("modalClose").addEventListener("click",closeModal);
+$("modalBackdrop").addEventListener("click",closeModal);
+document.addEventListener("keydown",function(e){
+  if(e.key==="Escape"){closeModal();hideDrawers();}
+});
+
+/* =========================================================
+   PAGES  (footer destinations)
+   ========================================================= */
+var PAGES = {
+
+  about: {
+    emoji:"🏢", title:"About Us",
+    subtitle:"How Crave brings your favourite food to your door",
+    html:
+      '<div class="page-block">' +
+        '<h2>Our story</h2>' +
+        '<p>Crave started in 2020 in a tiny Bengaluru apartment with one idea: good food should reach your door fast, hot and hassle-free. What began as a weekend project between four friends is now one of India\'s fastest-growing food delivery platforms.</p>' +
+        '<p>We partner with neighbourhood favourites and premium kitchens alike, so whether you\'re craving a masala dosa at 8 AM or a midnight biryani, Crave has you covered.</p>' +
+      '</div>' +
+      '<div class="stat-grid">' +
+        '<div class="stat-box"><b>2,400+</b><span>Restaurant partners</span></div>' +
+        '<div class="stat-box"><b>30 min</b><span>Average delivery</span></div>' +
+        '<div class="stat-box"><b>4.6★</b><span>Average rating</span></div>' +
+        '<div class="stat-box"><b>18 cities</b><span>Across India</span></div>' +
+      '</div>' +
+      '<div class="page-block"><h2>What we stand for</h2>' +
+        '<div class="value-grid">' +
+          '<div class="value-card"><div class="value-emoji">⚡</div><div class="value-title">Speed</div><div class="value-desc">Every minute counts. We optimize every step from kitchen to doorstep.</div></div>' +
+          '<div class="value-card"><div class="value-emoji">🍲</div><div class="value-title">Quality</div><div class="value-desc">We only partner with restaurants that meet our hygiene and taste standards.</div></div>' +
+          '<div class="value-card"><div class="value-emoji">🤝</div><div class="value-title">Fairness</div><div class="value-desc">Fair pay for delivery partners. Fair commissions for restaurants.</div></div>' +
+          '<div class="value-card"><div class="value-emoji">🌱</div><div class="value-title">Sustainability</div><div class="value-desc">Compostable packaging and EV-first delivery fleet by 2026.</div></div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="page-block"><h2>Come say hello</h2>' +
+        '<p>We\'d love to hear from you. Whether you\'re a customer, restaurant owner, or aspiring delivery partner — reach out and we\'ll get back within 24 hours.</p>' +
+        '<a class="page-cta" data-page="contact">Contact us →</a>' +
+      '</div>'
+  },
+
+  careers: {
+    emoji:"💼", title:"Careers",
+    subtitle:"Join a team that's redefining food delivery",
+    html:
+      '<div class="page-block"><h2>Why Crave?</h2>' +
+        '<p>We\'re a small, fast-moving team that ships every week. You\'ll work on problems that affect millions of daily orders — routing, real-time tracking, payments, personalization — with the autonomy to make real decisions.</p>' +
+        '<ul>' +
+          '<li>Competitive salary + ESOPs</li>' +
+          '<li>Health insurance for you and your family</li>' +
+          '<li>Flexible hours and remote-friendly roles</li>' +
+          '<li>Learning budget of ₹50,000 per year</li>' +
+          '<li>Free Crave credits every month (obviously)</li>' +
+        '</ul>' +
+      '</div>' +
+      '<div class="page-block"><h2>Open positions</h2>' +
+        '<div class="job-card"><span class="job-emoji">💻</span><div class="job-info"><div class="job-title">Senior Frontend Engineer</div><div class="job-meta">Engineering • Bengaluru • Full-time</div></div><button class="job-apply">Apply</button></div>' +
+        '<div class="job-card"><span class="job-emoji">⚙️</span><div class="job-info"><div class="job-title">Backend Engineer (Node.js)</div><div class="job-meta">Engineering • Bengaluru / Remote • Full-time</div></div><button class="job-apply">Apply</button></div>' +
+        '<div class="job-card"><span class="job-emoji">📱</span><div class="job-info"><div class="job-title">Android Developer</div><div class="job-meta">Mobile • Bengaluru • Full-time</div></div><button class="job-apply">Apply</button></div>' +
+        '<div class="job-card"><span class="job-emoji">🎨</span><div class="job-info"><div class="job-title">Product Designer</div><div class="job-meta">Design • Bengaluru • Full-time</div></div><button class="job-apply">Apply</button></div>' +
+        '<div class="job-card"><span class="job-emoji">📊</span><div class="job-info"><div class="job-title">Data Analyst</div><div class="job-meta">Analytics • Bengaluru • Full-time</div></div><button class="job-apply">Apply</button></div>' +
+        '<div class="job-card"><span class="job-emoji">📣</span><div class="job-info"><div class="job-title">Marketing Manager</div><div class="job-meta">Growth • Mumbai • Full-time</div></div><button class="job-apply">Apply</button></div>' +
+        '<div class="job-card"><span class="job-emoji">🛵</span><div class="job-info"><div class="job-title">City Operations Lead</div><div class="job-meta">Operations • Hyderabad • Full-time</div></div><button class="job-apply">Apply</button></div>' +
+        '<div class="job-card"><span class="job-emoji">🎧</span><div class="job-info"><div class="job-title">Customer Support Specialist</div><div class="job-meta">Support • Bengaluru • Full-time</div></div><button class="job-apply">Apply</button></div>' +
+      '</div>' +
+      '<div class="page-block"><h2>Don\'t see your role?</h2>' +
+        '<p>We\'re always looking for talented people. Send us your resume and tell us what you\'d love to work on.</p>' +
+        '<a class="page-cta" data-page="contact">Get in touch →</a>' +
+      '</div>',
+    wire: function(){
+      pageView.querySelectorAll(".job-apply").forEach(function(btn){
+        btn.addEventListener("click",function(){
+          var title=btn.closest(".job-card").querySelector(".job-title").textContent;
+          toast("Application started for "+title,"📝");
+        });
+      });
+    }
+  },
+
+  team: {
+    emoji:"👥", title:"Our Team",
+    subtitle:"The people building Crave, one order at a time",
+    html:
+      '<div class="page-block"><h2>The people behind Crave</h2>' +
+        '<p>We\'re a team of 240+ across engineering, design, operations and support — all obsessed with one thing: making food delivery delightful.</p>' +
+      '</div>' +
+      '<div class="team-grid">' +
+        '<div class="team-card"><div class="team-avatar">👨‍💼</div><div class="team-name">Aarav Sharma</div><div class="team-role">Co-founder & CEO</div><div class="team-bio">Ex-Flipkart. IIT Delhi. Believes every meal deserves to arrive hot.</div></div>' +
+        '<div class="team-card"><div class="team-avatar">👩‍💻</div><div class="team-name">Priya Nair</div><div class="team-role">Co-founder & CTO</div><div class="team-bio">Ex-Swiggy. IIT Bombay. Built our real-time routing engine from scratch.</div></div>' +
+        '<div class="team-card"><div class="team-avatar">👨‍🍳</div><div class="team-name">Rohan Mehta</div><div class="team-role">Head of Restaurants</div><div class="team-bio">15 years in F&B. Knows every kitchen in Bengaluru by name.</div></div>' +
+        '<div class="team-card"><div class="team-avatar">👩‍🎨</div><div class="team-name">Ananya Iyer</div><div class="team-role">Head of Design</div><div class="team-bio">Ex-Zomato. Obsessed with making food ordering feel effortless.</div></div>' +
+        '<div class="team-card"><div class="team-avatar">👨‍📈</div><div class="team-name">Kabir Singh</div><div class="team-role">Head of Growth</div><div class="team-bio">Scaled three startups from zero to one. Loves a good chai.</div></div>' +
+        '<div class="team-card"><div class="team-avatar">👩‍🔬</div><div class="team-name">Sneha Reddy</div><div class="team-role">Head of Data</div><div class="team-bio">Ex-Amazon. Turns millions of orders into insights that matter.</div></div>' +
+        '<div class="team-card"><div class="team-avatar">👨‍💼</div><div class="team-name">Vikram Joshi</div><div class="team-role">Head of Operations</div><div class="team-bio">Runs 18 city teams like clockwork. Ex-Delhivery.</div></div>' +
+        '<div class="team-card"><div class="team-avatar">👩‍⚖️</div><div class="team-name">Meera Kapoor</div><div class="team-role">General Counsel</div><div class="team-bio">Ensures we play fair with customers, partners and restaurants.</div></div>' +
+      '</div>' +
+      '<div class="page-block" style="margin-top:32px"><h2>Want to join us?</h2>' +
+        '<p>We\'re hiring across engineering, design, and operations.</p>' +
+        '<a class="page-cta" data-page="careers">See open roles →</a>' +
+      '</div>'
+  },
+
+  blog: {
+    emoji:"📰", title:"Blog",
+    subtitle:"Stories, recipes and updates from the Crave kitchen",
+    html:
+      '<div class="page-block"><h2>Latest from the Crave kitchen</h2><p>Stories, recipes, and behind-the-scenes updates from our team and partners.</p></div>' +
+      '<div class="blog-grid">' +
+        '<article class="blog-card"><div class="blog-thumb" style="background:linear-gradient(135deg,#f7b733,#fc4a1a)">🍛</div><div class="blog-body"><span class="blog-tag">Food Culture</span><h3>The secret behind a perfect Hyderabadi biryani</h3><p>Dum, saffron, and patience — we spoke to three legendary biryani chefs.</p><div class="blog-meta">6 min read • 12 Sep 2025</div></div></article>' +
+        '<article class="blog-card"><div class="blog-thumb" style="background:linear-gradient(135deg,#00b09b,#96c93d)">🛵</div><div class="blog-body"><span class="blog-tag">Behind the Scenes</span><h3>A day in the life of a Crave delivery partner</h3><p>From 7 AM coffee runs to midnight biryani drops.</p><div class="blog-meta">8 min read • 05 Sep 2025</div></div></article>' +
+        '<article class="blog-card"><div class="blog-thumb" style="background:linear-gradient(135deg,#a8e063,#56ab2f)">🥗</div><div class="blog-body"><span class="blog-tag">Health</span><h3>Eating clean while ordering in — it\'s possible</h3><p>Nutritionists share their top picks from our Healthy category.</p><div class="blog-meta">5 min read • 28 Aug 2025</div></div></article>' +
+        '<article class="blog-card"><div class="blog-thumb" style="background:linear-gradient(135deg,#8E2DE2,#4A00E0)">🎉</div><div class="blog-body"><span class="blog-tag">Offers</span><h3>How to feed 20 people for under ₹2,000</h3><p>Our best party-pack combos, tested and ranked.</p><div class="blog-meta">4 min read • 20 Aug 2025</div></div></article>' +
+        '<article class="blog-card"><div class="blog-thumb" style="background:linear-gradient(135deg,#8E2DE2,#4A00E0)">☕</div><div class="blog-body"><span class="blog-tag">Coffee</span><h3>Bengaluru\'s third-wave coffee scene, ranked</h3><p>We ordered from 15 cafés in one week.</p><div class="blog-meta">7 min read • 14 Aug 2025</div></div></article>' +
+        '<article class="blog-card"><div class="blog-thumb" style="background:linear-gradient(135deg,#c31432,#240b36)">🌙</div><div class="blog-body"><span class="blog-tag">Late Night</span><h3>The midnight menu: what India orders after 11 PM</h3><p>Biryani, momos, and surprisingly — a lot of ice cream.</p><div class="blog-meta">5 min read • 02 Aug 2025</div></div></article>' +
+      '</div>'
+  },
+
+  terms: {
+    emoji:"📄", title:"Terms & Conditions",
+    subtitle:"The rules that govern your use of Crave",
+    html:
+      '<div class="legal-updated">Last updated: 15 September 2025</div>' +
+      '<div class="legal-section"><h3>1. Acceptance of terms</h3><p>By accessing or using the Crave platform, you agree to be bound by these Terms &amp; Conditions. If you do not agree, please do not use our services.</p></div>' +
+      '<div class="legal-section"><h3>2. Use of the platform</h3><p>You agree to use Crave only for lawful purposes. You must be at least 18 years old to place an order. You are responsible for maintaining the confidentiality of your account.</p></div>' +
+      '<div class="legal-section"><h3>3. Orders and payment</h3><p>All orders are subject to acceptance by the restaurant. Prices displayed include applicable taxes unless stated otherwise.</p><ul><li>Orders cannot be modified after the restaurant begins preparation.</li><li>Crave is not responsible for order accuracy once prepared.</li><li>Delivery times are estimates and may vary.</li></ul></div>' +
+      '<div class="legal-section"><h3>4. Cancellation</h3><p>You may cancel your order free of charge within 60 seconds of placing it, or until the restaurant accepts it.</p></div>' +
+      '<div class="legal-section"><h3>5. Restaurant partners</h3><p>Restaurants listed on Crave are independent third parties. Any quality, hygiene or food-safety concerns should be raised with us and will be investigated promptly.</p></div>' +
+      '<div class="legal-section"><h3>6. Limitation of liability</h3><p>To the maximum extent permitted by law, Crave\'s total liability for any claim shall not exceed the amount you paid for the order in question.</p></div>' +
+      '<div class="legal-section"><h3>7. Changes to terms</h3><p>We may update these terms from time to time. Continued use of the platform after changes constitutes acceptance of the new terms.</p></div>' +
+      '<div class="legal-section"><h3>8. Contact</h3><p>Questions about these terms? Email us at <strong>legal@crave.com</strong>.</p></div>'
+  },
+
+  privacy: {
+    emoji:"🔒", title:"Privacy Policy",
+    subtitle:"How we collect, use and protect your data",
+    html:
+      '<div class="legal-updated">Last updated: 15 September 2025</div>' +
+      '<div class="legal-section"><h3>1. Information we collect</h3><p>We collect information you provide directly (name, phone, email, delivery address, payment details) and information generated when you use our platform (device data, location, order history).</p></div>' +
+      '<div class="legal-section"><h3>2. How we use your data</h3><ul><li>To process and deliver your orders</li><li>To personalize restaurant recommendations</li><li>To send order updates and important service notifications</li><li>To improve our platform and prevent fraud</li><li>To comply with legal obligations</li></ul></div>' +
+      '<div class="legal-section"><h3>3. Sharing your data</h3><p>We share limited data with:</p><ul><li><strong>Restaurants</strong> — only what\'s needed to prepare and deliver your order</li><li><strong>Delivery partners</strong> — your name, phone and delivery address</li><li><strong>Payment processors</strong> — to complete transactions securely</li><li><strong>Law enforcement</strong> — when legally required</li></ul><p>We never sell your personal data.</p></div>' +
+      '<div class="legal-section"><h3>4. Data retention</h3><p>Order history is retained for 3 years for accounting and legal purposes. Account data is purged within 30 days of account deletion.</p></div>' +
+      '<div class="legal-section"><h3>5. Your rights</h3><p>You have the right to access, correct, or delete your personal data. Email <strong>privacy@crave.com</strong> to exercise these rights.</p></div>' +
+      '<div class="legal-section"><h3>6. Security</h3><p>We use industry-standard encryption (TLS 1.3), tokenized payments, and strict access controls.</p></div>' +
+      '<div class="legal-section"><h3>7. Children\'s privacy</h3><p>Crave is not intended for users under 18. We do not knowingly collect data from minors.</p></div>'
+  },
+
+  refund: {
+    emoji:"💸", title:"Refund Policy",
+    subtitle:"When and how you get your money back",
+    html:
+      '<div class="legal-updated">Last updated: 15 September 2025</div>' +
+      '<div class="legal-section"><h3>1. When you\'re eligible for a refund</h3><ul><li>Order was cancelled by the restaurant</li><li>Order never arrived</li><li>Items were missing or significantly different from what was ordered</li><li>Food was spoiled, cold, or unsafe to eat</li><li>Duplicate charge or payment failure</li></ul></div>' +
+      '<div class="legal-section"><h3>2. When refunds are not applicable</h3><ul><li>Change of mind after the restaurant has started preparing</li><li>Incorrect delivery address provided by you</li><li>Food consumed before raising a complaint</li><li>Complaints raised after 24 hours of delivery</li></ul></div>' +
+      '<div class="legal-section"><h3>3. How to request a refund</h3><p>Open the order from <strong>My Orders</strong>, tap <strong>Help</strong>, and select <strong>Restaurant &amp; menu issues</strong>. Our team reviews every complaint within 24 hours.</p></div>' +
+      '<div class="legal-section"><h3>4. Refund timelines</h3><ul><li><strong>UPI &amp; Wallets</strong> — 1 to 2 business days</li><li><strong>Credit / Debit Cards</strong> — 5 to 7 business days</li><li><strong>Net Banking</strong> — 3 to 5 business days</li><li><strong>Crave Wallet credits</strong> — Instant</li></ul></div>' +
+      '<div class="legal-section"><h3>5. Partial refunds</h3><p>For missing items, we refund the exact price of the missing item. For quality complaints, we may offer a partial refund, full refund, or Crave credit.</p></div>' +
+      '<div class="legal-section"><h3>6. Escalation</h3><p>If you\'re not satisfied with the resolution, escalate to <strong>grievance@crave.com</strong>. Our Grievance Officer responds within 15 working days.</p></div>'
+  },
+
+  cookies: {
+    emoji:"🍪", title:"Cookie Policy",
+    subtitle:"How we use cookies on Crave",
+    html:
+      '<div class="legal-updated">Last updated: 15 September 2025</div>' +
+      '<div class="legal-section"><h3>1. What are cookies?</h3><p>Cookies are small text files stored on your device by your browser. They help us remember your preferences, keep you signed in, and understand how you use Crave.</p></div>' +
+      '<div class="legal-section"><h3>2. Types of cookies we use</h3><ul><li><strong>Essential</strong> — Required for the site to function (login, cart, checkout)</li><li><strong>Performance</strong> — Help us understand how visitors use Crave</li><li><strong>Functionality</strong> — Remember your preferences (language, location, favourites)</li><li><strong>Marketing</strong> — Used to show relevant offers</li></ul></div>' +
+      '<div class="legal-section"><h3>3. Third-party cookies</h3><p>We work with trusted partners like Google Analytics, Firebase, and payment providers who may set their own cookies.</p></div>' +
+      '<div class="legal-section"><h3>4. Managing cookies</h3><p>You can control or delete cookies via your browser settings. Note that disabling essential cookies will break core features like login and checkout.</p></div>' +
+      '<div class="legal-section"><h3>5. Do Not Track</h3><p>Some browsers support a "Do Not Track" signal. We currently do not respond to these signals, but we never track you across unrelated websites.</p></div>' +
+      '<div class="legal-section"><h3>6. Updates</h3><p>We may update this cookie policy as our services evolve. Material changes will be notified via a banner on the site.</p></div>'
+  },
+
+  help: {
+    emoji:"🎧", title:"Help Centre",
+    subtitle:"Find answers and get support",
+    html:
+      '<div class="page-block"><h2>Browse help topics</h2><p>Pick a topic below to get instant help.</p></div>' +
+      '<div class="help-page-grid">' +
+        '<div class="help-cat" data-help-topic="track"><span class="hc-emoji">📦</span><div><div class="hc-title">Track my order</div><div class="hc-sub">See where your food is right now</div></div><span class="hc-arrow">›</span></div>' +
+        '<div class="help-cat" data-help-topic="payments"><span class="hc-emoji">💳</span><div><div class="hc-title">Payment & refunds</div><div class="hc-sub">Failed payments, refund status, wallets</div></div><span class="hc-arrow">›</span></div>' +
+        '<div class="help-cat" data-help-topic="cancel"><span class="hc-emoji">🚫</span><div><div class="hc-title">Cancel an order</div><div class="hc-sub">Cancel before it\'s picked up</div></div><span class="hc-arrow">›</span></div>' +
+        '<div class="help-cat" data-help-topic="restaurant"><span class="hc-emoji">🏪</span><div><div class="hc-title">Restaurant & menu issues</div><div class="hc-sub">Wrong item, missing items, quality concerns</div></div><span class="hc-arrow">›</span></div>' +
+        '<div class="help-cat" data-help-topic="coupons"><span class="hc-emoji">🎟️</span><div><div class="hc-title">Coupons & offers</div><div class="hc-sub">How to apply codes and offer terms</div></div><span class="hc-arrow">›</span></div>' +
+        '<div class="help-cat" data-help-topic="account"><span class="hc-emoji">👤</span><div><div class="hc-title">Account & profile</div><div class="hc-sub">Addresses, passwords, phone number</div></div><span class="hc-arrow">›</span></div>' +
+        '<div class="help-cat" data-help-topic="chat"><span class="hc-emoji">💬</span><div><div class="hc-title">Chat with support</div><div class="hc-sub">24×7 live chat with our team</div></div><span class="hc-arrow">›</span></div>' +
+        '<div class="help-cat" data-help-topic="call"><span class="hc-emoji">📞</span><div><div class="hc-title">Call us</div><div class="hc-sub">1800-123-4567 • Toll free</div></div><span class="hc-arrow">›</span></div>' +
+      '</div>',
+    wire: function(){
+      pageView.querySelectorAll("[data-help-topic]").forEach(function(el){
+        el.addEventListener("click",function(){ showHelpTopic(el.dataset.helpTopic); });
+      });
+    }
+  },
+
+  partner: {
+    emoji:"🤝", title:"Partner With Us",
+    subtitle:"Bring your restaurant to millions of hungry customers",
+    html:
+      '<div class="page-block"><h2>Grow your restaurant with Crave</h2><p>Join 2,400+ restaurants that serve millions of orders through Crave every month.</p></div>' +
+      '<div class="benefit-grid">' +
+        '<div class="benefit-card"><div class="benefit-emoji">📈</div><div class="benefit-title">Reach more customers</div><div class="benefit-desc">Get discovered by lakhs of hungry customers in your neighbourhood.</div></div>' +
+        '<div class="benefit-card"><div class="benefit-emoji">💰</div><div class="benefit-title">Weekly payouts</div><div class="benefit-desc">Money in your account every Monday. No delays, no surprises.</div></div>' +
+        '<div class="benefit-card"><div class="benefit-emoji">📊</div><div class="benefit-title">Restaurant dashboard</div><div class="benefit-desc">Track orders, menu performance, and ratings in real time.</div></div>' +
+        '<div class="benefit-card"><div class="benefit-emoji">🎯</div><div class="benefit-title">Marketing boost</div><div class="benefit-desc">Featured placements and offers help you stand out.</div></div>' +
+        '<div class="benefit-card"><div class="benefit-emoji">🛵</div><div class="benefit-title">Delivery fleet</div><div class="benefit-desc">Use our delivery partners — no need to hire your own riders.</div></div>' +
+        '<div class="benefit-card"><div class="benefit-emoji">🤝</div><div class="benefit-title">Dedicated support</div><div class="benefit-desc">A relationship manager for every partner.</div></div>' +
+      '</div>' +
+      '<div class="page-block"><h2>Sign up your restaurant</h2>' +
+        '<div class="page-form">' +
+          '<div class="help-field"><label>Restaurant name</label><input type="text" id="partnerName" placeholder="e.g. Spice Garden"></div>' +
+          '<div class="form-row">' +
+            '<div class="help-field"><label>Owner name</label><input type="text" id="partnerOwner" placeholder="Full name"></div>' +
+            '<div class="help-field"><label>Phone number</label><input type="tel" id="partnerPhone" placeholder="+91 98765 43210"></div>' +
+          '</div>' +
+          '<div class="help-field"><label>City</label><input type="text" id="partnerCity" placeholder="e.g. Bengaluru"></div>' +
+          '<div class="help-field"><label>Cuisine type</label><input type="text" id="partnerCuisine" placeholder="e.g. North Indian, Chinese"></div>' +
+          '<button class="help-submit" id="partnerSubmit">Submit application</button>' +
+        '</div>' +
+      '</div>',
+    wire: function(){
+      var btn=$("partnerSubmit");
+      if(btn) btn.addEventListener("click",function(){
+        var name=$("partnerName").value.trim();
+        var owner=$("partnerOwner").value.trim();
+        var phone=$("partnerPhone").value.trim();
+        if(!name){toast("Please enter your restaurant name","⚠️");return;}
+        if(!owner){toast("Please enter the owner's name","⚠️");return;}
+        if(phone.replace(/\D/g,"").length<10){toast("Enter a valid phone number","⚠️");return;}
+        $("pageContent").innerHTML='<div class="help-success"><div class="big">🎉</div><h4>Application received!</h4><p>Thanks, '+owner+'. Our partnerships team will call you at '+phone+' within 24 hours for <strong>'+name+'</strong>.</p></div>';
+      });
+    }
+  },
+
+  ride: {
+    emoji:"🛵", title:"Ride With Us",
+    subtitle:"Earn on your schedule as a Crave delivery partner",
+    html:
+      '<div class="page-block"><h2>Earn on your own schedule</h2><p>Become a Crave delivery partner and earn up to ₹35,000 a month.</p></div>' +
+      '<div class="benefit-grid">' +
+        '<div class="benefit-card"><div class="benefit-emoji">💵</div><div class="benefit-title">Daily payouts</div><div class="benefit-desc">Withdraw your earnings every single day.</div></div>' +
+        '<div class="benefit-card"><div class="benefit-emoji">⏰</div><div class="benefit-title">Flexible hours</div><div class="benefit-desc">Work when you want. You decide.</div></div>' +
+        '<div class="benefit-card"><div class="benefit-emoji">🎁</div><div class="benefit-title">Weekly incentives</div><div class="benefit-desc">Complete more orders, earn bonus cash every week.</div></div>' +
+        '<div class="benefit-card"><div class="benefit-emoji">🛡️</div><div class="benefit-title">Insurance cover</div><div class="benefit-desc">Free accident and medical insurance for all active partners.</div></div>' +
+        '<div class="benefit-card"><div class="benefit-emoji">⛽</div><div class="benefit-title">Fuel bonus</div><div class="benefit-desc">Monthly fuel top-up based on your distance.</div></div>' +
+        '<div class="benefit-card"><div class="benefit-emoji">📱</div><div class="benefit-title">Simple app</div><div class="benefit-desc">Orders, navigation, and earnings in one app.</div></div>' +
+      '</div>' +
+      '<div class="page-block"><h2>Apply to ride with Crave</h2>' +
+        '<div class="page-form">' +
+          '<div class="help-field"><label>Full name</label><input type="text" id="rideName" placeholder="Your full name"></div>' +
+          '<div class="form-row">' +
+            '<div class="help-field"><label>Phone number</label><input type="tel" id="ridePhone" placeholder="+91 98765 43210"></div>' +
+            '<div class="help-field"><label>City</label><input type="text" id="rideCity" placeholder="e.g. Bengaluru"></div>' +
+          '</div>' +
+          '<div class="help-field"><label>Vehicle type</label><select id="rideVehicle"><option value="">Select vehicle</option><option>Bike / Scooter</option><option>Bicycle</option><option>Electric scooter</option><option>Car</option></select></div>' +
+          '<button class="help-submit" id="rideSubmit">Submit application</button>' +
+        '</div>' +
+      '</div>',
+    wire: function(){
+      var btn=$("rideSubmit");
+      if(btn) btn.addEventListener("click",function(){
+        var name=$("rideName").value.trim();
+        var phone=$("ridePhone").value.trim();
+        var vehicle=$("rideVehicle").value;
+        if(!name){toast("Please enter your name","⚠️");return;}
+        if(phone.replace(/\D/g,"").length<10){toast("Enter a valid phone number","⚠️");return;}
+        if(!vehicle){toast("Please select your vehicle type","⚠️");return;}
+        $("pageContent").innerHTML='<div class="help-success"><div class="big">🛵</div><h4>Welcome aboard, '+name+'!</h4><p>We\'ve received your application to ride with a <strong>'+vehicle+'</strong>. We\'ll call you at '+phone+' within 48 hours.</p></div>';
+      });
+    }
+  },
+
+  contact: {
+    emoji:"📞", title:"Contact Us",
+    subtitle:"We're here 24×7 — reach out anytime",
+    html:
+      '<div class="page-block"><h2>Get in touch</h2><p>We\'re here 24×7 for customers, restaurants and delivery partners.</p></div>' +
+      '<div class="contact-row" data-call="1800-123-4567"><span class="contact-emoji">☎️</span><div class="contact-text"><div class="contact-label">Toll free — Customer care</div><div class="contact-value">1800-123-4567</div></div><span class="contact-action">Call</span></div>' +
+      '<div class="contact-row" data-call="1800-765-4321"><span class="contact-emoji">📱</span><div class="contact-text"><div class="contact-label">Restaurant / Partner support</div><div class="contact-value">1800-765-4321</div></div><span class="contact-action">Call</span></div>' +
+      '<div class="contact-row" data-copy-email="support@crave.com"><span class="contact-emoji">✉️</span><div class="contact-text"><div class="contact-label">Email — Support</div><div class="contact-value">support@crave.com</div></div><span class="contact-action">Copy</span></div>' +
+      '<div class="contact-row" data-copy-email="partners@crave.com"><span class="contact-emoji">🤝</span><div class="contact-text"><div class="contact-label">Email — Partnerships</div><div class="contact-value">partners@crave.com</div></div><span class="contact-action">Copy</span></div>' +
+      '<div class="contact-row" data-copy-email="grievance@crave.com"><span class="contact-emoji">⚖️</span><div class="contact-text"><div class="contact-label">Email — Grievance Officer</div><div class="contact-value">grievance@crave.com</div></div><span class="contact-action">Copy</span></div>' +
+      '<div class="help-card" style="margin-top:20px"><div class="help-card-title">Head office</div><div class="help-card-text">Crave Technologies Pvt. Ltd.<br>3rd Floor, Tower B, Ecoworld<br>Bellandur, Bengaluru — 560103<br>Karnataka, India</div></div>' +
+      '<div class="help-card"><div class="help-card-title">Business hours</div><div class="help-card-text">Customer support: <strong>24 × 7 × 365</strong><br>Partnership enquiries: Mon–Fri, 10 AM – 7 PM IST<br>Grievance officer: Mon–Fri, 10 AM – 6 PM IST</div></div>',
+    wire: function(){
+      pageView.querySelectorAll("[data-call]").forEach(function(row){
+        row.addEventListener("click",function(){toast("Dialling "+row.dataset.call+"…","📞");});
+      });
+      pageView.querySelectorAll("[data-copy-email]").forEach(function(row){
+        row.addEventListener("click",function(){
+          var email=row.dataset.copyEmail;
+          if(navigator.clipboard) navigator.clipboard.writeText(email);
+          toast('Email "'+email+'" copied',"📋");
+        });
+      });
+    }
+  }
+};
+
+/* =========================================================
+   PAGE NAVIGATION
+   ========================================================= */
+function showPage(key){
+  var page = PAGES[key];
+  if(!page){ toast("Page not found","⚠️"); return; }
+
+  // Hide home, show page
+  homeView.style.display = "none";
+  pageView.style.display = "block";
+  pageView.classList.add("active");
+
+  pageView.innerHTML =
+    '<button class="page-back" id="pageBackBtn">← Back to home</button>' +
+    '<div class="page-hero">' +
+      '<div class="page-hero-emoji">' + page.emoji + '</div>' +
+      '<h1>' + page.title + '</h1>' +
+      '<p>' + page.subtitle + '</p>' +
+    '</div>' +
+    '<div class="page-content" id="pageContent">' + page.html + '</div>';
+
+  // Wire back button
+  $("pageBackBtn").addEventListener("click", showHome);
+
+  // Attach page-specific wiring
+  if(page.wire) page.wire();
+
+  // Attach navigation to any in-page CTAs
+  pageView.querySelectorAll("[data-page]").forEach(function(el){
+    el.addEventListener("click", function(){
+      showPage(el.dataset.page);
+    });
+  });
+
+  window.scrollTo(0, 0);
+}
+
+function showHome(){
+  pageView.style.display = "none";
+  pageView.classList.remove("active");
+  pageView.innerHTML = "";
+  homeView.style.display = "block";
+  window.scrollTo(0, 0);
+}
+
+// Attach click handlers to all [data-page] elements (footer links + nav)
+document.querySelectorAll("[data-page]").forEach(function(el){
+  el.addEventListener("click", function(e){
+    e.preventDefault();
+    showPage(el.dataset.page);
+  });
+});
+
+// Logo returns home
+$("logoHome").addEventListener("click", showHome);
+
+/* =========================================================
+   OFFERS MODAL
+   ========================================================= */
+var OFFERS = [
+  {emoji:"🎁",title:"50% OFF up to ₹100",desc:"On your first order above ₹199.",code:"WELCOME50",why:"Restaurants priced ₹199 and above",eligible:function(r){return r.price>=199;}},
+  {emoji:"🍕",title:"Buy 1 Get 1 Free",desc:"On all pizzas from selected restaurants.",code:"BOGOPIZZA",why:"Pizza-serving restaurants",eligible:function(r){return r.cuisines.some(function(c){return c.toLowerCase().indexOf("pizza")>=0;});}},
+  {emoji:"🚚",title:"Free Delivery",desc:"On orders above ₹500.",code:"AUTO",why:"Restaurants priced ₹500 and above",eligible:function(r){return r.price>=500;}},
+  {emoji:"💳",title:"Flat ₹125 OFF",desc:"On HDFC cards above ₹499.",code:"HDFC125",why:"Restaurants priced ₹499 and above",eligible:function(r){return r.price>=499;}},
+  {emoji:"🌙",title:"Late Night Special",desc:"20% OFF on orders 11 PM – 4 AM.",code:"NIGHT20",why:"Late-night open restaurants",eligible:function(r){return r.cats.indexOf("Late-Night")>=0;}},
+  {emoji:"🍰",title:"Free Dessert",desc:"Free brownie above ₹399 at Sweet Cravings.",code:"SWEET",why:"Only at Sweet Cravings",eligible:function(r){return r.name==="Sweet Cravings";}},
+  {emoji:"🎉",title:"Party Pack Deal",desc:"Flat 20% OFF on family packs above ₹999.",code:"PARTY20",why:"Party-pack friendly restaurants",eligible:function(r){return r.cats.indexOf("Party Packs")>=0;}}
+];
+
+function openOffersModal(){
+  var html="";
+  OFFERS.forEach(function(o,idx){
+    html+='<div class="offer-card" data-idx="'+idx+'"><span class="offer-emoji">'+o.emoji+'</span><div style="flex:1;min-width:0"><div class="offer-title">'+o.title+'</div><div class="offer-desc">'+o.desc+'</div><span class="offer-code">CODE: '+o.code+'</span></div><span style="font-size:22px;color:#7e808c;flex-shrink:0">›</span></div>';
+  });
+  openModal("Offers for you","Tap any offer to see eligible restaurants",html);
+  modalBody.querySelectorAll(".offer-card").forEach(function(card){
+    card.addEventListener("click",function(){showEligibleItems(OFFERS[+card.dataset.idx]);});
+  });
+}
+
+function showEligibleItems(offer){
+  var eligible=RESTAURANTS.filter(offer.eligible);
+  var html='<button class="back-btn" id="offersBack">← Back to offers</button>';
+  html+='<div class="elig-head"><span style="font-size:36px">'+offer.emoji+'</span><div><div class="elig-title">'+offer.title+'</div><div class="elig-desc">'+offer.desc+'</div></div></div>';
+  html+='<div class="elig-summary"><strong>'+eligible.length+'</strong> restaurant'+(eligible.length!==1?'s':'')+' eligible • '+offer.why+'</div>';
+  if(eligible.length===0){
+    html+='<div style="text-align:center;padding:40px 20px;color:var(--muted)"><div style="font-size:48px;margin-bottom:12px">😕</div><p>No restaurants match this offer right now.</p></div>';
+  } else {
+    html+='<div class="elig-list">';
+    eligible.forEach(function(r){
+      html+='<div class="elig-item" data-rid="'+r.id+'"><div class="elig-emoji" style="background:'+r.grad+'">'+r.emoji+'</div><div style="flex:1;min-width:0"><div class="elig-name">'+r.name+'</div><div class="elig-meta">'+r.cuisines.join(", ")+' • '+r.time+' min • '+inr(r.price)+' for two</div></div><div class="elig-rating">★ '+r.rating.toFixed(1)+'</div></div>';
+    });
+    html+='</div><button class="elig-copy" id="copyOfferCode">📋 Copy code "'+offer.code+'"</button>';
+  }
+  modalTitle.textContent="Eligible Restaurants";
+  modalSubtitle.textContent=offer.title;
+  modalBody.innerHTML=html;
+  var backBtn=$("offersBack");
+  if(backBtn) backBtn.addEventListener("click",openOffersModal);
+  var copyBtn=$("copyOfferCode");
+  if(copyBtn) copyBtn.addEventListener("click",function(){
+    if(navigator.clipboard) navigator.clipboard.writeText(offer.code);
+    toast('Code "'+offer.code+'" copied!',"📋");
+  });
+  modalBody.querySelectorAll(".elig-item").forEach(function(el){
+    el.addEventListener("click",function(){
+      var rid=+el.dataset.rid;
+      closeModal();
+      showHome();
+      activeCategory="All";vegOnly=false;query="";
+      searchInput.value="";$("searchClear").classList.remove("show");
+      $("vegToggle").classList.remove("on");
+      renderCategories();renderActivePill();renderGrid();
+      setTimeout(function(){
+        var card=document.querySelector('.card[data-id="'+rid+'"]');
+        if(card){
+          card.scrollIntoView({behavior:"smooth",block:"center"});
+          card.style.boxShadow="0 0 0 3px var(--orange), 0 12px 36px rgba(252,128,25,.4)";
+          card.style.transform="translateY(-4px)";
+          setTimeout(function(){card.style.boxShadow="";card.style.transform="";},2400);
+        }
+      },180);
+    });
+  });
+}
+
+/* =========================================================
+   HELP SUB-VIEWS
+   ========================================================= */
+function showHelpTopic(key){
+  var routers={
+    track:renderHelpTrack,payments:renderHelpPayments,cancel:renderHelpCancel,
+    restaurant:renderHelpRestaurant,coupons:renderHelpCoupons,account:renderHelpAccount,
+    chat:renderHelpChat,call:renderHelpCall
+  };
+  if(routers[key]) routers[key]();
+}
+function helpBackBtnHTML(){return '<button class="help-back" id="helpBack">← Back to topics</button>';}
+function helpTopicHeadHTML(e,t,s){return '<div class="help-topic-head"><span class="help-topic-emoji">'+e+'</span><div><div class="help-topic-title">'+t+'</div><div class="help-topic-sub">'+s+'</div></div></div>';}
+function attachHelpBack(){var b=$("helpBack");if(b) b.addEventListener("click",closeModal);}
+
+function renderHelpTrack(){
+  var orders=[
+    {id:"ORD88231452",eta:"12 min",step:2,items:"2 items",total:520},
+    {id:"ORD88190371",eta:"Arriving now",step:3,items:"1 item",total:280}
+  ];
+  var steps=["Order placed","Preparing your food","Out for delivery","Delivered"];
+  var times=["12:34 PM","12:37 PM","12:48 PM","—"];
+  var html=helpBackBtnHTML();
+  html+=helpTopicHeadHTML("📦","Track my order","Live status of your active deliveries");
+  orders.forEach(function(o){
+    html+='<div class="track-card"><div class="track-top"><div><div class="track-id">'+o.id+'</div><div style="font-size:11.5px;color:var(--muted);margin-top:3px;font-weight:500">'+o.items+' • '+inr(o.total)+'</div></div><div class="track-eta">⏱ '+o.eta+'</div></div><div class="track-steps">';
+    steps.forEach(function(s,i){
+      var cls="track-step";
+      if(i<o.step)cls+=" done"; else if(i===o.step)cls+=" active";
+      var dot="";
+      if(i<o.step)dot="✓"; else if(i===o.step)dot="●";
+      html+='<div class="'+cls+'"><div class="track-dot">'+dot+'</div><div><div class="track-text">'+s+'</div><div class="track-time">'+times[i]+'</div></div></div>';
+    });
+    html+='</div></div>';
+  });
+  openModal("Track Order","Live delivery status",html);
+  attachHelpBack();
+}
+
+function renderHelpPayments(){
+  var faqs=[
+    {q:"My payment failed but money was deducted. What now?",a:"Failed payment amounts are auto-refunded within 5–7 business days to the original payment method."},
+    {q:"How long do refunds take?",a:"UPI & wallets: 1–2 days. Cards: 5–7 business days. Net banking: 3–5 business days."},
+    {q:"Can I pay with cash?",a:"Yes, Cash on Delivery is available on most restaurants for orders under ₹2000."},
+    {q:"Which wallets are supported?",a:"Paytm, PhonePe, Amazon Pay, Mobikwik and all major UPI apps."},
+    {q:"Do you support international cards?",a:"Currently only Indian cards are supported for online payment."}
+  ];
+  var html=helpBackBtnHTML();
+  html+=helpTopicHeadHTML("💳","Payment & refunds","Get help with payments, refunds and wallets");
+  html+='<div class="help-section-title">Refund lookup</div><div class="help-card"><div class="help-field"><label>Order ID</label><input type="text" id="refundOrderId" placeholder="e.g. ORD88231452"></div><button class="help-submit" id="refundLookup">Check refund status</button></div>';
+  html+='<div class="help-section-title">Frequently asked</div>';
+  faqs.forEach(function(f,i){
+    html+='<div class="faq-item"><div class="faq-q">'+f.q+'<span class="chev">▾</span></div><div class="faq-a">'+f.a+'</div></div>';
+  });
+  openModal("Payment & Refunds","Track refunds and find answers",html);
+  attachHelpBack();
+  modalBody.querySelectorAll(".faq-item").forEach(function(el){
+    el.querySelector(".faq-q").addEventListener("click",function(){el.classList.toggle("open");});
+  });
+  var btn=$("refundLookup");
+  if(btn) btn.addEventListener("click",function(){
+    var v=$("refundOrderId").value.trim();
+    if(!v){toast("Enter an order ID first","⚠️");return;}
+    toast("Refund for "+v+": ₹0 pending • Already settled","💳");
+  });
+}
+
+function renderHelpCancel(){
+  var orders=[
+    {id:"ORD88231452",status:"Preparing",canCancel:true,items:"2 items",total:520},
+    {id:"ORD88190371",status:"Out for delivery",canCancel:false,items:"1 item",total:280}
+  ];
+  var html=helpBackBtnHTML();
+  html+=helpTopicHeadHTML("🚫","Cancel an order","You can cancel until the restaurant starts preparing");
+  orders.forEach(function(o){
+    html+='<div class="track-card" data-cancel-card="'+o.id+'"><div class="track-top"><div><div class="track-id">'+o.id+'</div><div style="font-size:11.5px;color:var(--muted);margin-top:3px;font-weight:500">'+o.items+' • '+inr(o.total)+'</div></div><div class="track-eta" style="'+(o.canCancel?'':'background:#f4f4f5;color:#7e808c')+'">'+o.status+'</div></div><div style="margin-top:8px">';
+    if(o.canCancel){
+      html+='<button class="help-submit" style="background:#e23744;margin-top:0" data-cancel="'+o.id+'">Cancel this order</button>';
+    } else {
+      html+='<div class="help-card-text" style="font-size:12.5px;padding-top:4px">This order can no longer be cancelled.</div>';
+    }
+    html+='</div></div>';
+  });
+  openModal("Cancel Order","Cancel before your food is prepared",html);
+  attachHelpBack();
+  modalBody.querySelectorAll("[data-cancel]").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var id=btn.dataset.cancel;
+      var card=modalBody.querySelector('[data-cancel-card="'+id+'"]');
+      if(card) card.innerHTML='<div class="help-success"><div class="big">✅</div><h4>Order cancelled</h4><p>Your full refund will be credited within 3–5 business days.</p></div>';
+      toast("Order "+id+" cancelled","✅");
+    });
+  });
+}
+
+function renderHelpRestaurant(){
+  var html=helpBackBtnHTML();
+  html+=helpTopicHeadHTML("🏪","Restaurant & menu issues","Tell us what went wrong and we'll fix it");
+  html+='<div class="help-card"><div class="help-field"><label>Order ID</label><input type="text" id="issueOrderId" placeholder="e.g. ORD88231452"></div><div class="help-field"><label>What went wrong?</label><select id="issueType"><option value="">Select an issue</option><option>Wrong item delivered</option><option>Missing item</option><option>Food quality issue</option><option>Order was cold</option><option>Packaging damaged</option><option>Other</option></select></div><div class="help-field"><label>Describe the issue</label><textarea id="issueDesc" placeholder="Tell us exactly what happened…"></textarea></div><button class="help-submit" id="issueSubmit">Submit complaint</button></div>';
+  openModal("Report an issue","We'll make it right",html);
+  attachHelpBack();
+  var btn=$("issueSubmit");
+  if(btn) btn.addEventListener("click",function(){
+    var oid=$("issueOrderId").value.trim();
+    var type=$("issueType").value;
+    if(!oid){toast("Please enter your order ID","⚠️");return;}
+    if(!type){toast("Please select an issue type","⚠️");return;}
+    modalBody.innerHTML=helpBackBtnHTML()+'<div class="help-success"><div class="big">🎫</div><h4>Complaint registered</h4><p>Ticket <strong>#CRV'+Date.now().toString().slice(-6)+'</strong> created. Our team will review within 24 hours.</p></div>';
+    attachHelpBack();
+    toast("Complaint submitted successfully","🎫");
+  });
+}
+
+function renderHelpCoupons(){
+  var coupons=[
+    {emoji:"🎁",title:"50% OFF up to ₹100",code:"WELCOME50"},
+    {emoji:"🍕",title:"Buy 1 Get 1 Free on Pizzas",code:"BOGOPIZZA"},
+    {emoji:"💳",title:"Flat ₹125 OFF on HDFC",code:"HDFC125"},
+    {emoji:"🌙",title:"20% OFF Late Night",code:"NIGHT20"},
+    {emoji:"🎉",title:"Flat 20% OFF Party Packs",code:"PARTY20"}
+  ];
+  var html=helpBackBtnHTML();
+  html+=helpTopicHeadHTML("🎟️","Coupons & offers","How to save on your next order");
+  html+='<div class="help-card"><div class="help-card-title">How to apply a coupon</div><div class="help-card-text">1. Add items to your cart and open the cart drawer.<br>2. Tap <strong>Proceed to Checkout</strong>.<br>3. Enter your code in the coupon field.<br>4. The discount is applied instantly.</div></div>';
+  html+='<div class="help-section-title">Active coupons</div>';
+  coupons.forEach(function(c){
+    html+='<div class="coupon-item"><span class="coupon-emoji">'+c.emoji+'</span><div style="flex:1;min-width:0"><div class="coupon-title">'+c.title+'</div><span class="coupon-code-text">CODE: '+c.code+'</span></div><button class="contact-action" data-copy="'+c.code+'">Copy</button></div>';
+  });
+  openModal("Coupons & Offers","Save more on every order",html);
+  attachHelpBack();
+  modalBody.querySelectorAll("[data-copy]").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      var code=btn.dataset.copy;
+      if(navigator.clipboard) navigator.clipboard.writeText(code);
+      var old=btn.textContent;
+      btn.textContent="Copied!";
+      setTimeout(function(){btn.textContent=old;},1400);
+    });
+  });
+}
+
+function renderHelpAccount(){
+  var html=helpBackBtnHTML();
+  html+=helpTopicHeadHTML("👤","Account & profile","Manage your personal details and addresses");
+  html+='<div class="profile-avatar">👤</div><div class="help-card"><div class="help-field"><label>Full name</label><input type="text" id="accName" value="Guest User"></div><div class="help-field"><label>Phone number</label><input type="tel" id="accPhone" placeholder="+91 98765 43210"></div><div class="help-field"><label>Email address</label><input type="email" id="accEmail" placeholder="you@example.com"></div><div class="help-field"><label>Default delivery address</label><textarea id="accAddress">Koramangala, Bengaluru</textarea></div><button class="help-submit" id="accSave">Save changes</button></div>';
+  openModal("Account & Profile","Keep your info up to date",html);
+  attachHelpBack();
+  var btn=$("accSave");
+  if(btn) btn.addEventListener("click",function(){
+    var name=$("accName").value.trim();
+    var phone=$("accPhone").value.trim();
+    var email=$("accEmail").value.trim();
+    if(!name){toast("Name cannot be empty","⚠️");return;}
+    if(phone && phone.replace(/\D/g,"").length<10){toast("Enter a valid phone number","⚠️");return;}
+    if(email && !/^\S+@\S+\.\S+$/.test(email)){toast("Enter a valid email","⚠️");return;}
+    toast("Profile updated successfully","✅");
+  });
+}
+
+function renderHelpChat(){
+  var html=helpBackBtnHTML();
+  html+=helpTopicHeadHTML("💬","Chat with support","We typically reply in under 2 minutes");
+  html+='<div class="chat-window" id="chatWindow"><div class="chat-msg bot">Hi! 👋 I am Riya from Crave support. How can I help you today?</div></div><div class="chat-input-row"><input type="text" class="chat-input" id="chatInput" placeholder="Type your message…" autocomplete="off"><button class="chat-send" id="chatSend">Send</button></div><div class="help-card" style="margin-top:14px"><div class="help-section-title" style="margin-top:0">Quick replies</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="contact-action" style="background:#f4f4f5;color:#3d4152" data-quick="Where is my order?">Where is my order?</button><button class="contact-action" style="background:#f4f4f5;color:#3d4152" data-quick="I want a refund">I want a refund</button><button class="contact-action" style="background:#f4f4f5;color:#3d4152" data-quick="Wrong item delivered">Wrong item</button></div></div>';
+  openModal("Live Chat","Support is online",html);
+  attachHelpBack();
+  var win=$("chatWindow"),input=$("chatInput");
+  function botReply(text){
+    var t=text.toLowerCase();
+    if(t.indexOf("order")>=0||t.indexOf("where")>=0) return "Let me check that for you. Can you share your order ID? It starts with ORD.";
+    if(t.indexOf("refund")>=0) return "Refunds take 1–2 days for UPI/wallets and 5–7 days for cards.";
+    if(t.indexOf("wrong")>=0||t.indexOf("missing")>=0) return "I am sorry about that! Please share the order ID and a photo if possible.";
+    if(t.indexOf("cancel")>=0) return "You can cancel from Help Centre → Cancel an order.";
+    if(t.indexOf("hi")>=0||t.indexOf("hello")>=0) return "Hi there! 😊 How can I help you today?";
+    return "Thanks for your message! A support agent will be with you in a moment.";
+  }
+  function sendMsg(text){
+    if(!text.trim()) return;
+    var user=document.createElement("div");
+    user.className="chat-msg user";
+    user.textContent=text;
+    win.appendChild(user);
+    win.scrollTop=win.scrollHeight;
+    input.value="";
+    setTimeout(function(){
+      var bot=document.createElement("div");
+      bot.className="chat-msg bot";
+      bot.textContent=botReply(text);
+      win.appendChild(bot);
+      win.scrollTop=win.scrollHeight;
+    },800);
+  }
+  $("chatSend").addEventListener("click",function(){sendMsg(input.value);});
+  input.addEventListener("keydown",function(e){if(e.key==="Enter")sendMsg(input.value);});
+  modalBody.querySelectorAll("[data-quick]").forEach(function(b){
+    b.addEventListener("click",function(){sendMsg(b.dataset.quick);});
+  });
+  setTimeout(function(){input.focus();},250);
+}
+
+function renderHelpCall(){
+  var html=helpBackBtnHTML();
+  html+=helpTopicHeadHTML("📞","Call us","We are available 24×7 for you");
+  html+='<div class="contact-row" data-call="1800-123-4567"><span class="contact-emoji">☎️</span><div class="contact-text"><div class="contact-label">Toll free</div><div class="contact-value">1800-123-4567</div></div><span class="contact-action">Call</span></div>';
+  html+='<div class="contact-row" data-call="1800-765-4321"><span class="contact-emoji">📱</span><div class="contact-text"><div class="contact-label">Customer care</div><div class="contact-value">1800-765-4321</div></div><span class="contact-action">Call</span></div>';
+  html+='<div class="contact-row" data-copy-email="support@crave.com"><span class="contact-emoji">✉️</span><div class="contact-text"><div class="contact-label">Email — Support</div><div class="contact-value">support@crave.com</div></div><span class="contact-action">Copy</span></div>';
+  html+='<div class="contact-row" data-copy-email="partners@crave.com"><span class="contact-emoji">🤝</span><div class="contact-text"><div class="contact-label">Email — Partnerships</div><div class="contact-value">partners@crave.com</div></div><span class="contact-action">Copy</span></div>';
+  html+='<div class="help-card" style="margin-top:16px"><div class="help-card-title">Head office</div><div class="help-card-text">Crave Technologies Pvt. Ltd.<br>3rd Floor, Tower B, Ecoworld<br>Bellandur, Bengaluru — 560103</div></div>';
+  openModal("Contact Us","Reach us by phone or email",html);
+  attachHelpBack();
+  modalBody.querySelectorAll("[data-call]").forEach(function(row){
+    row.addEventListener("click",function(){toast("Dialling "+row.dataset.call+"…","📞");});
+  });
+  modalBody.querySelectorAll("[data-copy-email]").forEach(function(row){
+    row.addEventListener("click",function(){
+      var email=row.dataset.copyEmail;
+      if(navigator.clipboard) navigator.clipboard.writeText(email);
+      toast('Email "'+email+'" copied',"📋");
+    });
+  });
+}
+
+/* =========================================================
+   SIGN IN MODAL
+   ========================================================= */
+function openSignInModal(){
+  var html='<div class="auth-tabs"><div class="auth-tab active" data-tab="signin">Sign In</div><div class="auth-tab" data-tab="signup">Sign Up</div></div>';
+
+  // SIGN IN FORM
+  html+='<div id="signInForm">';
+  html+='<div style="font-size:20px;font-weight:800;letter-spacing:-.4px;margin-bottom:4px">Welcome back! 👋</div>';
+  html+='<div style="font-size:13px;color:var(--muted);margin-bottom:18px">Sign in to order your favourite food</div>';
+  html+='<div class="help-field"><label>Email Address</label><input type="email" id="siEmail" placeholder="you@example.com" autocomplete="off"></div>';
+  html+='<div class="help-field"><label>Password</label><input type="password" id="siPass" placeholder="Enter your password" autocomplete="off"></div>';
+  html+='<button class="help-submit" id="siBtn">Sign In →</button>';
+  html+='<div style="margin-top:16px;padding:12px;background:#f0fdf4;border:1px dashed #b6e3c4;border-radius:10px;font-size:12px;color:#1f7a45;font-weight:600;line-height:1.5"><strong>Demo:</strong> Use any email you signed up with, or create a new account via Sign Up.</div>';
+  html+='</div>';
+
+  // SIGN UP FORM
+  html+='<div id="signUpForm" style="display:none">';
+  html+='<div style="font-size:20px;font-weight:800;letter-spacing:-.4px;margin-bottom:4px">Create your account 🎉</div>';
+  html+='<div style="font-size:13px;color:var(--muted);margin-bottom:18px">Join thousands of food lovers</div>';
+  html+='<div class="help-field"><label>Full Name</label><input type="text" id="suName" placeholder="e.g. Aarav Sharma" autocomplete="off"></div>';
+  html+='<div class="help-field"><label>Email Address</label><input type="email" id="suEmail" placeholder="you@example.com" autocomplete="off"></div>';
+  html+='<div class="help-field"><label>Phone Number</label><input type="tel" id="suPhone" placeholder="9876543210" autocomplete="off"></div>';
+  html+='<div class="help-field"><label>Password</label><input type="password" id="suPass" placeholder="Minimum 6 characters" autocomplete="off"><div style="font-size:11px;color:var(--muted);margin-top:4px">Use at least 6 characters</div></div>';
+  html+='<button class="help-submit" id="suBtn">Create Account →</button>';
+  html+='</div>';
+
+  openModal("Welcome to Crave","Order faster and track everything",html);
+
+  // Tab switching
+  var tabs=modalBody.querySelectorAll(".auth-tab");
+  tabs.forEach(function(tab){
+    tab.addEventListener("click",function(){
+      tabs.forEach(function(t){t.classList.remove("active");});
+      tab.classList.add("active");
+      var isSignIn=tab.dataset.tab==="signin";
+      $("signInForm").style.display=isSignIn?"block":"none";
+      $("signUpForm").style.display=isSignIn?"none":"block";
+      modalTitle.textContent=isSignIn?"Welcome back":"Create Account";
+      modalSubtitle.textContent=isSignIn?"Sign in to order your favourite food":"Join thousands of food lovers";
+    });
+  });
+
+  // Sign In handler
+  function doSignIn(){
+    var emailEl=$("siEmail"),passEl=$("siPass");
+    var email=emailEl?emailEl.value.trim():"";
+    var pass=passEl?passEl.value:"";
+    if(!email){toast("Please enter your email","⚠️");return;}
+    if(!pass){toast("Please enter your password","⚠️");return;}
+    var users=getUsers2();
+    var user=null;
+    for(var i=0;i<users.length;i++){
+      if(users[i].email.toLowerCase()===email.toLowerCase() && users[i].password===pass){user=users[i];break;}
+    }
+    if(!user){toast("Invalid email or password. Please try again.","⚠️");return;}
+    setSignedIn(user);
+    toast("Welcome back, "+user.name.split(" ")[0]+"!","✅");
+    closeModal();
+  }
+  $("siBtn").addEventListener("click",doSignIn);
+  if($("siPass")) $("siPass").addEventListener("keydown",function(e){if(e.key==="Enter")doSignIn();});
+
+  // Sign Up handler
+  function doSignUp(){
+    var nameEl=$("suName"),emailEl=$("suEmail"),phoneEl=$("suPhone"),passEl=$("suPass");
+    var name=nameEl?nameEl.value.trim():"";
+    var email=emailEl?emailEl.value.trim():"";
+    var phone=phoneEl?phoneEl.value.trim():"";
+    var pass=passEl?passEl.value:"";
+    if(!name){toast("Please enter your name","⚠️");return;}
+    if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){toast("Please enter a valid email","⚠️");return;}
+    if(!phone||phone.replace(/\D/g,"").length<10){toast("Please enter a valid 10-digit phone number","⚠️");return;}
+    if(!pass||pass.length<6){toast("Password must be at least 6 characters","⚠️");return;}
+    var users=getUsers2();
+    for(var i=0;i<users.length;i++){
+      if(users[i].email.toLowerCase()===email.toLowerCase()){toast("This email is already registered. Please sign in.","⚠️");return;}
+    }
+    var newUser={
+      id:"u_"+Date.now(),
+      name:name,email:email,phone:phone,password:pass,
+      role:"user",createdAt:Date.now()
+    };
+    users.push(newUser);
+    saveUsers2(users);
+    setSignedIn(newUser);
+    toast("Account created! Welcome, "+name.split(" ")[0]+"!","🎉");
+    closeModal();
+  }
+  $("suBtn").addEventListener("click",doSignUp);
+  if($("suPass")) $("suPass").addEventListener("keydown",function(e){if(e.key==="Enter")doSignUp();});
+}
+
+/* =========================================================
+   PROFILE
+   ========================================================= */
+function renderAddressList(){
+  var addrs=getUserAddresses();
+  if(addrs.length===0) return '<div class="no-items">No saved addresses yet</div>';
+  var html='';
+  addrs.forEach(function(a,i){
+    var isDefault=a.isDefault;
+    html+='<div class="address-card'+(isDefault?' default':'')+'">';
+    html+='<div class="addr-type">'+a.type+(isDefault?'<span class="default-badge">Default</span>':'')+'</div>';
+    html+='<div class="addr-label">'+a.label+'</div>';
+    html+='<div class="addr-text">'+a.address+'</div>';
+    html+='<div class="addr-phone">📞 '+a.phone+'</div>';
+    html+='<div class="addr-actions">';
+    if(!isDefault) html+='<button data-addr-default="'+i+'">⭐ Set Default</button>';
+    html+='<button data-addr-edit="'+i+'">✎ Edit</button>';
+    html+='<button class="del" data-addr-del="'+i+'">✕ Delete</button>';
+    html+='</div></div>';
+  });
+  return html;
+}
+
+function renderPaymentList(){
+  var pays=getUserPayments();
+  if(pays.length===0) return '<div class="no-items">No saved payment methods</div>';
+  var html='';
+  pays.forEach(function(p,i){
+    var isDefault=p.isDefault;
+    var iconBg=p.type==="UPI"?"linear-gradient(135deg,#8E2DE2,#4A00E0)":p.type==="Card"?"linear-gradient(135deg,#1976d2,#42a5f5)":"linear-gradient(135deg,var(--orange),#ff9a4d)";
+    var iconEmoji=p.type==="UPI"?"📱":p.type==="Card"?"💳":"👛";
+    html+='<div class="payment-card'+(isDefault?' default':'')+'">';
+    html+='<div class="pay-card-row">';
+    html+='<div class="pay-icon" style="background:'+iconBg+'">'+iconEmoji+'</div>';
+    html+='<div class="pay-details">';
+    html+='<div class="pay-type">'+p.label+(isDefault?'<span class="default-badge">Default</span>':'')+'</div>';
+    html+='<div class="pay-meta">'+p.detail+'</div>';
+    html+='</div></div>';
+    html+='<div class="pay-actions">';
+    if(!isDefault) html+='<button data-pay-default="'+i+'">⭐ Set Default</button>';
+    html+='<button class="del" data-pay-del="'+i+'">✕ Delete</button>';
+    html+='</div></div>';
+  });
+  return html;
+}
+
+function openProfileModal(){
+  if(!requireAuth()) return;
+  var u=currentUser2;
+  var initials=u.name.split(" ").map(function(w){return w.charAt(0);}).join("").slice(0,2).toUpperCase();
+  var orderCount=orderHistory.length;
+  var totalSpent=orderHistory.reduce(function(s,o){return s+o.total;},0);
+  var html='<div class="profile-header">';
+  html+='<div class="profile-avatar-lg">'+initials+'</div>';
+  html+='<div class="profile-name">'+u.name+'</div>';
+  html+='<div class="profile-email">'+u.email+'</div>';
+  html+='</div>';
+  html+='<div class="profile-stat-row">';
+  html+='<div class="profile-stat"><b>'+orderCount+'</b><span>Total Orders</span></div>';
+  html+='<div class="profile-stat"><b>'+inr(totalSpent)+'</b><span>Total Spent</span></div>';
+  html+='</div>';
+  html+='<div class="profile-grid">';
+  html+='<div class="profile-field"><b>Phone</b><span>'+(u.phone||'Not set')+'</span></div>';
+  html+='<div class="profile-field"><b>Member Since</b><span>'+new Date(u.createdAt).toLocaleDateString("en-IN",{day:"numeric",month:"short",year:"numeric"})+'</span></div>';
+  html+='</div>';
+
+  // Addresses
+  html+='<div class="profile-section"><div class="profile-section-head"><h4>📍 Saved Addresses</h4><button id="addAddrBtn">+ Add New</button></div>';
+  html+='<div id="addrList">'+renderAddressList()+'</div></div>';
+
+  // Payment Methods
+  html+='<div class="profile-section"><div class="profile-section-head"><h4>💳 Payment Methods</h4><button id="addPayBtn">+ Add New</button></div>';
+  html+='<div id="payList">'+renderPaymentList()+'</div></div>';
+
+  // Actions
+  html+='<div class="profile-actions">';
+  html+='<button class="profile-btn edit" id="profileEditBtn">✎ Edit Profile</button>';
+  html+='<button class="profile-btn danger" id="profileLogoutBtn">🚪 Sign Out</button>';
+  html+='</div>';
+
+  openModal("My Profile","Manage your account",html);
+
+  // Wire profile actions
+  $("profileEditBtn").addEventListener("click",showEditProfile);
+  $("profileLogoutBtn").addEventListener("click",function(){
+    setSignedIn(null);cart={};RESTAURANTS.forEach(function(r){refreshFoot(r.id);});renderCart();
+    closeModal();toast("Signed out","👋");
+  });
+  $("addAddrBtn").addEventListener("click",function(){showAddAddressForm();});
+  $("addPayBtn").addEventListener("click",function(){showAddPaymentForm();});
+  wireAddressActions();
+  wirePaymentActions();
+}
+function wireAddressActions(){
+  var wrap=$("addrList");
+  if(!wrap) return;
+  wrap.querySelectorAll("[data-addr-default]").forEach(function(btn){btn.addEventListener("click",function(){
+    var addrs=getUserAddresses();var idx=+btn.dataset.addrDefault;
+    addrs.forEach(function(a,i){a.isDefault=(i===idx);});
+    saveUserAddresses(addrs);$("addrList").innerHTML=renderAddressList();wireAddressActions();
+    toast("Default address updated","✅");
+  });});
+  wrap.querySelectorAll("[data-addr-edit]").forEach(function(btn){btn.addEventListener("click",function(){
+    showEditAddressForm(+btn.dataset.addrEdit);
+  });});
+  wrap.querySelectorAll("[data-addr-del]").forEach(function(btn){btn.addEventListener("click",function(){
+    var addrs=getUserAddresses();addrs.splice(+btn.dataset.addrDel,1);
+    if(addrs.length>0 && !addrs.some(function(a){return a.isDefault;})) addrs[0].isDefault=true;
+    saveUserAddresses(addrs);$("addrList").innerHTML=renderAddressList();wireAddressActions();
+    toast("Address deleted","🗑️");
+  });});
+}
+
+function wirePaymentActions(){
+  var wrap=$("payList");
+  if(!wrap) return;
+  wrap.querySelectorAll("[data-pay-default]").forEach(function(btn){btn.addEventListener("click",function(){
+    var pays=getUserPayments();var idx=+btn.dataset.payDefault;
+    pays.forEach(function(p,i){p.isDefault=(i===idx);});
+    saveUserPayments(pays);$("payList").innerHTML=renderPaymentList();wirePaymentActions();
+    toast("Default payment updated","✅");
+  });});
+  wrap.querySelectorAll("[data-pay-del]").forEach(function(btn){btn.addEventListener("click",function(){
+    var pays=getUserPayments();pays.splice(+btn.dataset.payDel,1);
+    if(pays.length>0 && !pays.some(function(p){return p.isDefault;})) pays[0].isDefault=true;
+    saveUserPayments(pays);$("payList").innerHTML=renderPaymentList();wirePaymentActions();
+    toast("Payment method deleted","🗑️");
+  });});
+}
+
+function showAddAddressForm(){
+  var html='<div style="margin-bottom:14px"><button style="background:none;border:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--muted);font-family:inherit" id="addrBack">← Back</button></div>';
+  html+='<div class="help-field"><label>Label</label><input type="text" id="newAddrLabel" placeholder="e.g. Home, Office" autocomplete="off"></div>';
+  html+='<div class="help-field"><label>Type</label><select id="newAddrType" style="width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:13.5px;font-family:inherit;background:#fff"><option>Home</option><option>Office</option><option>Other</option></select></div>';
+  html+='<div class="help-field"><label>Full Address</label><textarea id="newAddrText" placeholder="House no, street, area, city, pincode" rows="3" style="width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:13.5px;font-family:inherit;resize:vertical"></textarea></div>';
+  html+='<div class="help-field"><label>Phone</label><input type="tel" id="newAddrPhone" placeholder="9876543210" autocomplete="off"></div>';
+  html+='<button class="help-submit" id="newAddrSave">Save Address</button>';
+  modalTitle.textContent="Add Address";
+  modalSubtitle.textContent="Where should we deliver?";
+  modalBody.innerHTML=html;
+  $("addrBack").addEventListener("click",openProfileModal);
+  $("newAddrSave").addEventListener("click",function(){
+    var label=$("newAddrLabel").value.trim();
+    var type=$("newAddrType").value;
+    var addr=$("newAddrText").value.trim();
+    var phone=$("newAddrPhone").value.trim();
+    if(!label){toast("Please enter a label like Home or Office","⚠️");return;}
+    if(!addr){toast("Please enter the full address","⚠️");return;}
+    var addrs=getUserAddresses();
+    addrs.push({label:label,type:type,address:addr,phone:phone||currentUser2.phone||"",isDefault:addrs.length===0});
+    saveUserAddresses(addrs);openProfileModal();
+    toast("Address saved!","✅");
+  });
+}
+
+function showEditAddressForm(idx){
+  var addrs=getUserAddresses();
+  var a=addrs[idx];
+  if(!a){toast("Address not found","⚠️");return;}
+  var html='<div style="margin-bottom:14px"><button style="background:none;border:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--muted);font-family:inherit" id="addrBack">← Back</button></div>';
+  html+='<div class="help-field"><label>Label</label><input type="text" id="editAddrLabel" value="'+a.label+'" autocomplete="off"></div>';
+  var selHome=a.type=="Home"?' selected':'';
+  var selOffice=a.type=="Office"?' selected':'';
+  var selOther=a.type=="Other"?' selected':'';
+  html+='<div class="help-field"><label>Type</label><select id="editAddrType" style="width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:13.5px;font-family:inherit;background:#fff"><option'+selHome+'>Home</option><option'+selOffice+'>Office</option><option'+selOther+'>Other</option></select></div>';
+  html+='<div class="help-field"><label>Full Address</label><textarea id="editAddrText" rows="3" style="width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:13.5px;font-family:inherit;resize:vertical">'+a.address+'</textarea></div>';
+  html+='<div class="help-field"><label>Phone</label><input type="tel" id="editAddrPhone" value="'+(a.phone||'')+'" autocomplete="off"></div>';
+  html+='<button class="help-submit" id="editAddrSave">Save Changes</button>';
+  modalTitle.textContent="Edit Address";
+  modalSubtitle.textContent="Update delivery address";
+  modalBody.innerHTML=html;
+  $("addrBack").addEventListener("click",openProfileModal);
+  $("editAddrSave").addEventListener("click",function(){
+    var label=$("editAddrLabel").value.trim();
+    var addr=$("editAddrText").value.trim();
+    var phone=$("editAddrPhone").value.trim();
+    if(!label||!addr){toast("Label and address are required","⚠️");return;}
+    a.label=label;a.type=$("editAddrType").value;a.address=addr;a.phone=phone;
+    addrs[idx]=a;saveUserAddresses(addrs);openProfileModal();
+    toast("Address updated!","✅");
+  });
+}
+
+function showAddPaymentForm(){
+  var html='<div style="margin-bottom:14px"><button style="background:none;border:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--muted);font-family:inherit" id="payBack">← Back</button></div>';
+  html+='<div class="help-field"><label>Payment Type</label><select id="newPayType" style="width:100%;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-size:13.5px;font-family:inherit;background:#fff"><option>UPI</option><option>Card</option><option>Wallet</option></select></div>';
+  html+='<div class="help-field"><label>Label</label><input type="text" id="newPayLabel" placeholder="e.g. GPay, HDFC Card, Paytm" autocomplete="off"></div>';
+  html+='<div class="help-field"><label>Details</label><input type="text" id="newPayDetail" placeholder="e.g. user@upi, **** 4521" autocomplete="off"></div>';
+  html+='<button class="help-submit" id="newPaySave">Save Payment Method</button>';
+  modalTitle.textContent="Add Payment";
+  modalSubtitle.textContent="Add a payment method";
+  modalBody.innerHTML=html;
+  $("payBack").addEventListener("click",openProfileModal);
+  $("newPaySave").addEventListener("click",function(){
+    var type=$("newPayType").value;
+    var label=$("newPayLabel").value.trim();
+    var detail=$("newPayDetail").value.trim();
+    if(!label){toast("Please enter a label like GPay or HDFC Card","⚠️");return;}
+    if(!detail){toast("Please enter payment details","⚠️");return;}
+    var pays=getUserPayments();
+    pays.push({type:type,label:label,detail:detail,isDefault:pays.length===0});
+    saveUserPayments(pays);openProfileModal();
+    toast("Payment method saved!","✅");
+  });
+}
+
+function showEditProfile(){
+  var u=currentUser2;
+  var html='<div style="margin-bottom:14px"><button style="background:none;border:none;cursor:pointer;font-size:13px;font-weight:700;color:var(--muted);font-family:inherit" id="editProfileBack">← Back</button></div>';
+  html+='<div class="help-field"><label>Full Name</label><input type="text" id="epName" value="'+u.name+'" autocomplete="off"></div>';
+  html+='<div class="help-field"><label>Email Address</label><input type="email" id="epEmail" value="'+u.email+'" autocomplete="off" readonly style="background:#f4f4f5;color:var(--muted)"></div>';
+  html+='<div class="help-field"><label>Phone Number</label><input type="tel" id="epPhone" value="'+(u.phone||'')+'" autocomplete="off"></div>';
+  html+='<button class="help-submit" id="epSave">Save Changes</button>';
+  modalTitle.textContent="Edit Profile";
+  modalSubtitle.textContent="Update your personal information";
+  modalBody.innerHTML=html;
+  $("editProfileBack").addEventListener("click",openProfileModal);
+  $("epSave").addEventListener("click",function(){
+    var name=$("epName").value.trim();
+    var phone=$("epPhone").value.trim();
+    if(!name){toast("Name cannot be empty","⚠️");return;}
+    currentUser2.name=name;
+    if(phone) currentUser2.phone=phone;
+    var users=getUsers2();
+    for(var i=0;i<users.length;i++){
+      if(users[i].id===currentUser2.id){users[i]=currentUser2;break;}
+    }
+    saveUsers2(users);
+    updateSignInUI();
+    toast("Profile updated!","✅");
+    openProfileModal();
+  });
+}
+
+/* =========================================================
+   ORDER TRACKING
+   ========================================================= */
+var TRACK_STEPS=["Order Placed","Preparing","Out for Delivery","Delivered"];
+var TRACK_TIMES=["Just now","~10 min","~20 min","~30 min"];
+
+function openTrackingModal(orderId){
+  if(!requireAuth()) return;
+  var order=orderHistory.find(function(o){return o.id===orderId;});
+  if(!order){toast("Order not found","⚠️");return;}
+  var elapsed=Date.now()-order.ts;
+  var mins=elapsed/60000;
+  var currentStep=0;
+  if(mins>25) currentStep=3;
+  else if(mins>15) currentStep=2;
+  else if(mins>5) currentStep=1;
+  else currentStep=0;
+  var statusText=TRACK_STEPS[currentStep];
+  var isComplete=currentStep>=3;
+
+  var html='';
+  if(order.address){
+    html+='<div style="padding:12px 16px;background:#fffaf5;border-bottom:1px dashed var(--line);display:flex;gap:10px;align-items:flex-start">';
+    html+='<span style="font-size:18px;flex-shrink:0">📍</span><div><div style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.4px;text-transform:uppercase">Delivering To</div><div style="font-size:13px;font-weight:700;color:var(--ink);margin-top:2px">'+order.address+'</div></div>';
+    html+='</div>';
+  }
+  if(order.payment){
+    html+='<div style="padding:12px 16px;background:#f8f8ff;border-bottom:1px dashed var(--line);display:flex;gap:10px;align-items:center">';
+    html+='<span style="font-size:18px;flex-shrink:0">💳</span><div><div style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.4px;text-transform:uppercase">Payment</div><div style="font-size:13px;font-weight:700;color:var(--ink);margin-top:2px">'+order.payment+'</div></div>';
+    html+='</div>';
+  }
+  html+='<div class="track-order-card">';
+  html+='<div class="track-order-head"><div><div class="track-order-id">'+order.id+'</div><div class="track-order-date">'+fmtDate(order.ts)+'</div></div><div class="track-order-total">'+inr(order.total)+'</div></div>';
+  html+='<div class="track-order-items">';
+  order.items.forEach(function(it){
+    html+='<div class="track-item-chip"><span class="ti-emoji">'+it.emoji+'</span>'+it.name+' × '+it.qty+'</div>';
+  });
+  html+='</div>';
+  html+='<div class="track-progress">';
+  html+='<div class="track-steps">';
+  var fillPct=isComplete?100:Math.round((currentStep/(TRACK_STEPS.length-1))*100);
+  html+='<div class="step-fill" style="width:calc('+fillPct+'% - 56px)"></div>';
+  TRACK_STEPS.forEach(function(step,i){
+    var cls="track-step";
+    if(i<currentStep) cls+=" done"; else if(i===currentStep) cls+=" active";
+    var icon="";
+    if(i<currentStep) icon="✓"; else if(i===currentStep) icon="●"; else icon=(i+1);
+    var time=i<=currentStep?TRACK_TIMES[i]:"";
+    html+='<div class="'+cls+'"><div class="step-dot">'+icon+'</div><div class="step-label">'+step+'</div>'+(time?'<div class="step-time">'+time+'</div>':'')+'</div>';
+  });
+  html+='</div>';
+  if(!isComplete){
+    html+='<div style="padding:0 16px 8px">';
+    html+='<div style="text-align:center;margin-bottom:10px"><span style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.6px;text-transform:uppercase">Arriving In</span></div>';
+    html+='<div class="countdown-bar"><div class="countdown-unit"><span class="countdown-num" id="countdownMin">30</span><span class="countdown-label">Minutes</span></div><div class="countdown-sep">:</div><div class="countdown-unit"><span class="countdown-num" id="countdownSec">00</span><span class="countdown-label">Seconds</span></div></div>';
+    html+='<div style="height:6px;border-radius:4px;background:#e9e9eb;overflow:hidden;margin-top:12px"><div id="countdownProgress" style="height:100%;border-radius:4px;background:var(--orange);transition:width 1s linear;width:0%"></div></div>';
+    html+='</div>';
+  } else {
+    html+='<div class="track-eta-bar" style="background:linear-gradient(135deg,#eafaf0,#f0fdf4);color:#1f7a45">✓ Order delivered! Enjoy your meal 🎉</div>';
+  }
+  html+='</div></div>';
+
+  // Items summary
+  html+='<div style="margin-top:16px;padding:14px;border-radius:12px;background:#fafafa;border:1px solid var(--line)">';
+  html+='<div style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">Bill Summary</div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:6px"><span>Item Total</span><span>'+inr(order.subtotal)+'</span></div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:6px"><span>Delivery</span><span>'+(order.delivery===0?'<span style="color:var(--green);font-weight:700">FREE</span>':inr(order.delivery))+'</span></div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:6px"><span>GST</span><span>'+inr(order.gst)+'</span></div>';
+  if(order.promoDiscount && order.promoDiscount>0){
+    html+='<div style="display:flex;justify-content:space-between;font-size:13px;color:#1f7a45;font-weight:700;margin-bottom:6px"><span>Promo ('+order.promoCode+')</span><span>-'+inr(order.promoDiscount)+'</span></div>';
+  }
+  html+='<div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;color:var(--ink);padding-top:8px;border-top:1px dashed #d9d9d9"><span>Total</span><span>'+inr(order.total)+'</span></div>';
+  html+='</div>';
+
+  html+='<button class="track-btn" id="trackCloseBtn">Done</button>';
+  if(!isComplete) html+='<div style="text-align:center"><div class="auto-refresh-badge"><span class="pulse"></span>Auto-refreshing every 30s</div></div>';
+  openModal("Track Order","Live status for "+order.id,html);
+  $("trackCloseBtn").addEventListener("click",function(){stopCountdown();stopAutoRefresh();closeModal();});
+  if(!isComplete){
+    var durationMs=30*60*1000;
+    startCountdown(order.ts,durationMs);
+    startAutoRefresh(order.ts,order.id);
+  }
+}
+
+/* Wire nav */
+$("offersLink").addEventListener("click",function(e){e.preventDefault();openOffersModal();});
+$("favLink").addEventListener("click",function(e){e.preventDefault();openFavModal();});
+$("profileLink").addEventListener("click",function(e){e.preventDefault();openProfileModal();});
+$("signInLink").addEventListener("click",function(e){
+  e.preventDefault();
+  if(signedIn){
+    setSignedIn(null);
+    cart={};
+    RESTAURANTS.forEach(function(r){refreshFoot(r.id);});
+    renderCart();
+    toast("Signed out successfully","👋");
+  } else {
+    openSignInModal();
+  }
+});
+tryAutoLogin2();
+updateSignInUI();
+
+/* =========================================================
+   CATEGORIES
+   ========================================================= */
+function renderCategories(){
+  var html="";
+  CATEGORIES.forEach(function(c,i){
+    var isAll=c.key==="All";
+    var active=activeCategory===c.key;
+    var bg=isAll?"linear-gradient(135deg,#fc8019,#ff9a4d)":CAT_BG[i%CAT_BG.length];
+    html+='<div class="cat '+(active?'active':'')+'" data-cat="'+c.key+'"><div class="cat-icon" style="background:'+bg+'">'+c.emoji+'</div><div class="cat-label">'+(isAll?'All':c.key)+'</div><div class="cat-desc">'+c.desc+'</div></div>';
+  });
+  catsGrid.innerHTML=html;
+}
+catsGrid.addEventListener("click",function(e){
+  var card=e.target.closest(".cat");
+  if(!card) return;
+  var key=card.dataset.cat;
+  activeCategory=(key===activeCategory && key!=="All")?"All":key;
+  renderCategories();renderActivePill();renderGrid();
+  document.querySelector(".section").scrollIntoView({behavior:"smooth",block:"start"});
+});
+
+/* =========================================================
+   ACTIVE PILL
+   ========================================================= */
+function renderActivePill(){
+  if(activeCategory==="All"){activePill.className="active-pill idle";activePill.innerHTML="All Restaurants";}
+  else{activePill.className="active-pill";activePill.innerHTML=activeCategory+' <span class="x">✕</span>';}
+}
+activePill.addEventListener("click",function(){
+  if(activeCategory==="All") return;
+  activeCategory="All";
+  renderCategories();renderActivePill();renderGrid();
+});
+
+/* =========================================================
+   GRID
+   ========================================================= */
+function getFiltered(){
+  var list=RESTAURANTS.filter(function(r){
+    if(vegOnly && !r.veg) return false;
+    if(activeCategory!=="All" && r.cats.indexOf(activeCategory)===-1) return false;
+    if(query){
+      var hay=[r.name,r.cuisines.join(" "),r.tag||"",r.cats.join(" "),r.aliases||""].join(" ");
+      if(!fuzzyMatch(hay,query)) return false;
+    }
+    return true;
+  });
+  var sorters={
+    relevance:function(a,b){return b.rating-a.rating;},
+    rating:function(a,b){return b.rating-a.rating;},
+    time:function(a,b){return a.time-b.time;},
+    priceLow:function(a,b){return a.price-b.price;},
+    priceHigh:function(a,b){return b.price-a.price;}
+  };
+  return list.sort(sorters[sortBy]||sorters.relevance);
+}
+
+function footHTML(r){
+  var qty=cart[r.id]||0;
+  if(qty===0) return '<button class="add-btn" data-add="'+r.id+'">ADD</button>';
+  return '<div class="stepper"><button data-dec="'+r.id+'">−</button><span>'+qty+'</span><button data-inc="'+r.id+'">+</button></div>';
+}
+
+function cardHTML(r){
+  var ratingClass=r.rating<4.2?"low":"";
+  var fav=isFav(r.id)?"on":"";
+  var favIcon=isFav(r.id)?"♥":"♡";
+  var tagHTML=r.tag?'<span class="badge-tag">'+r.tag+'</span>':'<span class="badge-tag" style="background:#f4f4f5;color:#7e808c">Free Delivery</span>';
+  return '<article class="card" data-id="'+r.id+'"><div class="card-img" style="background:'+r.grad+'"><span class="card-emoji">'+r.emoji+'</span><button class="fav '+fav+'" data-fav="'+r.id+'">'+favIcon+'</button><div class="offer-badge">'+r.offer+'</div></div><div class="card-body"><div class="card-row"><h3>'+r.name+'</h3><span class="rating '+ratingClass+'">★ '+r.rating.toFixed(1)+'</span></div><p class="cuisines">'+r.cuisines.join(", ")+'</p><p class="meta">'+inr(r.price)+' for two • '+r.time+' min</p><div class="card-foot">'+tagHTML+'<span id="foot-'+r.id+'">'+footHTML(r)+'</span></div></div></article>';
+}
+
+function renderGrid(){
+  var list=getFiltered();
+  if(query) sectionTitle.textContent='Results for "'+query+'"';
+  else if(activeCategory==="All") sectionTitle.textContent="Restaurants with online food delivery";
+  else sectionTitle.textContent=activeCategory+" places near you";
+  if(list.length===0){
+    grid.innerHTML='<div class="empty"><div class="big">🔍</div><h3>No restaurants found</h3><p>Try a different spelling or browse a category.</p><button class="empty-btn" id="emptyReset">Clear search</button></div>';
+    var btn=$("emptyReset");
+    if(btn) btn.addEventListener("click",function(){
+      query="";searchInput.value="";$("searchClear").classList.remove("show");renderGrid();
+    });
+  } else {
+    grid.innerHTML=list.map(cardHTML).join("");
+  }
+  resultCount.textContent=list.length+" restaurant"+(list.length!==1?"s":"");
+}
+
+function refreshFoot(id){
+  var el=$("foot-"+id);
+  if(!el) return;
+  var r=RESTAURANTS.find(function(x){return x.id===id;});
+  if(!r) return;
+  el.innerHTML=footHTML(r);
+}
+
+grid.addEventListener("click",function(e){
+  var add=e.target.closest("[data-add]");
+  var inc=e.target.closest("[data-inc]");
+  var dec=e.target.closest("[data-dec]");
+  var fav=e.target.closest("[data-fav]");
+  if(add){addToCart(+add.dataset.add);return;}
+  if(inc){addToCart(+inc.dataset.inc);return;}
+  if(dec){removeFromCart(+dec.dataset.dec);return;}
+  if(fav){
+    e.stopPropagation();
+    var id=+fav.dataset.fav;
+    toggleFav(id);
+    fav.classList.toggle("on");
+    fav.textContent=isFav(id)?"♥":"♡";
+  }
+});
+
+/* =========================================================
+   CART
+   ========================================================= */
+function addToCart(id){
+  if(!requireAuth()) return;
+  cart[id]=(cart[id]||0)+1;
+  refreshFoot(id);renderCart();
+  var r=RESTAURANTS.find(function(x){return x.id===id;});
+  toast(r.name+" added to cart","🛒");
+}
+function removeFromCart(id){
+  if(!cart[id]) return;
+  cart[id]--;
+  if(cart[id]<=0) delete cart[id];
+  refreshFoot(id);renderCart();
+}
+function cartTotals(){
+  var subtotal=0,count=0;
+  for(var id in cart){
+    var r=RESTAURANTS.find(function(x){return x.id===+id;});
+    if(!r) continue;
+    subtotal+=itemPrice(r)*cart[id];
+    count+=cart[id];
+  }
+  var delivery=subtotal===0?0:(subtotal>=FREE_DELIVERY_ABOVE?0:DELIVERY_FEE);
+  var gst=Math.round(subtotal*GST_RATE);
+  var total=subtotal+delivery+gst+(subtotal?PLATFORM_FEE:0);
+  return {subtotal:subtotal,count:count,delivery:delivery,gst:gst,total:total,platform:subtotal?PLATFORM_FEE:0};
+}
+function renderCart(){
+  var t=cartTotals();
+  cartCount.textContent=t.count;
+  drawerSub.textContent=t.count===0?"0 items":t.count+" item"+(t.count>1?"s":"");
+  if(t.count===0){
+    cartBody.innerHTML='<div class="cart-empty"><div class="big">🛒</div><h4>Your cart is empty</h4><p>Good food is always a good idea.<br>Add something delicious!</p></div>';
+    cartFoot.style.display="none";
+    return;
+  }
+  var html="";
+  for(var id in cart){
+    var r=RESTAURANTS.find(function(x){return x.id===+id;});
+    if(!r) continue;
+    var line=itemPrice(r)*cart[id];
+    html+='<div class="c-item"><div class="c-emoji" style="background:'+r.grad+'">'+r.emoji+'</div><div class="c-info"><h4>'+r.name+'</h4><span>'+r.cuisines[0]+' • '+inr(itemPrice(r))+' each</span></div><div class="c-right"><div class="stepper sm"><button data-cdec="'+r.id+'">−</button><span>'+cart[id]+'</span><button data-cinc="'+r.id+'">+</button></div><div class="c-price">'+inr(line)+'</div></div></div>';
+  }
+  var saved=t.delivery===0?DELIVERY_FEE:0;
+  html+='<div class="bill"><h4>Bill Details</h4><div class="bill-row"><span>Item Total</span><span>'+inr(t.subtotal)+'</span></div><div class="bill-row"><span>Delivery Fee '+(t.delivery===0?'<span class="free">(FREE)</span>':'')+'</span><span>'+(t.delivery===0?'<span class="strike">'+inr(DELIVERY_FEE)+'</span>'+inr(0):inr(t.delivery))+'</span></div><div class="bill-row"><span>Platform Fee</span><span>'+inr(t.platform)+'</span></div><div class="bill-row"><span>GST &amp; Charges (5%)</span><span>'+inr(t.gst)+'</span></div><div class="bill-row total"><span>To Pay</span><span>'+inr(t.total)+'</span></div>'+(saved?'<div class="savings">🎉 You saved '+inr(saved)+' on delivery!</div>':'')+'</div>';
+  cartBody.innerHTML=html;
+  cartFoot.style.display="block";
+  $("checkout").innerHTML='Proceed to Checkout • '+inr(t.total)+' →';
+}
+cartBody.addEventListener("click",function(e){
+  var inc=e.target.closest("[data-cinc]");
+  var dec=e.target.closest("[data-cdec]");
+  if(inc) addToCart(+inc.dataset.cinc);
+  if(dec) removeFromCart(+dec.dataset.cdec);
+});
+
+/* =========================================================
+   ORDER HISTORY
+   ========================================================= */
+function fmtDate(ts){
+  var d=new Date(ts);
+  var date=d.toLocaleDateString("en-IN",{day:"numeric",month:"short"});
+  var time=d.toLocaleTimeString("en-IN",{hour:"2-digit",minute:"2-digit"});
+  return date+", "+time;
+}
+function renderHistory(){
+  var n=orderHistory.length;
+  historySub.textContent=n===0?"No orders yet":n+" order"+(n>1?"s":"");
+  clearHistoryBtn.style.display=n===0?"none":"inline-block";
+  if(n===0){
+    historyBody.innerHTML='<div class="cart-empty"><div class="big">📦</div><h4>No orders yet</h4><p>Your past orders will show up here.<br>Time to place your first one!</p></div>';
+    return;
+  }
+  var html="";
+  orderHistory.forEach(function(o){
+    var itemsHTML="";
+    o.items.forEach(function(it){
+      itemsHTML+='<div class="h-item"><span class="h-item-emoji" style="background:'+it.grad+'">'+it.emoji+'</span><span class="h-item-name">'+it.name+'</span><span class="h-item-qty">× '+it.qty+'</span></div>';
+    });
+    var totalQty=o.items.reduce(function(s,i){return s+i.qty;},0);
+    html+='<div class="h-order"><div class="h-top"><div><div class="h-id">'+o.id+'</div><div class="h-date">'+fmtDate(o.ts)+'</div></div><div class="h-total">'+inr(o.total)+'</div></div><div class="h-items">'+itemsHTML+'</div><div class="h-foot"><button class="h-btn reorder" data-track="'+o.id+'" style="background:#e3f2fd;color:#0c5fa5">📍 Track</button>'+(hasRated(o.id)?'<span style="font-size:12px;font-weight:700;color:#1f7a45">⭐ Rated</span>':'<button class="h-btn reorder" data-rate="'+o.id+'" style="background:#fff3e0;color:#7a4b12">⭐ Rate</button>')+'<button class="h-btn reorder" data-reorder="'+o.id+'">🔄 Reorder</button></div></div>';
+  });
+  historyBody.innerHTML=html;
+}
+function reorder(orderId){
+  if(!requireAuth()) return;
+  var order=orderHistory.find(function(o){return o.id===orderId;});
+  if(!order){toast("Order not found","⚠️");return;}
+  var added=0;
+  order.items.forEach(function(it){
+    var r=RESTAURANTS.find(function(x){return x.id===it.id;});
+    if(!r) return;
+    cart[r.id]=(cart[r.id]||0)+it.qty;
+    refreshFoot(r.id);added+=it.qty;
+  });
+  if(added===0){toast("Those restaurants are no longer available","⚠️");return;}
+  renderCart();showDrawer(cartDrawer);
+  toast(added+" item"+(added>1?"s":"")+" added back to cart","🔄");
+}
+historyBody.addEventListener("click",function(e){
+  var btn=e.target.closest("[data-reorder]");
+  var trackBtn=e.target.closest("[data-track]");
+  var rateBtn=e.target.closest("[data-rate]");
+  if(trackBtn){hideDrawers();setTimeout(function(){openTrackingModal(trackBtn.dataset.track);},350);return;}
+  if(rateBtn){hideDrawers();setTimeout(function(){openRatingModal(rateBtn.dataset.rate);},350);return;}
+  if(btn) reorder(btn.dataset.reorder);
+});
+clearHistoryBtn.addEventListener("click",function(){
+  if(orderHistory.length===0) return;
+  if(confirm("Clear all order history? This cannot be undone.")){
+    orderHistory=[];saveHistory();renderHistory();updateHistoryBadge();
+    toast("Order history cleared","🗑️");
+  }
+});
+function updateHistoryBadge(){
+  $("historyOpen").classList.toggle("has",orderHistory.length>0);
+}
+
+/* =========================================================
+   DRAWER WIRING
+   ========================================================= */
+$("cartOpen").addEventListener("click",function(){if(!requireAuth()) return;showDrawer(cartDrawer);});
+$("cartClose").addEventListener("click",hideDrawers);
+$("historyOpen").addEventListener("click",function(){if(!requireAuth()) return;renderHistory();showDrawer(historyDrawer);});
+$("historyClose").addEventListener("click",hideDrawers);
+$("ordersLink").addEventListener("click",function(e){
+  e.preventDefault();
+  if(!requireAuth()) return;
+  renderHistory();showDrawer(historyDrawer);
+});
+overlayEl.addEventListener("click",hideDrawers);
+
+/* =========================================================
+   CHECKOUT
+   ========================================================= */
+$("checkout").addEventListener("click",function(){
+  if(!requireAuth()) return;
+  var t=cartTotals();
+  if(t.count===0) return;
+  var addrs=getUserAddresses();
+  var pays=getUserPayments();
+  var defaultAddr=addrs.find(function(a){return a.isDefault;})||addrs[0]||null;
+  var defaultPay=pays.find(function(p){return p.isDefault;})||pays[0]||null;
+  if(!defaultAddr){
+    hideDrawers();
+    setTimeout(function(){showCheckoutAddressModal(t);},350);
+    return;
+  }
+  showCheckoutConfirmModal(t,defaultAddr,defaultPay);
+});
+
+function showCheckoutAddressModal(t){
+  var addrs=getUserAddresses();
+  var html='<div style="padding:4px 0 12px"><p style="font-size:14px;color:var(--ink-2);line-height:1.5">Please add a delivery address before placing your order.</p></div>';
+  if(addrs.length>0){
+    html+='<div style="margin-bottom:12px">';
+    addrs.forEach(function(a,i){
+      var isDef=a.isDefault;
+      html+='<div class="address-card'+(isDef?' default':'')+'" style="cursor:default">';
+      html+='<div class="addr-type">'+a.type+(isDef?'<span class="default-badge">Default</span>':'')+'</div>';
+      html+='<div class="addr-text">'+a.address+'</div>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
+  html+='<button class="help-submit" id="checkoutAddAddr">+ Add New Address</button>';
+  html+='<button style="width:100%;padding:13px;border-radius:11px;font-size:14px;font-weight:800;background:#f4f4f5;color:var(--ink-2);border:none;cursor:pointer;font-family:inherit;margin-top:8px" id="checkoutAddrBack">Cancel</button>';
+  openModal("Delivery Address","Where should we deliver?",html);
+  $("checkoutAddAddr").addEventListener("click",function(){showAddAddressForm();});
+  $("checkoutAddrBack").addEventListener("click",closeModal);
+}
+
+function showCheckoutConfirmModal(t,defaultAddr,defaultPay){
+  var items=[];
+  for(var id in cart){
+    var r=RESTAURANTS.find(function(x){return x.id===+id;});
+    if(!r) continue;
+    items.push({id:r.id,name:r.name,qty:cart[id],price:itemPrice(r),emoji:r.emoji,grad:r.grad});
+  }
+  var html='<div style="margin-bottom:16px">';
+  html+='<div style="padding:12px 14px;border-radius:12px;background:#fafafa;border:1px solid var(--line);margin-bottom:12px">';
+  html+='<div style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">📍 Deliver To</div>';
+  html+='<div style="font-size:14px;font-weight:800;color:var(--ink)">'+defaultAddr.label+' ('+defaultAddr.type+')</div>';
+  html+='<div style="font-size:12.5px;color:var(--ink-2);margin-top:2px">'+defaultAddr.address+'</div>';
+  html+='</div>';
+  html+='<div style="padding:12px 14px;border-radius:12px;background:#fafafa;border:1px solid var(--line);margin-bottom:12px">';
+  html+='<div style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px">💳 Pay With</div>';
+  if(defaultPay){
+    html+='<div style="font-size:14px;font-weight:800;color:var(--ink)">'+defaultPay.label+'</div>';
+    html+='<div style="font-size:12.5px;color:var(--ink-2);margin-top:2px">'+defaultPay.detail+'</div>';
+  } else {
+    html+='<div style="font-size:13px;color:var(--muted)">Cash on Delivery</div>';
+  }
+  html+='</div>';
+  html+='<div class="promo-wrap">';
+  html+='<div style="font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px">🏷️ Promo Code</div>';
+  html+='<div class="promo-row"><input type="text" class="promo-input" id="promoInput" placeholder="Enter code (e.g. WELCOME50)" autocomplete="off"><button class="promo-btn" id="promoApplyBtn">Apply</button></div>';
+  html+='<div class="promo-msg" id="promoMsg"></div>';
+  html+='<div class="promo-saved" id="promoSaved" style="display:none"><span id="promoSavedText"></span><button id="promoRemoveBtn">✕ Remove</button></div>';
+  html+='</div>';
+  var finalTotal=t.total;
+  html+='<div style="padding:14px;border-radius:12px;background:#fafafa;border:1px solid var(--line);margin-top:12px">';
+  html+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:6px"><span>Item Total</span><span>'+inr(t.subtotal)+'</span></div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:6px"><span>Delivery</span><span>'+(t.delivery===0?'<span style="color:var(--green);font-weight:700">FREE</span>':inr(t.delivery))+'</span></div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:6px"><span>GST</span><span>'+inr(t.gst)+'</span></div>';
+  html+='<div id="promoLine" style="display:none;display:flex;justify-content:space-between;font-size:13px;color:#1f7a45;font-weight:700;margin-bottom:6px"><span>Promo Discount</span><span id="promoLineVal">-₹0</span></div>';
+  html+='<div style="display:flex;justify-content:space-between;font-size:15px;font-weight:800;color:var(--ink);padding-top:8px;border-top:1px dashed #d9d9d9"><span>Total</span><span id="checkoutTotal">'+inr(t.total)+'</span></div>';
+  html+='</div>';
+  html+='</div>';
+  html+='<button class="help-submit" id="confirmOrderBtn">Confirm Order • <span id="confirmTotalLabel">'+inr(t.total)+'</span></button>';
+  html+='<button style="width:100%;padding:13px;border-radius:11px;font-size:14px;font-weight:800;background:#f4f4f5;color:var(--ink-2);border:none;cursor:pointer;font-family:inherit;margin-top:8px" id="confirmCancelBtn">Go Back</button>';
+  openModal("Confirm Order","Review and place your order",html);
+  $("confirmCancelBtn").addEventListener("click",function(){removePromo();closeModal();});
+
+  // Promo code wiring
+  var finalTotal=t.total;
+  function updatePromoUI(){
+    var total=t.total-promoDiscount;
+    if(total<0) total=0;
+    finalTotal=total;
+    var pl=$("promoLine");
+    var plv=$("promoLineVal");
+    var ct=$("checkoutTotal");
+    var cl=$("confirmTotalLabel");
+    if(appliedPromo){
+      pl.style.display="flex";
+      plv.textContent="-"+inr(appliedPromo.discount);
+      $("promoSaved").style.display="flex";
+      $("promoSavedText").textContent=appliedPromo.code+" — "+appliedPromo.desc;
+      $("promoInput").value="";
+      $("promoMsg").style.display="none";
+    } else {
+      pl.style.display="none";
+      $("promoSaved").style.display="none";
+    }
+    ct.textContent=inr(finalTotal);
+    cl.textContent=inr(finalTotal);
+  }
+  $("promoApplyBtn").addEventListener("click",function(){
+    var code=$("promoInput").value.trim();
+    if(!code){toast("Enter a promo code","⚠️");return;}
+    var result=applyPromo(code);
+    var msg=$("promoMsg");
+    msg.textContent=result.msg;
+    msg.className="promo-msg "+(result.ok?"success":"error");
+    if(result.ok) updatePromoUI();
+  });
+  $("promoInput").addEventListener("keydown",function(e){if(e.key==="Enter")$("promoApplyBtn").click();});
+  $("promoRemoveBtn").addEventListener("click",function(){removePromo();updatePromoUI();});
+
+  // Confirm order
+  $("confirmOrderBtn").addEventListener("click",function(){
+    var order={
+      id:"ORD"+Date.now().toString().slice(-8),
+      ts:Date.now(),items:items,address:defaultAddr.label+', '+defaultAddr.address,
+      payment:defaultPay?defaultPay.label:'Cash on Delivery',
+      promoCode:appliedPromo?appliedPromo.code:null,promoDiscount:promoDiscount,
+      subtotal:t.subtotal,delivery:t.delivery,gst:t.gst,platform:t.platform,total:finalTotal
+    };
+    orderHistory.unshift(order);
+    if(orderHistory.length>HISTORY_LIMIT) orderHistory.length=HISTORY_LIMIT;
+    saveHistory();updateHistoryBadge();removePromo();
+    toast("Order placed! "+inr(finalTotal)+" • arriving in ~30 min","🎉");
+    cart={};
+    RESTAURANTS.forEach(function(r){refreshFoot(r.id);});
+    renderCart();closeModal();
+  });
+}
+
+/* =========================================================
+   PROMO CODES
+   ========================================================= */
+var PROMO_CODES={
+  WELCOME50:{desc:"50% OFF up to ₹100 on first order",type:"percent",value:50,maxDiscount:100,minOrder:199},
+  FLAT50:{desc:"Flat ₹50 OFF on orders above ₹299",type:"flat",value:50,minOrder:299},
+  FREEDEL:{desc:"Free delivery on any order",type:"delivery",value:0,minOrder:0},
+  HUNGRY30:{desc:"30% OFF up to ₹75",type:"percent",value:30,maxDiscount:75,minOrder:200},
+  BOGO100:{desc:"Flat ₹100 OFF on orders above ₹499",type:"flat",value:100,minOrder:499}
+};
+var appliedPromo=null;
+var promoDiscount=0;
+
+function applyPromo(code){
+  var promo=PROMO_CODES[code.toUpperCase()];
+  if(!promo){return {ok:false,msg:"Invalid promo code"};}
+  var t=cartTotals();
+  if(t.subtotal<promo.minOrder){return {ok:false,msg:"Minimum order ₹"+promo.minOrder+" required for this code"};}
+  var discount=0;
+  if(promo.type=="percent"){
+    discount=Math.round(t.subtotal*promo.value/100);
+    if(promo.maxDiscount) discount=Math.min(discount,promo.maxDiscount);
+  } else if(promo.type=="flat"){
+    discount=promo.value;
+  } else if(promo.type=="delivery"){
+    discount=t.delivery;
+  }
+  appliedPromo={code:code.toUpperCase(),desc:promo.desc,discount:discount,type:promo.type};
+  promoDiscount=discount;
+  return {ok:true,discount:discount,msg:"✅ "+promo.desc+" — You save "+inr(discount)};
+}
+function removePromo(){
+  appliedPromo=null;
+  promoDiscount=0;
+}
+
+/* =========================================================
+   LIVE COUNTDOWN TIMER
+   ========================================================= */
+var countdownInterval=null;
+
+function startCountdown(orderTs,durationMs){
+  stopCountdown();
+  var endTime=orderTs+durationMs;
+  function tick(){
+    var remaining=endTime-Date.now();
+    if(remaining<=0){remaining=0;stopCountdown();}
+    var totalSec=Math.ceil(remaining/1000);
+    var min=Math.floor(totalSec/60);
+    var sec=totalSec%60;
+    var numEl=$("countdownNum");
+    var minEl=$("countdownMin");
+    var secEl=$("countdownSec");
+    if(numEl) numEl.textContent=min+":"+(sec<10?"0":"")+sec;
+    if(minEl) minEl.textContent=min;
+    if(secEl) secEl.textContent=(sec<10?"0":"")+sec;
+    var barEl=$("countdownProgress");
+    if(barEl){
+      var elapsed=Date.now()-orderTs;
+      var pct=Math.min(100,Math.round(elapsed/durationMs*100));
+      barEl.style.width=pct+"%";
+      if(pct>=100) barEl.style.background="var(--green)";
+    }
+  }
+  tick();
+  countdownInterval=setInterval(tick,1000);
+}
+function stopCountdown(){
+  if(countdownInterval){clearInterval(countdownInterval);countdownInterval=null;}
+}
+
+/* =========================================================
+   FAVOURITES (persisted)
+   ========================================================= */
+var LS_FAVS="crave_favourites";
+var favourites=JSON.parse(localStorage.getItem(LS_FAVS)||"[]");
+if(!Array.isArray(favourites)) favourites=[];
+
+function saveFavs(){localStorage.setItem(LS_FAVS,JSON.stringify(favourites));}
+function isFav(id){return favourites.indexOf(id)>=0;}
+function toggleFav(id){
+  var idx=favourites.indexOf(id);
+  if(idx>=0){favourites.splice(idx,1);toast("Removed from favourites","💔");}
+  else{favourites.push(id);toast("Added to favourites","❤️");}
+  saveFavs();
+}
+
+function openFavModal(){
+  var html='';
+  if(favourites.length===0){
+    html+='<div style="text-align:center;padding:40px 20px"><div style="font-size:52px;margin-bottom:12px;opacity:.5">❤️</div><h4 style="font-size:17px;font-weight:800;color:var(--ink);margin-bottom:6px">No favourites yet</h4><p style="font-size:13px;color:var(--muted);line-height:1.5">Tap the heart icon on any restaurant to save it here for quick access.</p></div>';
+  } else {
+    html+='<div class="fav-section"><div class="fav-section-head"><h4>❤️ Your Favourites</h4><span>'+favourites.length+' saved</span></div>';
+    favourites.forEach(function(id){
+      var r=RESTAURANTS.find(function(x){return x.id===id;});
+      if(!r) return;
+      var ratingClass=r.rating<4.2?"low":"";
+      html+='<div class="fav-card">';
+      html+='<div class="fav-card-emoji" style="background:'+r.grad+'">'+r.emoji+'</div>';
+      html+='<div class="fav-card-info"><div class="fav-card-name">'+r.name+'</div><div class="fav-card-meta">'+r.cuisines.join(", ")+' • '+r.time+' min • '+inr(r.price)+' for two</div></div>';
+      html+='<div class="fav-card-rating '+ratingClass+'">★ '+r.rating.toFixed(1)+'</div>';
+      html+='<button class="fav-remove" data-fav-remove="'+r.id+'">♥</button>';
+      html+='</div>';
+    });
+    html+='</div>';
+  }
+  openModal("Favourites","Your saved restaurants",html);
+  modalBody.querySelectorAll("[data-fav-remove]").forEach(function(btn){
+    btn.addEventListener("click",function(){
+      toggleFav(+btn.dataset.favRemove);
+      renderGrid();
+      openFavModal();
+    });
+  });
+}
+
+/* =========================================================
+   RATINGS
+   ========================================================= */
+var LS_RATINGS="crave_ratings";
+function getRatings(){try{return JSON.parse(localStorage.getItem(LS_RATINGS)||"[]")||[];}catch(e){return [];}}
+function saveRatings(list){localStorage.setItem(LS_RATINGS,JSON.stringify(list));}
+function hasRated(orderId){var ratings=getRatings();return ratings.some(function(r){return r.orderId===orderId;});}
+
+function openRatingModal(orderId){
+  if(!requireAuth()) return;
+  var order=orderHistory.find(function(o){return o.id===orderId;});
+  if(!order){toast("Order not found","⚠️");return;}
+  if(hasRated(orderId)){toast("You already rated this order","✅");return;}
+  var selectedStars=0;
+  var selectedTags=[];
+  var RATING_TAGS=[" Great Food "," Fast Delivery "," Good Packaging "," Value for Money "," Would Order Again "," Nice Presentation "];
+
+  function renderRatingHTML(){
+    var html='<div class="rating-modal">';
+    html+='<div class="rate-emoji">'+order.items[0].emoji+'</div>';
+    html+='<div class="rate-title">How was your order?</div>';
+    html+='<div class="rate-sub">Order '+order.id+' • '+order.items.length+' item'+(order.items.length>1?'s':'')+'</div>';
+    html+='<div class="star-row">';
+    for(var i=1;i<=5;i++){
+      html+='<button class="star-btn'+(i<=selectedStars?' selected':'')+'" data-star="'+i+'">'+(i<=selectedStars?'⭐':'☆')+'</button>';
+    }
+    html+='</div>';
+    html+='<div class="rating-tags">';
+    RATING_TAGS.forEach(function(tag){
+      var sel=selectedTags.indexOf(tag)>=0;
+      html+='<button class="rating-tag'+(sel?' selected':'')+'" data-tag="'+tag+'">'+tag+'</button>';
+    });
+    html+='</div>';
+    html+='<textarea class="rating-textarea" id="ratingComment" placeholder="Any additional comments? (optional)"></textarea>';
+    html+='<button class="rating-submit" id="ratingSubmit"'+(selectedStars===0?' disabled style="opacity:.5"':'')+'>Submit Rating</button>';
+    html+='</div>';
+    return html;
+  }
+
+  openModal("Rate Order","Your feedback helps us improve",renderRatingHTML());
+
+  function wireStars(){
+    modalBody.querySelectorAll("[data-star]").forEach(function(btn){
+      btn.addEventListener("click",function(){
+        selectedStars=+btn.dataset.star;
+        modalBody.innerHTML=renderRatingHTML();
+        wireStars();wireTags();wireSubmit();
+      });
+    });
+  }
+  function wireTags(){
+    modalBody.querySelectorAll("[data-tag]").forEach(function(btn){
+      btn.addEventListener("click",function(){
+        var tag=btn.dataset.tag;
+        var idx=selectedTags.indexOf(tag);
+        if(idx>=0) selectedTags.splice(idx,1); else selectedTags.push(tag);
+        modalBody.innerHTML=renderRatingHTML();
+        wireStars();wireTags();wireSubmit();
+      });
+    });
+  }
+  function wireSubmit(){
+    var sub=$("ratingSubmit");
+    if(sub) sub.addEventListener("click",function(){
+      if(selectedStars===0){toast("Please select a star rating","⚠️");return;}
+      var comment=("ratingComment"&&$("ratingComment"))?("ratingComment"&&$("ratingComment")).value.trim():"";
+      var rating={
+        orderId:orderId,stars:selectedStars,tags:selectedTags,comment:comment,
+        ts:Date.now(),restaurantIds:order.items.map(function(it){return it.id;})
+      };
+      var ratings=getRatings();ratings.push(rating);saveRatings(ratings);
+      modalBody.innerHTML='<div class="rating-done"><div class="big">🎉</div><h4>Thank you!</h4><p>Your '+selectedStars+'-star rating has been recorded. It helps other food lovers discover great restaurants!</p></div>';
+      toast("Rating submitted! Thank you ⭐","🎉");
+      setTimeout(closeModal,2200);
+    });
+  }
+  wireStars();wireTags();wireSubmit();
+}
+
+/* =========================================================
+   AUTO-REFRESH TRACKING
+   ========================================================= */
+var autoRefreshInterval=null;
+
+function startAutoRefresh(orderTs,orderId){
+  stopAutoRefresh();
+  autoRefreshInterval=setInterval(function(){
+    var elapsed=Date.now()-orderTs;
+    var mins=elapsed/60000;
+    var currentStep=0;
+    if(mins>25) currentStep=3;
+    else if(mins>15) currentStep=2;
+    else if(mins>5) currentStep=1;
+    else currentStep=0;
+    var isComplete=currentStep>=3;
+    // Update step dots
+    var dots=modalBody.querySelectorAll(".track-step");
+    dots.forEach(function(dot,i){
+      dot.className="track-step";
+      if(i<currentStep) dot.className+=" done";
+      else if(i===currentStep) dot.className+=" active";
+    });
+    // Update progress fill
+    var fillEl=$("countdownProgress");
+    if(fillEl && !isComplete){
+      var elapsed2=Date.now()-orderTs;
+      var pct=Math.min(100,Math.round(elapsed2/(30*60*1000)*100));
+      fillEl.style.width=pct+"%";
+    }
+    // If delivered, refresh the whole modal
+    if(isComplete){
+      stopAutoRefresh();
+      stopCountdown();
+      openTrackingModal(orderId);
+      toast("Order has been delivered! 🎉","📦");
+    }
+  },30000);
+}
+function stopAutoRefresh(){
+  if(autoRefreshInterval){clearInterval(autoRefreshInterval);autoRefreshInterval=null;}
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+var searchTimer;
+function runSearch(val,scroll){
+  query=normalizeQuery(val);
+  $("searchClear").classList.toggle("show",val.length>0);
+  renderGrid();
+  if(scroll) document.querySelector(".section").scrollIntoView({behavior:"smooth",block:"start"});
+}
+searchInput.addEventListener("input",function(e){
+  var val=e.target.value;
+  $("searchClear").classList.toggle("show",val.length>0);
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(function(){runSearch(val,false);},220);
+});
+searchInput.addEventListener("keydown",function(e){if(e.key==="Enter")runSearch(e.target.value,true);});
+$("searchBtn").addEventListener("click",function(){runSearch(searchInput.value,true);});
+$("searchClear").addEventListener("click",function(){
+  searchInput.value="";$("searchClear").classList.remove("show");
+  runSearch("",false);searchInput.focus();
+});
+
+/* =========================================================
+   VEG / SORT
+   ========================================================= */
+$("vegToggle").addEventListener("click",function(){
+  vegOnly=!vegOnly;
+  this.classList.toggle("on",vegOnly);
+  renderGrid();
+});
+$("sort").addEventListener("change",function(e){sortBy=e.target.value;renderGrid();});
+
+/* =========================================================
+   INIT
+   ========================================================= */
+loadHistory();
+renderCategories();
+renderActivePill();
+renderGrid();
+renderCart();
+renderHistory();
+updateHistoryBadge();
+</script>
+</body>
+</html>
